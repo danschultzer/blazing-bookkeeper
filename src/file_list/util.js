@@ -80,3 +80,13 @@ export default class Util {
       return bytes.toFixed(1)+' '+units[u];
   }
 }
+
+
+Util.Interval = function(fn, interval) {
+  var id = setInterval(fn, interval);
+  this.cleared = false;
+  this.clear = function () {
+    this.cleared = true;
+    clearInterval(id);
+  };
+};

@@ -20,6 +20,64 @@ describe("file list", function() {
     fileList.createSmoothPercentProgressionInterval.restore();
   });
 
+  describe('#createSmoothPercentProgressionInterval', function() {
+    var interval,
+      checkAfter = function(done, callback, timeout) {
+         setTimeout(function() {
+            try {
+              callback();
+              done();
+            } catch(e) {
+              done(e);
+            }
+          }, timeout || 15);
+      };
+
+    beforeEach(function() {
+      fileList.addFile("readable.jpg", "/path/to/readable.jpg", 1345000);
+      fileList.createSmoothPercentProgressionInterval.restore();
+      interval = fileList.createSmoothPercentProgressionInterval(fileList.files[0].index);
+    });
+
+    afterEach(function() {
+      interval.clear();
+      sinon.stub(fileList, 'createSmoothPercentProgressionInterval'); // We don't want to run progress interval
+    });
+
+    it('should smooth update progress after 15ms', function(done) {
+      assert.equal(0, fileList.files[0].progressBar);
+      fileList.files[0].percentDone = 0.1;
+      assert.equal(0, fileList.files[0].progressBar);
+      checkAfter(done, function() {
+        assert.equal(false, interval.cleared);
+        assert.equal(1, fileList.files[0].progressBar);
+      });
+    });
+
+    it('doesn\'t increase above max percent', function(done) {
+      fileList.files[0].percentDone = 0.1;
+      checkAfter(done, function() {
+        assert.equal(10, fileList.files[0].progressBar);
+      }, 15*20);
+    });
+
+    it('should stop interval after filed parsed', function(done) {
+      fileList.files[0].done = true;
+      assert.equal(false, interval.cleared);
+      checkAfter(done, function() {
+        assert.equal(true, interval.cleared);
+      });
+    });
+
+    it('should stop interval after file removed', function(done) {
+      fileList.files.pop();
+      assert.equal(false, interval.cleared);
+      checkAfter(done, function() {
+        assert.equal(true, interval.cleared);
+      });
+    });
+  });
+
   describe('#addFiles()', function() {
 
     beforeEach(function() {

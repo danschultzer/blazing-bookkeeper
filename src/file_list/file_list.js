@@ -34,10 +34,9 @@ export class FileList {
   }
 
   createSmoothPercentProgressionInterval(index) {
-    var interval = setInterval(() => {
+    var interval = new Util.Interval(() => {
       var file = this.getFileForIndex(index);
-      if (!file || file.done) return clearInterval(interval);
-
+      if (!file || file.done) return interval.clear();
       var maxAmount = parseInt(file.percentDone * 100),
         amount = file.progressBar;
       if (amount < maxAmount) {
@@ -45,6 +44,8 @@ export class FileList {
         this.updateFile(index, { progressBar: amount });
       }
     }, 15);
+
+    return interval;
   }
 
   addFile(name, path, filesize) {
