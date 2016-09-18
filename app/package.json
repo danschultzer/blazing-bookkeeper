@@ -3,7 +3,10 @@
   "productName": "Blazing Bookkeeper",
   "description": "Who has got time to read receipts? Let Blazing Bookkeeper blaze through all your receipts in no time.",
   "version": "0.1.0",
-  "author": "Dan Schultzer, Benjamin Schultzer",
+  "author": "Dan Schultzer <dan@dreamconception.com>",
+  "contributors": [
+    "Benjamin Schultzer <benjamin@schultzer.com>"
+  ],
   "main": "background.js",
   "dependencies": {
     "fs-jetpack": "^0.9.0",
