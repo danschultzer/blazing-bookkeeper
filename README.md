@@ -24,6 +24,15 @@ npm run e2e
 ```
 All `*.e2e.js` in `e2e` will be included.
 
+
+### Code coverage
+
+Using [istanbul](http://gotwarlost.github.io/istanbul/) code coverage tool. Run with command:
+```
+npm run coverage
+```
+You can set the reporter(s) by setting `ISTANBUL_REPORTERS` environment variable (defaults to `text-summary` and `html`). The report directory can be set with `ISTANBUL_REPORT_DIR` (defaults to `coverage`).
+
 # Making a release
 
 To make ready for distribution installer use command:
