@@ -5,6 +5,8 @@
 [![CircleCI](https://img.shields.io/circleci/project/danschultzer/blazing-bookkeeper.svg)](https://circleci.com/gh/danschultzer/blazing-bookkeeper)
 [![Codecov](https://img.shields.io/codecov/c/github/danschultzer/blazing-bookkeeper.svg)](https://codecov.io/gh/danschultzer/blazing-bookkeeper)
 
+![](https://cloud.githubusercontent.com/assets/1254724/18614273/5b964992-7d40-11e6-991c-39e7ab7d25d9.gif)
+
 ### Unit tests
 
 Using [electron-mocha](https://github.com/jprichardson/electron-mocha) test runner with the [chai](http://chaijs.com/api/assert/) assertion library. To run the tests go with standard:
