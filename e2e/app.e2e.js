@@ -69,7 +69,7 @@ describe('application launch', function() {
             return app.client.getWindowCount().then(function(count) {
               return count == 1;
             });
-          }, 500, 'expected window to close after 0.5s');
+          }, 1000, 'expected window to close after 1s');
         });
 
         it("updates values", function() {
