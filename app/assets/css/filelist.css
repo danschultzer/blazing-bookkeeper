@@ -1,0 +1,270 @@
+:root {
+
+/*Submenu*/
+  --submenu-bg: rgb(240, 240, 240);
+  --submenu-bg-blurred: rgb(246, 246, 246);
+  --submenu-black-text: rgb(37, 37, 37);
+  --submenu-black-text-blurred: rgb(38, 38, 38);
+  --submenu-border-buttom: rgb(192, 192, 192);
+  --submenu-border-buttom-blurred: rgb(197, 197, 197);
+
+/*Table*/
+  --table-grey-bg: rgb(240, 240, 240);
+  --table-grey-bg-blurred: rgb(246, 246, 246);
+  --table-border-bottom: rgb(173, 173, 173);
+  --table-border-bottom-blurred: rgb(149, 148, 149);
+
+/*Table Body*/
+  --table-body-white-bg: rgb(255, 255, 255);
+  --table-body-grey-bg: rgb(245, 245, 245);
+  --table-body-files-bottom: 60px;
+
+
+/*Row*/
+  --row-height: 23px;
+  --double-row-height: 46px;
+  --row-black-text: rgb(36, 36, 36);
+  --row-black-text-blurred: rgb(32, 32, 32);
+  --row-grey-text: rgb(128, 128, 128);
+  --row-white-bg: rgb(255, 255, 255);
+  --row-gray-bg: rgb(245, 245, 245);
+  --row-white-border: rgb(255, 255, 255);
+  --row-grey-border-color: rgb(245, 245, 245);
+
+/*Row Selected*/
+  --row-white-text-selected: rgb(255, 255, 255);
+  --row-blue-bg-selected: rgb(17, 108, 214);
+  --row-grey-bg-selected-blurred: rgb(220, 220, 220);
+
+/*Buttons*/
+  --button-blue-text: rgb(0, 122, 255);
+  --button-black-text-blurred: rgb(36, 36, 36);
+  --button-text-activated: rgb(255, 255, 255);
+  --button-bg-activated: rgb(71, 152, 251);
+  --button-grey-bg: rgb(240, 240, 240);
+  --button-grey-bg-blurred: rgb(246, 246, 246);
+
+/*Footer Summery*/
+  --summary-bar-height: 25px;
+  --summary-bar-bottom: 0px;
+  --summary-grey-bg: rgb(240, 240, 240);
+  --summary-grey-bg-blurred: rgb(246, 246, 246);
+  --summary-border-top: rgb(192, 192, 192);
+  --summary-border-top-blurred: rgb(197, 197, 197);
+
+}
+
+.drag .window:before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 99;
+  cursor: copy;
+}
+
+.window .table {
+  margin: 0px;
+  padding: 0px;
+}
+
+.window .table {
+  width:100%;
+}
+
+.window .table .head {
+  position: fixed;
+  width: 100%;
+  background-color: var(--table-grey-bg);
+  height: 46px;
+  overflow: none;
+}
+
+.blurred .window .table .head {
+  background-color: var(--table-grey-bg-blurred);
+}
+
+.window .table .head .cell {
+  color: var(--submenu-black-text);
+}
+
+.blurred .window .table .head .cell {
+  color: var(--submenu-black-text-blurred);
+}
+
+.window .table .head header.titlebar {
+  margin-bottom: 0px;
+}
+
+.window .row {
+  display: flex;
+  border-bottom: 1px solid var(--submenu-border-bottom);
+  justify-content: end;
+  flex-flow: row;
+}
+
+.blurred .window .row {
+  border-bottom: 1px solid var(--submenu-border-bottom-blurred);
+}
+
+.window .cell {
+  padding: 3px 12px;
+
+  flex: 1 1 auto;
+
+  text-align:left;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.window .cell:last-child {
+  text-align:right;
+}
+
+.window .table .cell:nth-of-type(1) {
+  width: 100%;
+}
+.window .table .cell:nth-of-type(2),
+.window .table .cell:nth-of-type(3),
+.window .table .cell:nth-of-type(4) {
+  width: 200px;
+}
+
+.window .table .cell:nth-of-type(4) progress {
+  width: 100%;
+}
+
+.window .head .row {
+  background-color: var(--submenu-bg);
+  border-bottom: 1px solid var(--submenu-border-buttom);
+}
+
+.blurred .window .head .row {
+  background-color: var(--submenu-bg-blurred);
+  border-bottom: 1px solid var(--submenu-border-buttom-blurred);
+}
+
+.window .table .body {
+  position: fixed;
+  position:absolute;
+  top: 46px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  overflow-y: scroll;
+  bottom: var(--table-body-files-bottom);
+  /*border-top: 2px solid var(--row-white-border);*/
+  background: linear-gradient(0deg,
+    var(--table-body-white-bg),
+    var(--table-body-white-bg) 24px,
+    var(--table-body-grey-bg) 23px,
+    var(--table-body-grey-bg) 46px
+);
+  background-size: 100% var(--double-row-height);
+
+}
+
+.window .table .body .row {
+  background: var(--row-white-bg);
+  height: var(--row-height);
+  border-bottom: 1px solid var(--row-white-border);
+}
+
+.window .table .body .row:nth-of-type(odd) {
+  background: var(--row-gray-bg);
+}
+
+.window .table .body .cell:nth-of-type(1) {
+  color: var(--row-black-text);
+}
+.window .table .body .cell:nth-of-type(2),
+.window .table .body .cell:nth-of-type(3),
+.window .table .body .cell:nth-of-type(4) {
+  color: var(--row-grey-text);
+}
+
+.window .table .body .row.selected,
+.window .table .body .row.selected .cell {
+  color: var(--row-white-text-selected);
+  background-color: var(--row-blue-bg-selected);
+}
+
+.blurred .window .table .body .row.selected,
+.blurred .window .table .body .row.selected .cell {
+  color: var(--row-grey-text);
+  background-color: var(--row-grey-bg-selected-blurred);
+}
+.blurred .window .table .body .row.selected .cell:nth-of-type(1) {
+  color: var(--row-black-text-blurred);
+  background-color: var(--row-grey-bg-selected-blurred);
+}
+
+
+/* Toolbar */
+.bottom-toolbar {
+  bottom: 25px !important;
+}
+
+.btn-group {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-app-region: no-drag;
+}
+.btn-group .btn {
+  position: relative;
+  float: left;
+}
+
+
+footer#summary {
+  position: absolute;
+  bottom: var(--summary-bar-bottom);
+  height: var(--summary-bar-height);
+  width: 100%;
+
+  border-top: 1px solid var(--summary-border-top);
+  background-color: var(--summary-grey-bg);
+  overflow: none;
+
+  display: flex;
+  flex-flow: row;
+}
+
+footer#summary div {
+  text-align: center;
+
+  flex: 1 1 auto;
+  width: 100px;
+  margin: 2px 5px;
+}
+
+footer#summary div .color-red {
+  color: #a00;
+}
+
+footer#summary div .color-yellow {
+  color: #aa0;
+}
+
+footer#summary div .color-green {
+  color: #0a0;
+}
+
+footer#summary div:first-child {
+  text-align:left;
+}
+
+footer#summary div:last-child {
+  text-align:right;
+}
+
+.blurred footer#summary {
+  border-top: 1px solid var(--summary-border-top-blurred);
+  background-color: var(--summary-grey-bg-blurred);
+}

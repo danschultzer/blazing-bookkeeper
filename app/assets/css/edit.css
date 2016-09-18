@@ -1,0 +1,84 @@
+.window {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(236, 236, 236);
+  color: rgb(0, 0, 0);
+}
+
+.edit {
+  position: absolute;
+  top: 19px;
+  left: 0px;
+  right: 0px;
+  bottom: 35px;
+}
+
+.edit > div.preview {
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+
+.edit > div.preview > div {
+  width:100%;
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit > div.input {
+  float: left;
+  min-width: 200px;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit > div.input label, .edit > div.input input {
+  display: inline-block;
+  width: 150px;
+  text-align:left;
+}
+.edit > div.input label {
+  width: 152px;
+}
+
+.edit > div.input input {
+  cursor: text;
+  border: 1px solid rgb(240, 240, 240);
+  outline: 1px solid rgb(177, 177, 177);
+  padding: 0 5px;
+}
+
+.edit > div.input input:focus {
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+
+.edit > div.input .input-group {
+  padding-bottom: 20px;
+  width: 152px;
+}
+
+.edit > div.input .input-group.notice {
+  padding-top: 20px;
+  text-align: center;
+}
+
+.edit > div.input .input-group.notice a {
+  cursor: pointer;
+  color: rgb(0,0,0);
+  font-size: 10px;
+}
+
+#preview {
+  margin: 0px 10px 10px 10px;
+  transition: opacity 0.2s ease-in-out;
+  border: 1px solid rgb(240, 240, 240);
+  outline: 1px solid rgb(177, 177, 177);
+}

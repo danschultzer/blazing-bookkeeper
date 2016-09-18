@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blazing Bookkeeper</title>
+
+  <link rel="stylesheet" type="text/css" href="assets/css/app.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/edit.css">
+
+  <script src="edit.js"></script>
+</head>
+<body id="main" v-on:keydown.prevent.27="close" v-on:keydown.prevent.13="save">
+
+<div class="window">
+  <header class="titlebar" style="-webkit-app-region: drag;">{{ file.file.name }}</header>
+
+  <div class="edit">
+    <div class="input">
+      <div class="input-group">
+        <label for="date">Date:</label>
+        <input placeholder="{{ (new Date).toISOString().substring(0, 10); }}" type="text" id="date" name="date" value="{{ (file.result.updated || {}).date || file.result.parsed.date }}" />
+      </div>
+      <div class="input-group">
+        <label for="amount">Amount:</label>
+        <input placeholder="2,970.00" type="text" id="amount" name="amount" value="{{ (file.result.updated || {}).amount || file.result.parsed.amount }}" />
+      </div>
+      <div class="input-group notice">
+        <a href="https://github.com/" target="_blank" class="js-external-link">Wrong results? Report it so Blazing Bookkeeper can be improved!</a>
+      </div>
+    </div>
+
+    <div class="preview">
+      <div>
+        <canvas id="preview" alt="{{ file.file.path }}"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bottom-toolbar" id="toolbar" style="-webkit-app-region: drag;">
+    <button class="btn btn-default" v-on:click.stop.prevent="close">
+      Cancel
+    </button>
+    <button class="btn btn-default" v-on:click.stop.prevent="save">
+      Update
+    </button>
+  </footer>
+</div>
+</body>
+</html>

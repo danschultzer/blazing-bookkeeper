@@ -1,0 +1,123 @@
+/* Attr: http://codepen.io/the_ruther4d/pen/HwaEf */
+/* HTML:
+<div class='icon'>
+  <div class='ring'>
+    <div class='flame'>
+      <div class='main'>
+        <div class='inner'></div>
+      </div>
+      <div class='sub'></div>
+    </div>
+  </div>
+</div>
+*/
+
+:root {
+  --background: #fff;
+  --flame-darkest: #ee5630;
+  --flame-second-darkest: #f18032;
+  --flame-third-darkest: #f49f36;
+  --flame-second-lightest: #f6b537;
+  --flame-lightest: #f8c83c;
+}
+
+:root {
+  --background: #0087BC;
+  --flame-darkest: #006B96;
+  --flame-second-darkest: #22ACE2;
+  --flame-third-darkest: #4DCDFF;
+  --flame-second-lightest: #73D8FF;
+  --flame-lightest: #99E2FF;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html {
+  background: #ccc;
+  font-size: 62.5%;
+}
+
+
+.icon {
+  display: block;
+  position:absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--background);
+  border-radius:100%;
+  border:6px solid #fff;
+  width:345px;
+  height:345px;
+}
+.ring:after {
+  content: ' ';
+  position:absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius:100%;
+
+  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.1) 100%);
+  z-index:99;
+}
+
+.flame {
+  z-index: 1;
+  position: relative;
+  width: 14.8rem;
+  height: 24.8rem;
+  margin: 50px auto;
+}
+.flame .children, .flame .main, .flame .main .inner, .flame .sub {
+  position: absolute;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.flame .psuedo, .flame .main .inner:before, .flame .sub:before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+.flame .main {
+  width: 19.0rem;
+  height: 19.0rem;
+  left: 4.4rem;
+  top: -0.7rem;
+}
+.flame .main .inner {
+  width: 18.7rem;
+  height: 18.7rem;
+  left: -8.3rem;
+  top: 5.3rem;
+  background: var(--flame-third-darkest);
+  box-shadow: 10.7rem -11.5rem 0 -3.0rem var(--background), 1.2rem -6.7rem 0 -4.6rem var(--flame-second-lightest), 3.7rem -11.4rem 0 -4.6rem var(--flame-third-darkest);
+}
+.flame .main .inner:before {
+  width: 9.5rem;
+  height: 9.5rem;
+  left: 5.8rem;
+  top: -2.1rem;
+  background: var(--flame-lightest);
+  box-shadow: 0 4.0rem 0 1.95rem var(--flame-second-lightest);
+}
+.flame .sub {
+  width: 20.08rem;
+  height: 19.6rem;
+  bottom: 0.8rem;
+  background: var(--background);
+  right: 0;
+  z-index: -1;
+}
+.flame .sub:before {
+  width: 9.5rem;
+  height: 9.5rem;
+  left: 7.2rem;
+  top: -1.77rem;
+  background: var(--background);
+  box-shadow: 0 4.0rem 0 1.95rem var(--flame-third-darkest), -4.0rem 1.0rem 0 1.95rem var(--background), 6.8rem 0 0 9.75rem var(--flame-second-darkest), -7.29rem 15.8rem 0 2.1rem var(--background), 0rem 15.8rem 0 2.1rem var(--flame-darkest);
+}
