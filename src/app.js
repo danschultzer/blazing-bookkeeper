@@ -128,7 +128,7 @@ function exportCSV() {
     ]
   }, function(filename) {
     saveFileDialog = false;
-    if (filename) jetpack.write(filename, global.fileList.selectedToCSV());
+    if (filename) jetpack.write(filename, global.fileList.Select.selectedToCSV());
   });
 }
 

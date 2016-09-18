@@ -4,7 +4,7 @@ import jetpack from 'fs-jetpack';
 import { FileList } from './file_list';
 import scanner from 'receipt-scanner';
 
-describe("file list", function() {
+describe("fileList", function() {
   var fileList;
   beforeEach(function() {
     sinon.stub(scanner.prototype, 'parse');
@@ -259,20 +259,9 @@ describe("file list", function() {
     });
   });
 
-  describe('#selectedToCSV()', function() {
-    it("converts selected items to CSV", function() {
+  describe('#toCSV()', function() {
+    it("converts items to CSV", function() {
       var files = [{
-        file: {
-          name: "test.jpg",
-          path: "/path/to/test.jpg"
-        },
-        result: {
-          parsed: {
-            date: "2016-01-05",
-            amount: "500.00"
-          }
-        }
-      }, {
         file: {
           name: "test2.jpg",
           path: "/path/to/test2.jpg"
@@ -282,17 +271,10 @@ describe("file list", function() {
         }
       }];
 
-      sinon.stub(fileList.Select, 'selected', function() {
-        return [1];
-      });
-      sinon.stub(fileList, 'getFileForElement', function() {
-        return files[1];
-      });
-
       var expected = "Name\tAmount\tDate\tPath\n" +
         "test2.jpg\t\t\t/path/to/test2.jpg\n";
 
-      assert.include(fileList.selectedToCSV(), expected);
+      assert.include(fileList.toCSV(files), expected);
     });
   });
 

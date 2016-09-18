@@ -8,7 +8,7 @@ export var appMenuTemplate = {
         accelerator: "CmdOrCtrl+C",
         click: function(item, focusedWindow) {
           if (focusedWindow)
-            focusedWindow.webContents.executeJavaScript("fileList.copySelectedToClipboard();");
+            focusedWindow.webContents.executeJavaScript("fileList.Select.copySelectedToClipboard();");
         }
       },
       {
@@ -32,7 +32,7 @@ export var appMenuTemplate = {
         accelerator: "CmdOrCtrl+Backspace",
         click: function(item, focusedWindow) {
           if (focusedWindow)
-            focusedWindow.webContents.executeJavaScript("fileList.removeSelected();");
+            focusedWindow.webContents.executeJavaScript("fileList.Select.removeSelected();");
         }
       }
     ]

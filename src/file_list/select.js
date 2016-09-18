@@ -1,3 +1,5 @@
+import { clipboard } from 'electron';
+
 export default class Select {
   constructor(fileList) {
     this.fileList = fileList;
@@ -115,7 +117,46 @@ export default class Select {
 
     if (nextFile) {
       this.select([nextFile], removeSelected);
-      this.fileList.scrollToSelection(direction);
+      this.scrollToSelection(direction);
     }
+  }
+
+  selectedToCSV() {
+    var files = [].slice.call(this.selected()).map((el) => {
+      return this.fileList.getFileForElement(el);
+    });
+    if (files.length < 1) files = this.fileList.files;
+    return this.fileList.toCSV(files);
+  }
+
+  copySelectedToClipboard() {
+    clipboard.writeText(this.selectedToCSV(), 'text/csv');
+  }
+
+  removeSelected() {
+    var files = [].slice.call(this.selected()).map((el) => {
+      return this.fileList.getFileForElement(el);
+    });
+    this.fileList.removeFiles(files);
+    this.deselectAll();
+  }
+
+  scrollToSelection(direction) {
+    var items = this.selected(),
+      curScrollTop = this.el().scrollTop,
+      scrollTop,
+      elHeight = this.el().getBoundingClientRect().height;
+
+    if (direction == 'up') {
+      scrollTop = items[0].getBoundingClientRect().top;
+    } else {
+      scrollTop = items[items.length - 1].getBoundingClientRect().bottom - elHeight;
+    }
+
+    scrollTop = scrollTop - this.el().getBoundingClientRect().top + curScrollTop;
+    if (
+      (direction == "up" && scrollTop < curScrollTop) ||
+      (direction !== "up" && scrollTop > (curScrollTop - elHeight)))
+      this.el().scrollTop = scrollTop;
   }
 }

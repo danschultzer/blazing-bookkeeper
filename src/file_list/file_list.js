@@ -3,7 +3,6 @@ import jetpack from 'fs-jetpack';
 import scanner from 'receipt-scanner';
 import Select from './select';
 import Util from './util';
-import { clipboard } from 'electron';
 
 export class FileList {
   constructor(elId) {
@@ -188,48 +187,9 @@ export class FileList {
     return this.files[this.getFileIndexForIndex(index)];
   }
 
-  selectedToCSV() {
-    var files = [].slice.call(this.Select.selected()).map((el) => {
-      return this.getFileForElement(el);
-    });
-    if (files.length < 1) files = this.files;
-    return this.toCSV(files);
-  }
-
-  copySelectedToClipboard() {
-    clipboard.writeText(this.selectedToCSV(), 'text/csv');
-  }
-
   removeFiles(files) {
     for(var i = 0, length = files.length;i < length;++i) {
       this.files.splice(this.files.indexOf(files[i]), 1);
     }
-  }
-
-  removeSelected() {
-    var files = [].slice.call(this.Select.selected()).map((el) => {
-      return this.getFileForElement(el);
-    });
-    this.removeFiles(files);
-    this.Select.deselectAll();
-  }
-
-  scrollToSelection(direction) {
-    var items = this.Select.selected(),
-      curScrollTop = this.el().scrollTop,
-      scrollTop,
-      elHeight = this.el().getBoundingClientRect().height;
-
-    if (direction == 'up') {
-      scrollTop = items[0].getBoundingClientRect().top;
-    } else {
-      scrollTop = items[items.length - 1].getBoundingClientRect().bottom - elHeight;
-    }
-
-    scrollTop = scrollTop - this.el().getBoundingClientRect().top + curScrollTop;
-    if (
-      (direction == "up" && scrollTop < curScrollTop) ||
-      (direction !== "up" && scrollTop > (curScrollTop - elHeight)))
-      this.el().scrollTop = scrollTop;
   }
 }
