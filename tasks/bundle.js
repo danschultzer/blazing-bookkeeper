@@ -23,7 +23,8 @@ var generateExternalModulesList = function () {
 
 var cached = {};
 
-module.exports = function (src, dest, opts = {}) {
+module.exports = function (src, dest, opts) {
+    opts = opts || {};
     opts.rollupPlugins = opts.rollupPlugins || [];
     return rollup({
         entry: src,

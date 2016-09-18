@@ -14,3 +14,4 @@ app/background.js
 app/edit.js
 
 /dist
+/coverage
