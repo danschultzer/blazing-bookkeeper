@@ -163,6 +163,28 @@ describe("fileList", function() {
       });
     });
 
+    describe("during parsing", function() {
+      var tickerCallback;
+
+      beforeEach(function(done) {
+        sinon.stub(scanner.prototype, 'ticker', function(callback) {
+          callback(0.5, 1000);
+          done();
+          return this;
+        });
+        fileList.addFile("readable.jpg", "/path/to/readable.jpg", 1345000);
+      });
+
+      afterEach(function() {
+        scanner.prototype.ticker.restore();
+      });
+
+      it("should update percentDone", function() {
+        assert.equal(0.5, fileList.files[0].percentDone);
+      });
+    });
+
+
     describe("when file is removed from list", function() {
       describe("while file is procesing", function() {
         var callbacks = [];
