@@ -204,6 +204,39 @@ describe("fileList", function() {
     });
   });
 
+  describe('#results', function() {
+    it("returns", function() {
+      fileList.files = [{
+        done: true,
+        result: {
+          parsed: {
+            amount: "10.00",
+            date: "2016-01-30"
+          }
+        }
+      }, {
+        done: true,
+        result: {
+          parsed: {
+            amount: "10.00",
+          }
+        }
+      }, {
+        done: false
+      }, {
+        done: true,
+        result: {
+          error: "invalid",
+        }
+      }];
+       var results = fileList.results();
+      assert.equal(3, results.done.total);
+      assert.equal(1, results.done.successful);
+      assert.equal(1, results.done.failures);
+      assert.equal(1, results.processing.total);
+    });
+  });
+
   describe('#toCSV()', function() {
     it("returns CSV", function() {
       var files = [{
