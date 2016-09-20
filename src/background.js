@@ -3,7 +3,7 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
-import { app, Menu, ipcMain, shell } from 'electron';
+import { app, Menu, ipcMain, shell, BrowserWindow } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
@@ -15,8 +15,21 @@ import env from './env';
 var mainWindow, editWindow;
 
 var setApplicationMenu = function () {
-  var menus = [];
-  if (!editWindow) menus = [editMenuTemplate];
+    // We clone editMenuTemplate object so we can append to submenu
+    var menus = [JSON.parse(JSON.stringify(editMenuTemplate))];
+
+    if (!editWindow) {
+        menus[0].submenu.push({
+            label: "Deselect All",
+            accelerator: "CmdOrCtrl+D",
+            click() {
+              BrowserWindow.getFocusedWindow().webContents.executeJavaScript("document.dispatchEvent(new CustomEvent('deselectAll'));");
+            }
+        });
+        menus[0].submenu.push({
+            role: "delete"
+        });
+    }
 
     if (env.name !== 'production') {
         menus.push(devMenuTemplate);
@@ -76,29 +89,40 @@ var setApplicationMenu = function () {
       menus.push({
         label: 'Window',
         submenu: [
-        {
-          label: 'Close',
-          accelerator: 'CmdOrCtrl+W',
-          role: 'close'
-        },
-        {
-          label: 'Minimize',
-          accelerator: 'CmdOrCtrl+M',
-          role: 'minimize'
-        },
-        {
-          label: 'Zoom',
-          role: 'zoom'
-        },
-        {
-          type: 'separator'
-        },
-        {
-          label: 'Bring All to Front',
-          role: 'front'
-        }
-      ]
-    });
+          {
+            label: 'Close',
+            accelerator: 'CmdOrCtrl+W',
+            role: 'close'
+          },
+          {
+            label: 'Minimize',
+            accelerator: 'CmdOrCtrl+M',
+            role: 'minimize'
+          },
+          {
+            label: 'Zoom',
+            role: 'zoom'
+          },
+          {
+            type: 'separator'
+          },
+          {
+            label: 'Bring All to Front',
+            role: 'front'
+          }
+        ]
+      });
+      menus.push({
+        role: 'help',
+        submenu: [
+            {
+              label: 'Learn More',
+              click () {
+                require('electron').shell.openExternal('https://github.com/danschultzer/blazing-bookkeeper');
+              }
+            }
+          ]
+      });
     }
 
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));

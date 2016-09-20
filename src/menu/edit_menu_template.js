@@ -4,33 +4,25 @@ export var editMenuTemplate = {
     label: 'Edit',
     submenu: [
       {
-        label: "Copy",
-        accelerator: "CmdOrCtrl+C",
-        selector: "copy:"
+        role: 'undo'
       },
       {
-        label: "Select All",
-        accelerator: "CmdOrCtrl+A",
-        click: function(item, focusedWindow) {
-          if (focusedWindow)
-            focusedWindow.webContents.executeJavaScript("fileList.Select.selectAll();");
-        }
+        role: 'redo'
       },
       {
-        label: "Deselect All",
-        accelerator: "CmdOrCtrl+D",
-        click: function(item, focusedWindow) {
-          if (focusedWindow)
-            focusedWindow.webContents.executeJavaScript("fileList.Select.deselectAll();");
-        }
+        type: 'separator'
       },
       {
-        label: "Remove Selected",
-        accelerator: "CmdOrCtrl+Backspace",
-        click: function(item, focusedWindow) {
-          if (focusedWindow)
-            focusedWindow.webContents.executeJavaScript("fileList.Select.removeSelected();");
-        }
+        role: 'cut'
+      },
+      {
+        role: "copy"
+      },
+      {
+        role: 'paste'
+      },
+      {
+        role: "selectall"
       }
     ]
 };

@@ -9,7 +9,7 @@
 
   <script src="app.js"></script>
 </head>
-<body id="main" v-on:keydown.prevent.38="selectUp" v-on:keydown.prevent.40="selectDown" v-on:keydown.prevent.32>
+<body id="main" v-on:keydown.prevent.38="selectUp" v-on:keydown.prevent.40="selectDown" v-on:keydown.prevent.32 v-on:keydown.65="handleCmdOrCtrlA" v-on:keydown.8="handleCmdOrCtrlBackspace">
 
 <div class="window welcome" v-if="files.length < 1" style="-webkit-app-region: drag;">
   <header class="titlebar">Blazing Bookkeeper</header>

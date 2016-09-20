@@ -42,6 +42,18 @@ document.addEventListener('DOMContentLoaded', function () {
         deselectAll: function() { global.fileList.Select.deselectAll(); },
         selectUp: function(event) { global.fileList.Select.moveDirection('up', !event.shiftKey); },
         selectDown: function(event) { global.fileList.Select.moveDirection('down', !event.shiftKey); },
+        handleCmdOrCtrlA: function(event) {
+          if ((event.metaKey || e.ctrlKey) && event.keyCode == 65) {
+            event.preventDefault();
+            global.fileList.Select.selectAll();
+          }
+        },
+        handleCmdOrCtrlBackspace: function(event) {
+          if ((event.metaKey || e.ctrlKey) && event.keyCode == 8) {
+            event.preventDefault();
+            global.fileList.Select.removeSelected();
+          }
+        },
         edit: function(event) {
           ipcRenderer.send('display-edit', [
             global.fileList.getIndexForElement(event.currentTarget),
@@ -85,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener("copy", copySelectedToClipboard, true);
+document.addEventListener("deselectAll", function() { global.fileList.Select.deselectAll(); }, true);
 
 function selectFiles(event) {
   if (event.shiftKey) {
