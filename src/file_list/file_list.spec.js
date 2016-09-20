@@ -20,7 +20,34 @@ describe("fileList", function() {
     fileList.createSmoothPercentProgressionInterval.restore();
   });
 
-  describe('#createSmoothPercentProgressionInterval', function() {
+  describe('#addFiles()', function() {
+
+    beforeEach(function() {
+      sinon.stub(fileList, "addFile");
+    });
+
+    afterEach(function() {
+      fileList.addFile.restore();
+    });
+
+    it('should handle directories', function() {
+      fileList.addFiles([__dirname + '/../resources/icons']);
+      assert.equal(true, fileList.addFile.calledOnce);
+      assert.equal(true, fileList.addFile.calledWith("512x512.png", __dirname + '/../resources/icons/512x512.png', 74799, 'image/png'));
+    });
+
+    it('should filter invalid files', function() {
+      fileList.addFiles([__dirname + '/../resources']);
+      assert.equal(4, fileList.addFile.callCount);
+    });
+
+    it('should filter non existing files', function() {
+      fileList.addFiles(["/dir/dont/exist", "/file/dont/exist.jpg"]);
+      assert.equal(false, fileList.addFile.called);
+    });
+  });
+
+  describe('#createSmoothPercentProgressionInterval()', function() {
     var interval,
       checkAfter = function(done, callback, timeout) {
          setTimeout(function() {
@@ -61,7 +88,7 @@ describe("fileList", function() {
       }, 15*20);
     });
 
-    it('should stop interval after filed parsed', function(done) {
+    it('should stop interval after file parsed', function(done) {
       fileList.files[0].done = true;
       assert.equal(false, interval.cleared);
       checkAfter(done, function() {
@@ -75,33 +102,6 @@ describe("fileList", function() {
       checkAfter(done, function() {
         assert.equal(true, interval.cleared);
       });
-    });
-  });
-
-  describe('#addFiles()', function() {
-
-    beforeEach(function() {
-      sinon.stub(fileList, "addFile");
-    });
-
-    afterEach(function() {
-      fileList.addFile.restore();
-    });
-
-    it('should handle directories', function() {
-      fileList.addFiles([__dirname + '/../resources/icons']);
-      assert.equal(true, fileList.addFile.calledOnce);
-      assert.equal(true, fileList.addFile.calledWith("512x512.png", __dirname + '/../resources/icons/512x512.png', 74799, 'image/png'));
-    });
-
-    it('should filter invalid files', function() {
-      fileList.addFiles([__dirname + '/../resources']);
-      assert.equal(4, fileList.addFile.callCount);
-    });
-
-    it('should filter non existing files', function() {
-      fileList.addFiles(["/dir/dont/exist", "/file/dont/exist.jpg"]);
-      assert.equal(false, fileList.addFile.called);
     });
   });
 
@@ -226,8 +226,52 @@ describe("fileList", function() {
     });
   });
 
-  describe('#results', function() {
-    it("returns", function() {
+  describe('#processQueue()', function() {
+    beforeEach(function() {
+      fileList.files.push({
+        index: 0,
+        file: {
+          name: "test.jpg",
+          path: "/path/to/test.jpg"
+        },
+        processing: false,
+        done: false
+      },
+      {
+        index: 1,
+        file: {
+          name: "test2.jpg",
+          path: "/path/to/test2.jpg"
+        },
+        processing: false,
+        done: false
+      },
+      {
+        index: 2,
+        file: {
+          name: "test3.jpg",
+          path: "/path/to/test3.jpg"
+        },
+        processing: false,
+        done: false
+      });
+    });
+
+    afterEach(function() {
+      fileList.files = [];
+    });
+
+    it("should only run two files at any given time", function() {
+      assert.equal(0, fileList.processingCount());
+      fileList.processQueue();
+      assert.equal(2, fileList.processingCount());
+      fileList.processQueue();
+      assert.equal(2, fileList.processingCount());
+    });
+  });
+
+  describe('#results()', function() {
+    it("returns results", function() {
       fileList.files = [{
         done: true,
         result: {
@@ -330,50 +374,6 @@ describe("fileList", function() {
         "test2.jpg\t\t\t/path/to/test2.jpg\n";
 
       assert.include(fileList.toCSV(files), expected);
-    });
-  });
-
-  describe('#processQueue()', function() {
-    beforeEach(function() {
-      fileList.files.push({
-        index: 0,
-        file: {
-          name: "test.jpg",
-          path: "/path/to/test.jpg"
-        },
-        processing: false,
-        done: false
-      },
-      {
-        index: 1,
-        file: {
-          name: "test2.jpg",
-          path: "/path/to/test2.jpg"
-        },
-        processing: false,
-        done: false
-      },
-      {
-        index: 2,
-        file: {
-          name: "test3.jpg",
-          path: "/path/to/test3.jpg"
-        },
-        processing: false,
-        done: false
-      });
-    });
-
-    afterEach(function() {
-      fileList.files = [];
-    });
-
-    it("should only run two files at any given time", function() {
-      assert.equal(0, fileList.processingCount());
-      fileList.processQueue();
-      assert.equal(2, fileList.processingCount());
-      fileList.processQueue();
-      assert.equal(2, fileList.processingCount());
     });
   });
 });
