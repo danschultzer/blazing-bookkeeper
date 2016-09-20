@@ -3,7 +3,7 @@
 
 // Use new ES6 modules syntax for everything.
 import os from 'os'; // native node.js module
-import { webFrame, remote, ipcRenderer } from 'electron'; // native electron module
+import { webFrame, remote, ipcRenderer, clipboard } from 'electron'; // native electron module
 import jetpack from 'fs-jetpack'; // module loaded from npm
 import env from './env';
 
@@ -84,6 +84,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+document.addEventListener("copy", copySelectedToClipboard, true);
+
 function selectFiles(event) {
   if (event.shiftKey) {
     global.fileList.Select.selectUntil(event.currentTarget);
@@ -163,4 +165,9 @@ function handleDragnDrop() {
     if (dragCounter > 0) return;
     if (document.body.classList.contains('drag')) document.body.classList.remove("drag");
   };
+}
+
+
+function copySelectedToClipboard() {
+  clipboard.writeText(fileList.Select.selectedToCSV(), 'text/csv');
 }

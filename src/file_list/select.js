@@ -1,5 +1,3 @@
-import { clipboard } from 'electron';
-
 export default class Select {
   constructor(fileList) {
     this.fileList = fileList;
@@ -127,10 +125,6 @@ export default class Select {
     });
     if (files.length < 1) files = this.fileList.files;
     return this.fileList.toCSV(files);
-  }
-
-  copySelectedToClipboard() {
-    clipboard.writeText(this.selectedToCSV(), 'text/csv');
   }
 
   removeSelected() {

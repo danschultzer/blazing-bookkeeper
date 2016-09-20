@@ -10,7 +10,7 @@ describe('application launch', function() {
   });
   afterEach(testUtils.afterEach);
 
-  it('shows one window', function() {
+  it("shows one window", function() {
     return this.app.browserWindow.isVisible().then(function(visible) {
       assert.equal(visible, true);
     }).getWindowCount().then(function(count) {
@@ -18,18 +18,18 @@ describe('application launch', function() {
     });
   });
 
-  it('shows welcome screen', function() {
+  it("shows welcome screen", function() {
     return this.app.client.element('.welcome').isVisible().then(function(visible) {
       assert.equal(visible, true);
     });
   });
 
-  describe("when clicking to add file", function() {
+  describe('when clicking to add file', function() {
     beforeEach(function() {
       return this.app.client.click('#plus-button-open').waitForVisible(".table .body .row", 500);
     });
 
-    it('should show file', function() {
+    it("should show file", function() {
       var app = this.app;
 
       return this.app.client.element(".table .body .row")
@@ -41,6 +41,19 @@ describe('application launch', function() {
           assert.include(text, "2016-06-13");
           assert.include(text, "6000.00");
         });
+    });
+
+    describe('when copying', function() {
+      it("should copy CSV to clipboard", function() {
+        return this.app.client.click(".table .body .row")
+          .execute(function() {
+            document.dispatchEvent(new Event('copy'));
+          })
+          .electron.clipboard.readText().then(function(text) {
+            assert.include(text, "Name\tAmount\tDate\tPath\n");
+            assert.include(text, "readable.pdf\t");
+          });
+      });
     });
 
     describe('when double clicking on file row', function() {
@@ -55,7 +68,7 @@ describe('application launch', function() {
         });
       });
 
-      describe("when entering information, and clicking save", function() {
+      describe('when entering information, and clicking save', function() {
         beforeEach(function() {
           return this.app.client.windowByIndex(1).setValue('#date', '2016-01-01')
             .setValue('#amount', '125.00')

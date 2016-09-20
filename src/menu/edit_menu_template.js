@@ -1,15 +1,12 @@
 import { app, BrowserWindow } from 'electron';
 
-export var appMenuTemplate = {
+export var editMenuTemplate = {
     label: 'Edit',
     submenu: [
       {
         label: "Copy",
         accelerator: "CmdOrCtrl+C",
-        click: function(item, focusedWindow) {
-          if (focusedWindow)
-            focusedWindow.webContents.executeJavaScript("fileList.Select.copySelectedToClipboard();");
-        }
+        selector: "copy:"
       },
       {
         label: "Select All",
