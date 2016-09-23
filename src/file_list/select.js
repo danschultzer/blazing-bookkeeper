@@ -136,7 +136,7 @@ export default class Select {
   }
 
   scrollTop(el, position) {
-    if (typeof "position" == undefined) {
+    if (typeof position == "undefined") {
       return el.scrollTop;
     }
     return el.scrollTop = position;
