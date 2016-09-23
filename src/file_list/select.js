@@ -51,38 +51,38 @@ export default class Select {
     this.select(this.items());
   }
 
-  toggleSelect(item, keepSelected) {
+  toggleSelect(item) {
     if (this.el().contains(item)) {
-      if (this.selected().length > 1 && !keepSelected) this.deselectAll();
       if (item.classList.contains('selected')) {
         this.deselect([item]);
       } else {
-        this.select([item], !keepSelected);
+        this.select([item]);
       }
     }
   }
 
   selectUntil(item) {
-      var selected = this.selected(),
-        items = this.items(),
-        itemPos = this.indexOf(item),
-        itemsToSelect = [],
-        firstSelectedItem = selected[0],
-        lastSelectedItem = selected[selected.length - 1];
-      if (selected.length > 0) {
-        if (itemPos < this.indexOf(lastSelectedItem)) {
-          itemsToSelect = [].slice.call(items).filter((element, index, array) => {
-            return index >= this.indexOf(item) && index < this.indexOf(lastSelectedItem);
-          });
-        } else {
-          itemsToSelect = [].slice.call(items).filter((element, index, array) => {
-            return index <= this.indexOf(item) && index > this.indexOf(firstSelectedItem);
-          });
-        }
-        this.select(itemsToSelect);
-      } else {
-        this.toggleSelect([item]);
-      }
+    var selected = this.selected(),
+      items = this.items(),
+      itemPos = this.indexOf(item),
+      itemsToSelect = [],
+      firstSelectedItem = selected[0],
+      lastSelectedItem = selected[selected.length - 1];
+
+    if (!selected.length) {
+      return false;
+    }
+
+    if (itemPos < this.indexOf(lastSelectedItem)) {
+      itemsToSelect = [].slice.call(items).filter((element, index, array) => {
+        return index >= this.indexOf(item) && index < this.indexOf(lastSelectedItem);
+      });
+    } else {
+      itemsToSelect = [].slice.call(items).filter((element, index, array) => {
+        return index <= this.indexOf(item) && index > this.indexOf(firstSelectedItem);
+      });
+    }
+    this.select(itemsToSelect);
   }
 
   updateFileListSelect() {
@@ -135,9 +135,16 @@ export default class Select {
     this.deselectAll();
   }
 
+  scrollTop(el, position) {
+    if (typeof "position" == undefined) {
+      return el.scrollTop;
+    }
+    return el.scrollTop = position;
+  }
+
   scrollToSelection(direction) {
     var items = this.selected(),
-      curScrollTop = this.el().scrollTop,
+      curScrollTop = this.scrollTop(this.el()),
       scrollTop,
       elHeight = this.el().getBoundingClientRect().height;
 
@@ -151,6 +158,6 @@ export default class Select {
     if (
       (direction == "up" && scrollTop < curScrollTop) ||
       (direction !== "up" && scrollTop > (curScrollTop - elHeight)))
-      this.el().scrollTop = scrollTop;
+      this.scrollTop(this.el(), scrollTop);
   }
 }
