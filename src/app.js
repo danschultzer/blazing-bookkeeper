@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         },
         edit: function(event) {
+          global.fileList.Select.select([event.currentTarget], true);
           ipcRenderer.send('display-edit', [
             global.fileList.getIndexForElement(event.currentTarget),
             global.fileList.getFileForElement(event.currentTarget)
@@ -100,8 +101,12 @@ document.addEventListener("copy", copySelectedToClipboard, true);
 document.addEventListener("deselectAll", function() { global.fileList.Select.deselectAll(); }, true);
 
 function selectFiles(event) {
+  // If user does shift + click
   if (event.shiftKey) {
     global.fileList.Select.selectUntil(event.currentTarget);
+  // If user does command + click
+  } else if (event.metaKey || event.ctrlKey) {
+    global.fileList.Select.toggleSelect(event.currentTarget);
   } else {
     global.fileList.Select.select([event.currentTarget], true);
   }
