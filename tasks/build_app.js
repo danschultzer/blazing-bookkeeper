@@ -4,14 +4,59 @@ var gulp = require('gulp');
 var less = require('gulp-less');
 var watch = require('gulp-watch');
 var batch = require('gulp-batch');
+var exec = require('child_process').exec;
 var plumber = require('gulp-plumber');
 var jetpack = require('fs-jetpack');
 var bundle = require('./bundle');
 var utils = require('./utils');
+var gutil = require('gulp-util');
 
 var projectDir = jetpack;
 var srcDir = jetpack.cwd('./src');
 var destDir = jetpack.cwd('./app');
+
+gulp.task('dependencies', function () {
+    var rootDir = __dirname + '/..',
+        appDir = rootDir + '/app',
+        scriptsDir = rootDir + '/scripts',
+        buildDir = rootDir + '/build',
+        dependencies = ['dependencies', 'poppler', 'opencv', 'tesseract'];
+
+      return dependencies.reduce(function(p, dependency) {
+          return p.then(function() {
+              return new Promise(function(resolve, reject) {
+                  gutil.log("Going to build", gutil.colors.cyan("'" + dependency + "'"));
+                  var buildCommand = [
+                      'BUILDDIR=' + buildDir,
+                      'PKG_CONFIG_PATH=' + buildDir + '/dependencies/lib/pkgconfig',
+                      'LDFLAGS=-L' + buildDir + '/dependencies/lib',
+                      'CPATH=' + buildDir + '/dependencies/include',
+                      'LD_LIBRARY_PATH=' + buildDir + '/dependencies/lib:$LD_LIBRARY_PATH',
+                      scriptsDir + '/build-' + dependency + '.sh'].join(' ');
+                  gutil.log("Running command", gutil.colors.cyan("'" + buildCommand + "'"));
+
+                  var child = exec(buildCommand, {
+                      maxBuffer: 1024 * 1024 * 10
+                    },
+                    function(error, stdout, stderr) {
+                      if (!error) {
+                          projectDir.copy(buildDir + '/' + dependency, destDir.path('thirdparty/' + dependency), {
+                              overwrite: true
+                          });
+                          gutil.log("Build of", gutil.colors.cyan("'" + dependency + "'"), "succeeded");
+                          resolve();
+                      } else {
+                        gutil.log("Build of", gutil.colors.cyan("'" + dependency + "'"), "failed");
+                          reject();
+                          throw error;
+                      }
+                  });
+                  child.stdout.pipe(process.stdout);
+                  child.stderr.pipe(process.stdout);
+              });
+          });
+      }, Promise.resolve());
+});
 
 gulp.task('bundle', function () {
     return Promise.all([
@@ -51,4 +96,4 @@ gulp.task('watch', function () {
     }));
 });
 
-gulp.task('build', ['bundle', 'less', 'environment']);
+gulp.task('build', ['dependencies', 'bundle', 'less', 'environment']);
