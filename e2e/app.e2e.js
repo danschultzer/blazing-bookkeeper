@@ -3,7 +3,6 @@ import testUtils from './utils';
 import sinon from 'sinon';
 
 describe('application launch', function() {
-
   beforeEach(testUtils.beforeEach);
   beforeEach(function() {
     return this.app.client.windowByIndex(0);
@@ -26,7 +25,7 @@ describe('application launch', function() {
 
   describe('when clicking to add file', function() {
     beforeEach(function() {
-      return this.app.client.click('#plus-button-open').waitForVisible(".table .body .row", 500);
+      return this.app.client.click('#plus-button-open').waitForVisible(".table .body .row", 1000);
     });
 
     it("should show file", function() {
@@ -82,7 +81,7 @@ describe('application launch', function() {
             return app.client.getWindowCount().then(function(count) {
               return count == 1;
             });
-          }, 1000, 'expected window to close after 1s');
+          }, 1000, 'expected window to close');
         });
 
         it("updates values", function() {
