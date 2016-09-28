@@ -2,10 +2,7 @@
 set -e
 
 mkdir -p $BUILDDIR
-DESTDIR=$BUILDDIR/dependencies
-
-# Build dependencies
-brew install automake autoconf libtool
+DEST_DEPENDENCIES_DIR=$THIRDPARTYDIR/dependencies
 
 # Compile jpeg
 cd $BUILDDIR
@@ -18,11 +15,11 @@ then
   tar xvzf jpeg-v8d.tar.gz
   mv jpeg-8d jpeg-src
 fi
-if [ ! -f "$DESTDIR/bin/djpeg" ]
+if [ ! -f "$DEST_DEPENDENCIES_DIR/bin/djpeg" ]
 then
   cd jpeg-src
   ./configure \
-    --prefix=$DESTDIR \
+    --prefix=$DEST_DEPENDENCIES_DIR \
     --disable-dependency-tracking
   make install
 fi
@@ -38,13 +35,12 @@ then
   tar xvzf libpng-1.6.25.tar.xz
   mv libpng-1.6.25 libpng-src
 fi
-if [ ! -f "$DESTDIR/include/png.h" ]
+if [ ! -f "$DEST_DEPENDENCIES_DIR/include/png.h" ]
 then
   cd libpng-src
   ./configure \
-    --prefix=$DESTDIR \
-    --disable-dependency-tracking \
-    --disable-silent-rules
+    --prefix=$DEST_DEPENDENCIES_DIR \
+    --disable-dependency-tracking
   make
   make test
   make install
@@ -61,15 +57,15 @@ then
   tar xvzf tiff-4.0.6.tar.gz
   mv tiff-4.0.6 tiff-src
 fi
-if [ ! -f "$DESTDIR/include/tiffio.h" ]
+if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libtiff.dylib" ]
 then
   cd tiff-src
   ./configure \
-    --prefix=$DESTDIR \
+    --prefix=$DEST_DEPENDENCIES_DIR \
     --disable-dependency-tracking \
     --without-x \
-    --with-jpeg-include-dir=$DESTDIR/include \
-    --with-jpeg-lib-dir=$DESTDIR/lib \
+    --with-jpeg-include-dir=$DEST_DEPENDENCIES_DIR/include \
+    --with-jpeg-lib-dir=$DEST_DEPENDENCIES_DIR/lib \
     --disable-lzma
   make
   make install
@@ -89,11 +85,15 @@ then
   tar xvzf openjpeg-2.1.1.tar.gz
   mv openjpeg-2.1.1 openjpeg-src
 fi
-if [ ! -f "$DESTDIR/include/openjpeg-2.1/openjpeg.h" ]
+if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libopenjp2.dylib" ]
 then
   cd openjpeg-src
-  cmake -D CMAKE_INSTALL_PREFIX=$DESTDIR ./
+  cmake -D CMAKE_INSTALL_PREFIX=$DEST_DEPENDENCIES_DIR ./
   make install
+
+  # Fix for missing openjpeg.h in poppler install
+  cd $DEST_DEPENDENCIES_DIR
+  ln -s include/openjpeg-2.1/openjpeg.h include/openjpeg.h
 fi
 
 # Compile leptonica
@@ -107,18 +107,21 @@ then
   tar xvzf leptonica-1.73.tar.gz
   mv leptonica-1.73 leptonica-src
 fi
-if [ ! -f "$DESTDIR/lib/liblept.a" ]
+if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/liblept.dylib" ]
 then
   cd leptonica-src
   chmod +x configure
   ./configure \
-    --prefix=$DESTDIR \
-    --exec-prefix=$DESTDIR \
+    --prefix=$DEST_DEPENDENCIES_DIR \
+    --exec-prefix=$DEST_DEPENDENCIES_DIR \
     --disable-dependency-tracking \
     --without-zlib \
-    --without-libwebp
+    --without-libwebp \
+    --without-giflib \
+    --disable-static \
+    --disable-programs
   chmod +x config/install-sh
-  make install
+  make install-strip
 fi
 
 # Compile freetype
@@ -132,17 +135,16 @@ then
   tar xvzf freetype-2.7.tar.bz2
   mv freetype-2.7 freetype-src
 fi
-if [ ! -f "$DESTDIR/bin/freetype-config" ]
+if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libfreetype.dylib" ]
 then
   cd freetype-src
   chmod +x configure
   ./configure \
-    --prefix=$DESTDIR \
+    --prefix=$DEST_DEPENDENCIES_DIR \
     --without-harfbuzz
   make
   make install
 fi
-
 
 # Compile fontconfig
 cd $BUILDDIR
@@ -155,17 +157,17 @@ then
   tar xvzf fontconfig-2.12.1.tar.bz2
   mv fontconfig-2.12.1 fontconfig-src
 fi
-if [ ! -f "$DESTDIR/bin/fc-list" ]
+if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libfontconfig.dylib" ]
 then
   cd fontconfig-src
   chmod +x configure
   ./configure \
-    --prefix=$DESTDIR \
-    --localstatedir=$DESTDIR/var \
-    --sysconfdir=$DESTDIR/etc \
+    --prefix=$DEST_DEPENDENCIES_DIR \
+    --localstatedir=$DEST_DEPENDENCIES_DIR/var \
+    --sysconfdir=$DEST_DEPENDENCIES_DIR/etc \
     --disable-dependency-tracking \
     --with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts \
-    --disable-silent-rules
+    --disable-docs
 
   make install RUN_FC_CACHE_TEST=false
 fi

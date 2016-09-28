@@ -15,10 +15,10 @@ then
 fi
 cd poppler-src
 
-if [ ! -f "$BUILDDIR/poppler/bin/pdftotext" ]
+if [ ! -f "$THIRDPARTYDIR/poppler/bin/pdftotext" ]
 then
   ./configure \
-    --prefix=$BUILDDIR/poppler \
+    --prefix=$THIRDPARTYDIR/poppler \
     --disable-libcurl \
     --disable-zlib \
     --disable-splash-output \

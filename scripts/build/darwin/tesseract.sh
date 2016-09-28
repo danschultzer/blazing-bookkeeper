@@ -4,9 +4,6 @@ set -e
 mkdir -p $BUILDDIR
 cd $BUILDDIR
 
-# Build dependencies
-brew install automake autoconf
-
 # Compile tesseract
 if [ ! -d "$BUILDDIR/tesseract-src" ]
 then
@@ -17,21 +14,21 @@ then
   tar xvzf tesseract-3.04.01.tar.gz
   mv tesseract-3.04.01 tesseract-src
 fi
-if [ ! -f "$BUILDDIR/tesseract/bin/tesseract" ]
+if [ ! -f "$THIRDPARTYDIR/tesseract/bin/tesseract" ]
 then
   cd tesseract-src
   ./autogen.sh
   ./configure \
-    LIBLEPT_HEADERSDIR=$BUILDDIR/dependencies/include \
-    LDFLAGS=-L$BUILDDIR/dependencies/lib \
-    --prefix=$BUILDDIR/tesseract \
+    LIBLEPT_HEADERSDIR=$THIRDPARTYDIR/dependencies/include \
+    LDFLAGS=-L$THIRDPARTYDIR/dependencies/lib \
+    --prefix=$THIRDPARTYDIR/tesseract \
     --disable-dependency-tracking
   make install
 fi
 
 cd $BUILDDIR
 
-if [ ! -f "$BUILDDIR/tesseract/share/tessdata/eng.traineddata" ]
+if [ ! -f "$THIRDPARTYDIR/tesseract/share/tessdata/eng.traineddata" ]
 then
   if [ ! -f "$BUILDDIR/tessdata.tar.gz" ]
   then
@@ -39,5 +36,5 @@ then
   fi
   tar xvzf tessdata.tar.gz
   mkdir -p tesseract/share/tessdata/
-  mv tessdata-master/* tesseract/share/tessdata/
+  mv tessdata-master/* $THIRDPARTYDIR/tesseract/share/tessdata/
 fi

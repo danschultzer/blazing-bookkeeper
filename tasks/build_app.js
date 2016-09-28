@@ -16,46 +16,42 @@ var srcDir = jetpack.cwd('./src');
 var destDir = jetpack.cwd('./app');
 
 gulp.task('dependencies', function () {
-    var rootDir = __dirname + '/..',
-        appDir = rootDir + '/app',
-        scriptsDir = rootDir + '/scripts',
+    var rootDir = jetpack.cwd('./').path(),
+        platform = process.platform,
+        buildScript = jetpack.cwd('./scripts').path('build/' + platform + '/build.sh'),
         buildDir = rootDir + '/build',
-        dependencies = ['dependencies', 'poppler', 'opencv', 'tesseract'];
+        buildDestDir = destDir.path() + '/thirdparty';
 
-      return dependencies.reduce(function(p, dependency) {
-          return p.then(function() {
-              return new Promise(function(resolve, reject) {
-                  gutil.log("Going to build", gutil.colors.cyan("'" + dependency + "'"));
-                  var buildCommand = [
-                      'BUILDDIR=' + buildDir,
-                      'PKG_CONFIG_PATH=' + buildDir + '/dependencies/lib/pkgconfig',
-                      'LDFLAGS=-L' + buildDir + '/dependencies/lib',
-                      'CPATH=' + buildDir + '/dependencies/include',
-                      'LD_LIBRARY_PATH=' + buildDir + '/dependencies/lib:$LD_LIBRARY_PATH',
-                      scriptsDir + '/build-' + dependency + '.sh'].join(' ');
-                  gutil.log("Running command", gutil.colors.cyan("'" + buildCommand + "'"));
+      return new Promise(function(resolve, reject) {
+          if (!jetpack.exists(buildScript)) {
+            gutil.log("No build file for", gutil.colors.cyan("'" + platform + "'"));
+            return resolve();
+          }
 
-                  var child = exec(buildCommand, {
-                      maxBuffer: 1024 * 1024 * 10
-                    },
-                    function(error, stdout, stderr) {
-                      if (!error) {
-                          projectDir.copy(buildDir + '/' + dependency, destDir.path('thirdparty/' + dependency), {
-                              overwrite: true
-                          });
-                          gutil.log("Build of", gutil.colors.cyan("'" + dependency + "'"), "succeeded");
-                          resolve();
-                      } else {
-                        gutil.log("Build of", gutil.colors.cyan("'" + dependency + "'"), "failed");
-                          reject();
-                          throw error;
-                      }
-                  });
-                  child.stdout.pipe(process.stdout);
-                  child.stderr.pipe(process.stdout);
-              });
+          gutil.log("Going to build for", gutil.colors.cyan("'" + platform + "'"));
+
+          var buildCommand = [
+            "BUILDDIR=" + buildDir,
+            "THIRDPARTYDIR=" + buildDestDir,
+            'sh ' + buildScript,
+          ].join(" ");
+          var child = exec(buildCommand, {
+              maxBuffer: 1024 * 1024 * 10
+            },
+            function(error, stdout, stderr) {
+              if (!error) {
+                  gutil.log("Build succesful");
+                  resolve();
+              } else {
+                  gutil.log("Build failed");
+                  reject();
+                  throw error;
+              }
           });
-      }, Promise.resolve());
+          child.stdout.pipe(process.stdout);
+          child.stderr.pipe(process.stderr);
+          return child;
+      });
 });
 
 gulp.task('bundle', function () {
