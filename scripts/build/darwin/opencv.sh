@@ -16,9 +16,9 @@ then
 fi
 cd opencv-src
 
-if [ ! -f "$BUILDDIR/opencv/bin/opencv_version" ]
+if [ ! -f "$THIRDPARTYDIR/opencv/bin/opencv_version" ]
 then
-  cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=$BUILDDIR/opencv ./
+  cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=$THIRDPARTYDIR/opencv ./
   make -j7
   make install
 fi
