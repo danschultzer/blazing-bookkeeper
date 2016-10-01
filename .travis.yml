@@ -25,6 +25,8 @@ before_install:
   - brew install tesseract --all-languages
   - brew link tesseract --force
 
+install: PKG_CONFIG_PATH=$(pwd)/thirdparty/opencv/lib/pkgconfig npm install
+
 script:
   - npm run coverage
   - npm run e2e -- --timeout=30000
