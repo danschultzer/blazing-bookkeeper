@@ -20,7 +20,7 @@ gulp.task('dependencies', function () {
         platform = process.platform,
         buildScript = jetpack.cwd('./scripts').path('build/' + platform + '/build.sh'),
         buildDir = rootDir + '/build',
-        buildDestDir = destDir.path() + '/thirdparty';
+        buildDestDir = rootDir + '/thirdparty';
 
       return new Promise(function(resolve, reject) {
           if (!jetpack.exists(buildScript)) {

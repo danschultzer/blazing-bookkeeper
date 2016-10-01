@@ -35,6 +35,6 @@ then
     curl -o tessdata.tar.gz -L -z tessdata.tar.gz https://github.com/tesseract-ocr/tessdata/archive/master.tar.gz
   fi
   tar xvzf tessdata.tar.gz
-  mkdir -p tesseract/share/tessdata/
-  mv tessdata-master/* $THIRDPARTYDIR/tesseract/share/tessdata/
+  mkdir -p $THIRDPARTYDIR/tesseract/share/tessdata/
+  mv tessdata-master/eng.traineddata tessdata-master/osd.traineddata $THIRDPARTYDIR/tesseract/share/tessdata/
 fi

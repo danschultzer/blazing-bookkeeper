@@ -16,5 +16,5 @@ app/edit.js
 /dist
 /coverage
 
-/app/thirdparty
+/thirdparty
 /build
