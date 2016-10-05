@@ -1,0 +1,30 @@
+language: node_js
+node_js:
+  - "stable"
+
+os:
+  - osx
+
+env:
+  - ISTANBUL_REPORT_DIR=coverage ISTANBUL_REPORTERS=lcovonly
+
+cache:
+  directories:
+  - /usr/local/Cellar/opencv3
+  - /usr/local/Cellar/tesseract
+  - node_modules
+
+before_install:
+  - brew update
+  - brew tap homebrew/science
+  - brew install opencv3 --without-python --without-numpy --without-test
+  - brew link opencv3 --force
+  - ln -s /usr/local/Cellar/opencv3/3.1.0_4/share/OpenCV/3rdparty/lib/libippicv.a /usr/local/lib/
+  - brew install poppler
+  - brew install tesseract --all-languages
+  - brew link tesseract --force
+
+script:
+  - npm run coverage
+  - npm run e2e
+  - bash <(curl -s https://codecov.io/bash) -s coverage -f *.info
