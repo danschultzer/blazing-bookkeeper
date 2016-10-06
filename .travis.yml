@@ -13,6 +13,7 @@ cache:
   - /usr/local/Cellar/opencv3
   - /usr/local/Cellar/tesseract
   - node_modules
+  - app/node_modules
 
 before_install:
   - brew update
