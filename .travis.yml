@@ -6,7 +6,7 @@ os:
   - osx
 
 env:
-  - ISTANBUL_REPORT_DIR=coverage ISTANBUL_REPORTERS=lcovonly
+  - ISTANBUL_REPORT_DIR=coverage ISTANBUL_REPORTERS=lcovonly CASHER_TIME_OUT=54000
 
 cache:
   directories:
