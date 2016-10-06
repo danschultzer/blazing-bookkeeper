@@ -27,5 +27,5 @@ before_install:
 
 script:
   - npm run coverage
-  - npm run e2e
+  - npm run e2e -- --timeout=30000
   - bash <(curl -s https://codecov.io/bash) -s coverage -f *.info
