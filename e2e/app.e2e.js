@@ -31,10 +31,11 @@ describe('application launch', function() {
     it("should show file", function() {
       var app = this.app;
 
-      return this.app.client.element(".table .body .row")
+      return this.app.client.element(".table .body .row:nth-child(1)")
         .isVisible().then(function(visible) {
           assert.equal(visible, true);
         })
+        .waitUntilTextExists(".table .body .row .cell:nth-child(2)", "2016-06-13")
         .getText(".table .body .row").then(function(text) {
           assert.include(text, "readable.pdf");
           assert.include(text, "2016-06-13");
