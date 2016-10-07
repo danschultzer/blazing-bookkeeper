@@ -2,7 +2,7 @@
 
 [Electron powered](http://electron.atom.io) app that does accounting for you using [receipt-scanner](https://github.com/danschultzer/receipt-scanner). Build with [electron boilerplate](https://github.com/szwacz/electron-boilerplate)
 
-[![CircleCI](https://img.shields.io/circleci/project/danschultzer/blazing-bookkeeper/master.svg)](https://circleci.com/gh/danschultzer/blazing-bookkeeper)
+[![Travis](https://img.shields.io/travis/danschultzer/blazing-bookkeeper/master.svg)](https://travis-ci.org/danschultzer/blazing-bookkeeper/)
 [![Codecov](https://img.shields.io/codecov/c/github/danschultzer/blazing-bookkeeper/master.svg)](https://codecov.io/gh/danschultzer/blazing-bookkeeper)
 [![David (app)](https://david-dm.org/danschultzer/blazing-bookkeeper/status.svg?path=app)](https://david-dm.org/danschultzer/blazing-bookkeeper?path=app)
 [![David (boilerplate)](https://david-dm.org/danschultzer/blazing-bookkeeper/dev-status.svg)](https://david-dm.org/danschultzer/blazing-bookkeeper?type=dev)
