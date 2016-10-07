@@ -10,7 +10,7 @@ then
   then
     curl -o poppler-0.47.0.tar.xz -L -z poppler-0.47.0.tar.xz https://poppler.freedesktop.org/poppler-0.47.0.tar.xz
   fi
-  tar xvzf poppler-0.47.0.tar.xz
+  tar xzf poppler-0.47.0.tar.xz
   mv poppler-0.47.0 poppler-src
 fi
 cd poppler-src

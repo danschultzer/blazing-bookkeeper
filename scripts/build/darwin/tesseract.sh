@@ -11,7 +11,7 @@ then
   then
     curl -o tesseract-3.04.01.tar.gz -L -z tesseract-3.04.01.tar.gz https://github.com/tesseract-ocr/tesseract/archive/3.04.01.tar.gz
   fi
-  tar xvzf tesseract-3.04.01.tar.gz
+  tar xzf tesseract-3.04.01.tar.gz
   mv tesseract-3.04.01 tesseract-src
 fi
 if [ ! -f "$THIRDPARTYDIR/tesseract/bin/tesseract" ]
@@ -34,7 +34,7 @@ then
   then
     curl -o tessdata.tar.gz -L -z tessdata.tar.gz https://github.com/tesseract-ocr/tessdata/archive/master.tar.gz
   fi
-  tar xvzf tessdata.tar.gz
+  tar xzf tessdata.tar.gz
   mkdir -p $THIRDPARTYDIR/tesseract/share/tessdata/
   mv tessdata-master/eng.* tessdata-master/osd.traineddata $THIRDPARTYDIR/tesseract/share/tessdata/
 fi

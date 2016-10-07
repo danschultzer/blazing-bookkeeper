@@ -11,7 +11,7 @@ then
   then
     curl -o opencv-master.tar.gz -L -z opencv-master.tar.gz https://github.com/opencv/opencv/archive/master.tar.gz
   fi
-  tar xvzf opencv-master.tar.gz
+  tar xzf opencv-master.tar.gz
   mv opencv-master opencv-src
 fi
 cd opencv-src
