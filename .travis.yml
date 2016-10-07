@@ -15,6 +15,9 @@ cache:
   - build
   - thirdparty
 
+before_cache:
+  - rm -f build/tessdata-master
+
 before_install:
   - npm install --only=dev
   - node_modules/.bin/gulp dependencies
