@@ -27,3 +27,10 @@ cd $BASEDIR && ./tesseract.sh
 
 echo [darwin-build] Building opencv
 cd $BASEDIR && ./opencv.sh
+
+echo [darwin-build] Remove files
+cd $THIRDPARTYDIR
+rm -rf dependencies/share dependencies/include dependencies/bin
+rm -rf poppler/share $(find poppler/bin -type f ! -name 'pdftotext' -and ! -name 'pdfimages')
+rm -rf opencv/share
+rm -rf tesseract/include tesseract/share/man

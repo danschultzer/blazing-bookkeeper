@@ -15,7 +15,7 @@ then
   tar xvzf jpeg-v8d.tar.gz
   mv jpeg-8d jpeg-src
 fi
-if [ ! -f "$DEST_DEPENDENCIES_DIR/bin/djpeg" ]
+if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libjpeg.dylib" ]
 then
   cd jpeg-src
   ./configure \
@@ -35,7 +35,7 @@ then
   tar xvzf libpng-1.6.25.tar.xz
   mv libpng-1.6.25 libpng-src
 fi
-if [ ! -f "$DEST_DEPENDENCIES_DIR/include/png.h" ]
+if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libpng.dylib" ]
 then
   cd libpng-src
   ./configure \
@@ -66,7 +66,8 @@ then
     --without-x \
     --with-jpeg-include-dir=$DEST_DEPENDENCIES_DIR/include \
     --with-jpeg-lib-dir=$DEST_DEPENDENCIES_DIR/lib \
-    --disable-lzma
+    --disable-lzma \
+    --disable-docs
   make
   make install
 fi
