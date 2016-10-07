@@ -30,6 +30,6 @@ then
     -D TIFF_LIBRARY=$THIRDPARTYDIR/dependencies/lib/libtiff.a -D TIFF_INCLUDE_DIR=$THIRDPARTYDIR/dependencies/include \
     -D PNG_LIBRARY=$THIRDPARTYDIR/dependencies/lib/libpng.a -D PNG_INCLUDE_DIR=$THIRDPARTYDIR/dependencies/include \
     ./
-  make -j7
+  make
   make install
 fi

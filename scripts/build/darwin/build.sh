@@ -5,6 +5,8 @@ export PKG_CONFIG_PATH=$THIRDPARTYDIR/dependencies/lib/pkgconfig
 export LDFLAGS=-L$THIRDPARTYDIR/dependencies/lib
 export CPATH=$THIRDPARTYDIR/dependencies/include
 export LD_LIBRARY_PATH=$THIRDPARTYDIR/dependencies/lib:$LD_LIBRARY_PATH
+export NB_CORES=$(sysctl -n hw.logicalcpu)
+export MAKEFLAGS="-j$((NB_CORES+1)) -l${NB_CORES}"
 
 BASEDIR=$(dirname "$0")
 

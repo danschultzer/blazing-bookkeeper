@@ -42,7 +42,6 @@ then
     --prefix=$DEST_DEPENDENCIES_DIR \
     --disable-dependency-tracking
   make
-  make test
   make install
 fi
 
