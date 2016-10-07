@@ -10,22 +10,14 @@ env:
 
 cache:
   directories:
-  - /usr/local/Cellar/opencv3
-  - /usr/local/Cellar/tesseract
   - node_modules
   - app/node_modules
   - build
   - thirdparty
 
 before_install:
-  - brew update
-  - brew tap homebrew/science
-  - brew install opencv3 --without-python --without-numpy --without-test
-  - brew link opencv3 --force
-  - ln -s /usr/local/Cellar/opencv3/3.1.0_4/share/OpenCV/3rdparty/lib/libippicv.a /usr/local/lib/
-  - brew install poppler
-  - brew install tesseract --all-languages
-  - brew link tesseract --force
+  - npm install --only=dev
+  - node_modules/.bin/gulp dependencies
 
 install: PKG_CONFIG_PATH=$(pwd)/thirdparty/opencv/lib/pkgconfig npm install
 
