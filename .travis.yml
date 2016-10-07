@@ -31,3 +31,7 @@ script:
   - npm run coverage
   - npm run e2e -- --timeout=30000
   - bash <(curl -s https://codecov.io/bash) -s coverage -f *.info
+
+deploy:
+  provider: script
+  script: npm build --x64
