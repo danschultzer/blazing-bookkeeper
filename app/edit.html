@@ -25,7 +25,7 @@
         <input placeholder="2,970.00" type="text" id="amount" name="amount" value="{{ (file.result.updated || {}).amount || file.result.parsed.amount }}" />
       </div>
       <div class="input-group notice">
-        <a href="https://github.com/danschultzer/blazing-bookkeeper/issues/new" target="_blank" class="js-external-link">Wrong results? Report it so Blazing Bookkeeper can be improved!</a>
+        <botton class="btn btn-default" v-on:click.stop.prevent="report" >Wrong results? Report it so Blazing Bookkeeper can be improved!</botton>
       </div>
     </div>
 

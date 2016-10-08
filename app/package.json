@@ -10,6 +10,7 @@
   "main": "background.js",
   "dependencies": {
     "fs-jetpack": "^0.9.0",
+    "json-formatter-js": "^1.2.0",
     "mime": "^1.3.4",
     "pdfjs-dist": "1.5.500",
     "receipt-scanner": "^0.3.0",

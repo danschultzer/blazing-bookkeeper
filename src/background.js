@@ -12,7 +12,7 @@ import createWindow from './helpers/window';
 // in config/env_xxx.json file.
 import env from './env';
 
-var mainWindow, editWindow;
+var mainWindow, editWindow, reportWindow;
 
 var setApplicationMenu = function () {
     // We clone editMenuTemplate object so we can append to submenu
@@ -76,7 +76,9 @@ var setApplicationMenu = function () {
             label: 'Quit',
             accelerator: 'Command+Q',
             click() {
-              if (editWindow) {
+              if (reportWindow) {
+                reportWindow.close();
+              } else if (editWindow) {
                 editWindow.close();
               } else {
                 app.quit();
@@ -192,6 +194,10 @@ app.on('ready', function () {
 
       editWindow.on('focus', function() {
         editWindow.webContents.send('edit-focus');
+        if (reportWindow) {
+          reportWindow.focus();
+          shell.beep();
+        }
       });
 
       editWindow.loadURL('file://' + __dirname + '/edit.html');
@@ -225,6 +231,43 @@ app.on('ready', function () {
     ipcMain.on('close-edit', function(event) {
       editWindow.close();
       editWindow = null;
+    });
+
+    ipcMain.on('display-report', function(event, file) {
+      if (reportWindow) return;
+
+      global.reportFile = file;
+
+      reportWindow = createWindow('report', {
+          width: 500,
+          height: 400,
+          minWidth: 400,
+          minHeight: 310,
+          parent: mainWindow,
+          titleBarStyle: 'hidden'
+      });
+
+      setApplicationMenu();
+
+      reportWindow.on('blur', function() {
+        editWindow.webContents.send('report-blur');
+      });
+
+      reportWindow.on('focus', function() {
+        reportWindow.webContents.send('report-focus');
+      });
+
+      reportWindow.loadURL('file://' + __dirname + '/report.html');
+
+      reportWindow.on('closed', function() {
+        reportWindow = null;
+        setApplicationMenu();
+      });
+    });
+
+    ipcMain.on('close-report', function(event) {
+      reportWindow.close();
+      reportWindow = null;
     });
 });
 

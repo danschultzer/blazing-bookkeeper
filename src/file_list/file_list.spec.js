@@ -129,7 +129,6 @@ describe("fileList", function() {
             date: "2016-05-05",
             amount: "6,000.00"
           };
-
           callback(null, parsed);
 
           done();

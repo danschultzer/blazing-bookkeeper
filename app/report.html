@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blazing Bookkeeper</title>
+
+  <link rel="stylesheet" type="text/css" href="assets/css/app.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/report.css">
+
+  <script src="report.js"></script>
+</head>
+<body id="main" v-on:keydown.prevent.27="close">
+
+<div class="window">
+  <header class="titlebar" style="-webkit-app-region: drag;">Report</header>
+
+  <div class="report">
+    <h3>File</h3>
+    <div class="filename">
+      <pre>{{ file.file.path }}</pre>
+    </div>
+    <h3>Error</h3>
+    <div class="message">
+      <pre>{{ file.result.error.json.message }}</pre>
+    </div>
+    <h3>Stacktrace</h3>
+    <div class="json">
+      <div id="json"></div>
+    </div>
+    <div class="input">
+      <input id="data" type="checkbox">Send data anonymously</input>
+    </div>
+  </div>
+
+  <footer class="bottom-toolbar" id="toolbar" style="-webkit-app-region: drag;">
+    <button class="btn btn-default" v-on:click.stop.prevent="close">
+      Cancel
+    </button>
+    <button class="btn btn-default" v-on:click.stop.prevent="send">
+      Send
+    </button>
+  </footer>
+</div>
+</body>
+</html>

@@ -18,7 +18,10 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     methods: {
       close: close,
-      save: save
+      save: save,
+      report: function(event) {
+        ipcRenderer.send('display-report', global.file);
+      }
     }
   });
   updatePreviewCanvas();

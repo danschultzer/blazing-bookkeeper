@@ -18,6 +18,7 @@ gulp.task('bundle', function () {
         bundle(srcDir.path('background.js'), destDir.path('background.js')),
         bundle(srcDir.path('app.js'), destDir.path('app.js')),
         bundle(srcDir.path('edit.js'), destDir.path('edit.js')),
+        bundle(srcDir.path('report.js'), destDir.path('report.js')),
     ]);
 });
 
