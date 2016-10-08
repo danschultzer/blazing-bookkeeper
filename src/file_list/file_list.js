@@ -98,6 +98,7 @@ export class FileList {
         var tmpFile = tmp.tmpNameSync({ postfix: name.substr(name.lastIndexOf(".")) }),
           stream = jetpack.createReadStream(path),
           finishedCallback = (error, result) => {
+            error.json = JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error)));
             this.updateFile(index, {
               processing: false,
               done: true,
