@@ -157,6 +157,9 @@ app.on('ready', function () {
       mainWindow.webContents.send('main-focus');
       if (editWindow) {
         editWindow.focus();
+        if (reportWindow) {
+          reportWindow.focus();
+        }
         shell.beep();
       }
     });
