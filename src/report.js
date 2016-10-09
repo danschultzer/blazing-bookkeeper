@@ -10,8 +10,6 @@ webFrame.setZoomLevelLimits(1, 1); // Don't allow any pinch zoom
 document.addEventListener('DOMContentLoaded', function () {
   global.file = remote.getGlobal('reportFile');
 
-  var formatter = new JSONFormatter(global.file.result.error.json, [0], { hoverPreviewEnabled: true, hoverPreviewFieldCount: 0});
-
   var mainView = new Vue({
     el: '#main',
     data: {
@@ -22,7 +20,16 @@ document.addEventListener('DOMContentLoaded', function () {
       send: send
     },
     compiled: function() {
-      document.getElementById('json').appendChild(formatter.render());
+      var results = document.body.querySelector('.json.results');
+      if (results) {
+        var formatter = new JSONFormatter(global.file.result.parsed, [0], { hoverPreviewEnabled: true, hoverPreviewFieldCount: 0});
+        results.appendChild(formatter.render());
+      }
+      var fullError = document.body.querySelector('.json.full-error');
+      if (fullError) {
+        var formatter = new JSONFormatter(global.file.result.error.json, [0], { hoverPreviewEnabled: true, hoverPreviewFieldCount: 0});
+        fullError.appendChild(formatter.render());
+      }
     }
   });
 

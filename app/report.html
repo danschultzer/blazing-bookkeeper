@@ -17,19 +17,25 @@
   <div class="report">
     <h3>File</h3>
     <div class="filename">
-      <pre>{{ file.file.path }}</pre>
+      <pre>{{ file.file.name }}</pre>
     </div>
-    <h3>Error</h3>
-    <div class="message">
-      <pre>{{ file.result.error.json.message }}</pre>
-    </div>
-    <h3>Stacktrace</h3>
-    <div class="json">
-      <div id="json"></div>
-    </div>
+    <template v-if="file.result.parsed">
+      <h3>Parsed results</h3>
+      <div class="json results"></div>
+    </template>
+    <template v-if="file.result.error">
+      <h3>Error</h3>
+      <div class="message">
+        <pre>{{ file.result.error.json.message }}</pre>
+      </div>
+      <h3>Full</h3>
+      <div class="json full-error"></div>
+    </template>
+
     <div class="input">
-      <input id="data" type="checkbox">Send data anonymously</input>
+      <input name="anonymized" type="checkbox">Send data anonymously</input>
     </div>
+    <textarea name="comments" placeholder="Comments"></textarea>
   </div>
 
   <footer class="bottom-toolbar" id="toolbar" style="-webkit-app-region: drag;">
