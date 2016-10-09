@@ -15,25 +15,28 @@
   <header class="titlebar" style="-webkit-app-region: drag;">Report</header>
 
   <div class="report">
-    <h3>File</h3>
-    <div class="filename">
-      <pre>{{ file.file.name }}</pre>
+    <div>
+      <strong>File:</strong>
+      {{ file.file.name }}
     </div>
     <template v-if="file.result.parsed">
-      <h3>Parsed results</h3>
+      <strong>Parsed results:</strong>
       <div class="json results"></div>
     </template>
     <template v-if="file.result.error">
-      <h3>Error</h3>
-      <div class="message">
-        <pre>{{ file.result.error.json.message }}</pre>
+      <div>
+        <strong>Error:</strong>
+        {{ file.result.error.json.message }}
       </div>
-      <h3>Full</h3>
+      <strong>Full error:</strong>
       <div class="json full-error"></div>
+    </template>
+    <template v-if="!file.anonymized">
+      <strong>Attached file:</strong> {{ file.file.path }}
     </template>
 
     <div class="input">
-      <input name="anonymized" type="checkbox">Send data anonymously</input>
+      <input name="anonymized" v-on:change="changeAnonymized" type="checkbox" /> <label for="anonymized">Send anonymized data</label>
     </div>
     <textarea name="comments" placeholder="Comments"></textarea>
   </div>

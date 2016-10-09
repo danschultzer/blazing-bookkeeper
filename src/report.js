@@ -9,6 +9,7 @@ webFrame.setZoomLevelLimits(1, 1); // Don't allow any pinch zoom
 
 document.addEventListener('DOMContentLoaded', function () {
   global.file = remote.getGlobal('reportFile');
+  global.file.anonymized = document.body.querySelector('[name="anonymized"]').checked;
 
   var mainView = new Vue({
     el: '#main',
@@ -17,20 +18,13 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     methods: {
       close: close,
-      send: send
+      send: send,
+      changeAnonymized: function() {
+        global.file.anonymized = document.body.querySelector('[name="anonymized"]').checked;
+        render();
+      }
     },
-    compiled: function() {
-      var results = document.body.querySelector('.json.results');
-      if (results) {
-        var formatter = new JSONFormatter(global.file.result.parsed, [0], { hoverPreviewEnabled: true, hoverPreviewFieldCount: 0});
-        results.appendChild(formatter.render());
-      }
-      var fullError = document.body.querySelector('.json.full-error');
-      if (fullError) {
-        var formatter = new JSONFormatter(global.file.result.error.json, [0], { hoverPreviewEnabled: true, hoverPreviewFieldCount: 0});
-        fullError.appendChild(formatter.render());
-      }
-    }
+    compiled: render
   });
 
   ipcRenderer.on('report-blur', function(event) {
@@ -40,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
   ipcRenderer.on('report-focus', function(event) {
     if (document.body.classList.contains('blurred')) document.body.classList.remove('blurred');
   });
-
 });
 
 
@@ -50,4 +43,32 @@ function send() {
 
 function close() {
   ipcRenderer.send("close-report");
+}
+
+function render() {
+  var formatter;
+
+  var results = document.body.querySelector('.json.results');
+  if (results) {
+    formatter = new JSONFormatter(global.file.result.parsed, [0], { hoverPreviewEnabled: true, hoverPreviewFieldCount: 0});
+    results.innerHTML = "";
+    results.appendChild(formatter.render());
+  }
+
+  var fullError = document.body.querySelector('.json.full-error');
+  if (fullError) {
+    var errorJSON;
+
+    if (global.file.anonymized) {
+      errorJSON = JSON.stringify(global.file.result.error.json)
+        .replace(new RegExp(process.cwd(), "g"), "~");
+      errorJSON = JSON.parse(errorJSON);
+    } else {
+      errorJSON = global.file.result.error.json;
+    }
+
+    formatter = new JSONFormatter(errorJSON, [0], { hoverPreviewEnabled: true, hoverPreviewFieldCount: 0});
+    fullError.innerHTML = "";
+    fullError.appendChild(formatter.render());
+  }
 }
