@@ -19,8 +19,10 @@ before_cache:
   - rm -f build/tessdata-master
 
 before_install:
+  - mv app/npm-shrinkwrap.json app/.npm-shrinkwrap.json
   - npm install --only=dev
   - node_modules/.bin/gulp dependencies
+  - mv app/.npm-shrinkwrap.json app/npm-shrinkwrap.json
 
 install: PKG_CONFIG_PATH=$(pwd)/thirdparty/opencv/lib/pkgconfig npm install
 
