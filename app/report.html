@@ -15,31 +15,45 @@
   <header class="titlebar" style="-webkit-app-region: drag;">Report</header>
 
   <div class="report">
+    <h3>Report details</h3>
     <div>
       <strong>File:</strong>
       {{ file.file.name }}
     </div>
+    <template v-if="!file.anonymized">
+      <div>
+        <strong>Attached:</strong> {{ file.file.path }}
+      </div>
+    </template>
     <template v-if="file.result.parsed">
-      <strong>Parsed results:</strong>
-      <div class="json results"></div>
+      <div>
+        <strong>Parsed results:</strong>
+        <div class="json results"></div>
+      </div>
     </template>
     <template v-if="file.result.error">
       <div>
         <strong>Error:</strong>
         {{ file.result.error.json.message }}
       </div>
-      <strong>Full error:</strong>
-      <div class="json full-error"></div>
+      <div>
+        <strong>Full error:</strong>
+        <div class="json full-error"></div>
+      </div>
     </template>
-    <template v-if="!file.anonymized">
-      <strong>Attached file:</strong> {{ file.file.path }}
-    </template>
-
-    <div class="input">
-      <input name="anonymized" v-on:change="changeAnonymized" type="checkbox" /> <label for="anonymized">Send anonymized data</label>
-    </div>
-    <textarea name="comments" placeholder="Comments"></textarea>
   </div>
+
+  <div class="report-footer">
+    <label class="anonymized">
+      <input name="anonymized" v-on:change="changeAnonymized" type="checkbox" />
+      Send anonymized data
+    </label>
+    <textarea name="comments" placeholder="Describe the issue"></textarea>
+    <div class="notice">
+      <strong>Note:</strong> You can also create an <a href="https://github.com/danschultzer/blazing-bookkeeper/issues/new" target="_blank" class="js-external-link">issue on Github</a>
+    </div>
+  </div>
+
 
   <footer class="bottom-toolbar" id="toolbar" style="-webkit-app-region: drag;">
     <button class="btn btn-default" v-on:click.stop.prevent="close">
