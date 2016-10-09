@@ -78,11 +78,12 @@ var setApplicationMenu = function () {
             click() {
               if (reportWindow) {
                 reportWindow.close();
-              } else if (editWindow) {
-                editWindow.close();
-              } else {
-                app.quit();
               }
+              if (editWindow) {
+                editWindow.close();
+              }
+
+              app.quit();
             }
           },
         ]
