@@ -27,7 +27,11 @@ document.addEventListener('DOMContentLoaded', function () {
       close: close,
       send: send,
       changeAnonymized: function() {
-        global.file.anonymized = document.body.querySelector('[name="anonymized"]').checked;
+        if (global.file.uploading) {
+          document.body.querySelector('[name="anonymized"]').checked = !!global.file.anonymized;
+        } else {
+          global.file.anonymized = document.body.querySelector('[name="anonymized"]').checked;
+        }
         render();
       }
     },
