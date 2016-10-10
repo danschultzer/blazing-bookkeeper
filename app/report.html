@@ -73,7 +73,12 @@
       Cancel
     </button>
     <button class="btn btn-default" v-on:click.stop.prevent="send">
-      Send
+      <template v-if="!file.uploading">
+        Send
+      </template>
+      <template v-else>
+        Sending...
+      </template>
     </button>
   </footer>
 </div>
