@@ -56,10 +56,13 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         edit: function(event) {
           global.fileList.Select.select([event.currentTarget], true);
-          ipcRenderer.send('display-edit', [
-            global.fileList.getIndexForElement(event.currentTarget),
-            global.fileList.getFileForElement(event.currentTarget)
-          ]);
+          var index = global.fileList.getIndexForElement(event.currentTarget),
+            file = global.fileList.getFileForElement(event.currentTarget);
+          if (file.result.error) {
+            file.result.error.json = JSON.parse(JSON.stringify(file.result.error, Object.getOwnPropertyNames(file.result.error)));
+          }
+
+          ipcRenderer.send('display-edit', [index, file]);
         },
         export: exportCSV,
         select: selectFiles
