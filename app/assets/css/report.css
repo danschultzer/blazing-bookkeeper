@@ -23,21 +23,55 @@
 
 .report-footer {
   position: absolute;
-    bottom: 35px;
-    height: 125px;
-    width: 100%;
+  bottom: 35px;
+  height: 145px;
+  width: 100%;
 }
 
-.report-footer textarea {
+.report-footer .row {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 10px;
+}
+
+.report-footer .row .left {
+  width: 50%;
+}
+
+.report-footer .row .left input {
+  width: 100%;
+  cursor: text;
+  border: 1px solid rgb(240, 240, 240);
+  outline: 1px solid rgb(177, 177, 177);
+  padding: 0 5px;
+}
+
+.report-footer .row input,
+.report-footer .row label {
+  height: 22px;
+  vertical-align:middle;
+}
+
+.report-footer .row .right {
+  width: 50%;
+  text-align: right;
+}
+
+.report-footer .row textarea {
   width: 100%;
   height:70px;
+  cursor: text;
+  border: 1px solid rgb(240, 240, 240);
+  outline: 1px solid rgb(177, 177, 177);
+  padding: 0 5px;
 }
 
-.report-footer .notice {
+.report-footer .row .notice {
   font-size:10px;
   text-align:center;
 }
 
-.report-footer .anonymized {
-  float:right;
+.report-footer .row .left input:focus,
+.report-footer .row textarea:focus {
+  outline: -webkit-focus-ring-color auto 5px;
 }
