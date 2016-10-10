@@ -94,6 +94,67 @@ describe('application launch', function() {
             });
         });
       });
+
+      describe('when reporting an error', function() {
+        beforeEach(function() {
+          return this.app.client.windowByIndex(1).click("=Wrong results? Report it so Blazing Bookkeeper can be improved!")
+            .waitUntilWindowLoaded();
+        });
+
+        it("shows new browser window", function() {
+          return this.app.client.getWindowCount().then(function(count) {
+            assert.equal(count, 3);
+          });
+        });
+
+        describe('when entering information, and sending it', function() {
+          beforeEach(function() {
+            return this.app.client.windowByIndex(2)
+              .setValue("#email", "error@report.com")
+              .setValue("#comments", "There was an error");
+          });
+
+          it("should have an email", function() {
+            this.app.client.timeouts('script', 60000);
+            this.app.client.executeAsync(function (done) {
+              return this.app.client.windowByIndex(2)
+                .getText("#email").then(function(text) {
+                  assert.include(text, "error@report.com");
+                });
+                done();
+            });
+          });
+
+          it("should have a comment", function() {
+            this.app.client.timeouts('script', 60000);
+            this.app.client.executeAsync(function (done) {
+              return this.app.client.windowByIndex(2)
+                .getText("#comments").then(function(text) {
+                  assert.include(text, "There was an error");
+                });
+                done();
+            });
+          });
+        });
+
+        describe('when entering information, and sending it anonymized', function() {
+          beforeEach(function() {
+            return this.app.client.windowByIndex(2)
+              .click("#anonymized")
+              .setValue("#comments", "There was an error");
+          });
+
+          it("should have a comment", function() {
+            this.app.client.timeouts('script', 60000);
+            this.app.client.executeAsync(function (done) {
+              return this.app.client.windowByIndex(2)
+                .getText("#comments").then(function(text) {
+                  assert.include(text, "There was an error");
+                });
+            });
+          });
+        });
+      });
     });
   });
 });

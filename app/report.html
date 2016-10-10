@@ -47,18 +47,18 @@
     <div class="row">
       <div class="left">
         <template v-if="!file.anonymized">
-          <input type="text" name="email" placeholder="Your e-mail (optional)" />
+          <input type="text" name="email" id="email" placeholder="Your e-mail (optional)" />
         </template>
       </div>
       <div class="right">
         <label class="anonymized">
           Send anonymized data
-          <input name="anonymized" v-on:change="changeAnonymized" type="checkbox" />
+          <input name="anonymized" id="anonymized" v-on:change="changeAnonymized" type="checkbox" />
         </label>
       </div>
     </div>
     <div class="row">
-      <textarea name="comments" placeholder="Describe the issue"></textarea>
+      <textarea name="comments" id="comments" placeholder="Describe the issue"></textarea>
     </div>
     <div class="row">
       <div class="notice">
