@@ -11,6 +11,8 @@ require('./helpers/external_links');
 
 webFrame.setZoomLevelLimits(1, 1); // Don't allow any pinch zoom
 
+var appDir = jetpack.cwd(remote.app.getAppPath());
+
 document.addEventListener('DOMContentLoaded', function () {
   global.file = remote.getGlobal('reportFile');
   global.file.anonymized = document.body.querySelector('[name="anonymized"]').checked;
@@ -47,37 +49,36 @@ function send() {
     return;
   }
 
-  var body = {
-    file: fileObject(),
+  var packageJSON = appDir.read('package.json', 'json');
+  var formData = {
+    product: packageJSON.productName,
+    version: packageJSON.version,
+    report_json: JSON.stringify(fileObject()),
     comments: document.querySelector('[name="comments"]').value
   };
 
-  var multipart = [{
-    'content-type': 'application/json',
-  }];
-
   if (!global.file.anonymized) {
-    multipart.push({ body: jetpack.createReadStream(global.file.file.path) });
-    body.email = document.querySelector('[name="email"]').value;
+    formData.document = jetpack.createReadStream(global.file.file.path);
+    formData.email = document.querySelector('[name="email"]').value;
   }
-  multipart[0].body = JSON.stringify(body);
-  console.log(multipart);
 
-  global.file.uploading = request({
-    method: 'PUT',
-    preambleCRLF: true,
-    postambleCRLF: true,
-    uri: 'https://localhost/error-report/upload',
-    multipart: multipart
-  },
-  function (error, response, body) {
-    global.file.uploading = false;
-    if (error) {
-      console.log("Error: " + error);
-      return alert("Could not send report. Please check your internet connection, or try again later.");
-    }
-    close();
-  });
+  var url = env.bugReportSubmitURL || 'https://localhost/bug-report/upload';
+  global.file.uploading = request.post(
+    { url: url, formData: formData },
+    function (error, httpResponse, body) {
+      global.file.uploading = false;
+      if (error || httpResponse.statusCode != 200) {
+        if (error) {
+          console.error('Upload failed:', error);
+        } else {
+          console.log("Error: " + httpResponse.statusMessage);
+          console.log(body);
+        }
+        return alert("Could not send report. Please check your internet connection, or try again later.");
+      }
+      console.log('Upload successful!');
+      close();
+    });
 }
 
 function close() {
@@ -94,7 +95,7 @@ function fileObject() {
     fileJSON.error = global.file.result.error.json;
   }
 
-  if (global.file.anonymized) {
+  if (global.file.anonymized && fileJSON.error) {
     fileJSON.error = JSON.stringify(fileJSON.error)
       .replace(new RegExp(process.cwd(), "g"), "~");
     fileJSON.error = JSON.parse(fileJSON.error);

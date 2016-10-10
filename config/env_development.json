@@ -1,5 +1,6 @@
 {
   "name": "development",
-  "crashSubmitURL": "http://localhost:1127/post",
-  "autoSubmitCrashReports": true
+  "crashSubmitURL": "http://localhost:5000/crash-report",
+  "autoSubmitCrashReports": true,
+  "bugReportSubmitURL": "http://localhost:5000/bug-report"
 }
