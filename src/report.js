@@ -3,8 +3,9 @@ import JSONFormatter from 'json-formatter-js';
 import Vue from 'vue';
 import jetpack from 'fs-jetpack';
 import request from 'request';
+import env from './env';
 
-require('./helpers/crash_reporter_start.js');
+require('./helpers/crash_reporter.js')(env);
 require('./helpers/context_menu');
 require('./helpers/external_links');
 

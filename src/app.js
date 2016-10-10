@@ -10,7 +10,7 @@ import env from './env';
 import Vue from 'vue';
 import { FileList } from './file_list/file_list';
 
-require('./helpers/crash_reporter_start.js');
+require('./helpers/crash_reporter.js')(env);
 require('./helpers/context_menu');
 
 webFrame.setZoomLevelLimits(1, 1); // Don't allow any pinch zoom

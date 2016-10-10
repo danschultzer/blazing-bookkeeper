@@ -2,8 +2,9 @@ import { remote, webFrame, ipcRenderer, nativeImage } from 'electron';
 import Vue from 'vue';
 import { PDFJS } from 'pdfjs-dist/build/pdf.combined';
 import mime from 'mime';
+import env from './env';
 
-require('./helpers/crash_reporter_start.js');
+require('./helpers/crash_reporter.js')(env);
 require('./helpers/context_menu');
 require('./helpers/external_links');
 
