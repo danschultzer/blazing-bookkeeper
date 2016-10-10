@@ -59,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
           global.fileList.Select.select([event.currentTarget], true);
           var index = global.fileList.getIndexForElement(event.currentTarget),
             file = global.fileList.getFileForElement(event.currentTarget);
+          if (!file.done) return;
+
           if (file.result.error) {
             file.result.error.json = JSON.parse(JSON.stringify(file.result.error, Object.getOwnPropertyNames(file.result.error)));
           }
