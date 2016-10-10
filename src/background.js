@@ -7,6 +7,7 @@ import { app, Menu, ipcMain, shell, BrowserWindow } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
+const startCrashReporter = require('./helpers/crash_reporter_start.js');
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
@@ -140,6 +141,7 @@ if (env.name !== 'production') {
 }
 
 app.on('ready', function () {
+    startCrashReporter();
     setApplicationMenu();
 
     mainWindow = createWindow('main', {

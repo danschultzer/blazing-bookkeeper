@@ -1,10 +1,8 @@
-module.exports = function (extra) {
-  import crashReporter from 'electron';
+module.exports = function () {
+  const { crashReporter } = require ('electron');
   crashReporter.start({
     productName: 'Blazing Bookkeeper',
     companyName: 'Blazing Bookkeeper',
     submitURL: 'https://crashreporter.blazingbookkeeper.com',
-    autoSubmit: false,
-    extra: extra
   });
 };

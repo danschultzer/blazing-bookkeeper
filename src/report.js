@@ -4,6 +4,7 @@ import Vue from 'vue';
 import jetpack from 'fs-jetpack';
 import request from 'request';
 
+require('./helpers/crash_reporter_start.js');
 require('./helpers/context_menu');
 require('./helpers/external_links');
 

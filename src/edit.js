@@ -3,6 +3,7 @@ import Vue from 'vue';
 import { PDFJS } from 'pdfjs-dist/build/pdf.combined';
 import mime from 'mime';
 
+require('./helpers/crash_reporter_start.js');
 require('./helpers/context_menu');
 require('./helpers/external_links');
 
