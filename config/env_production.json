@@ -1,5 +1,6 @@
 {
   "name": "production",
-  "crashSubmitURL": "http://blazing-bookkeeper/crash/report",
-  "autoSubmitCrashReports": false
+  "crashSubmitURL": "https://blazingbookkeeper.com/api/v1/crash-report",
+  "autoSubmitCrashReports": false,
+  "bugReportSubmitURL": "https://blazingbookkeeper.com/api/v1/bug-report"
 }
