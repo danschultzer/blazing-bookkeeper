@@ -13,23 +13,23 @@
     };
 
     var cut = new MenuItem({
-        label: "Cut",
+        label: 'Cut',
         click: function () {
-            document.execCommand("cut");
+            document.execCommand('cut');
         }
     });
 
     var copy = new MenuItem({
-        label: "Copy",
+        label: 'Copy',
         click: function () {
-            document.execCommand("copy");
+            document.execCommand('copy');
         }
     });
 
     var paste = new MenuItem({
-        label: "Paste",
+        label: 'Paste',
         click: function () {
-            document.execCommand("paste");
+            document.execCommand('paste');
         }
     });
 

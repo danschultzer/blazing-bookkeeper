@@ -4,12 +4,12 @@ var gulp = require('gulp');
 var less = require('gulp-less');
 var watch = require('gulp-watch');
 var batch = require('gulp-batch');
-var exec = require('child_process').exec;
 var plumber = require('gulp-plumber');
+var gutil = require('gulp-util');
+var exec = require('child_process').exec;
 var jetpack = require('fs-jetpack');
 var bundle = require('./bundle');
 var utils = require('./utils');
-var gutil = require('gulp-util');
 
 var projectDir = jetpack;
 var srcDir = jetpack.cwd('./src');

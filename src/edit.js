@@ -28,12 +28,12 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   updatePreviewCanvas();
 
-  var preview = document.getElementById("preview");
-  ipcRenderer.on("edit-resizing", function() {
+  var preview = document.getElementById('preview');
+  ipcRenderer.on('edit-resizing', function() {
     preview.style.opacity = 0;
   });
 
-  ipcRenderer.on("edit-resized", function() {
+  ipcRenderer.on('edit-resized', function() {
     preview.style.opacity = 1;
     updatePreviewCanvas();
   });
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var loaded_pdf, loaded_img;
 function updatePreviewCanvas() {
-  var canvas = document.getElementById("preview"),
+  var canvas = document.getElementById('preview'),
     context = canvas.getContext('2d'),
     path = global.file.file.path,
     mimetype = mime.lookup(path),
@@ -60,7 +60,7 @@ function updatePreviewCanvas() {
 
   context.clearRect(0, 0, canvas.width, canvas.height);
   switch (true) {
-    case mimetype == "application/pdf":
+    case mimetype === 'application/pdf':
       if (!loaded_pdf) {
         PDFJS.getDocument(path).then(function(pdf) {
           loaded_pdf = pdf;
@@ -146,7 +146,7 @@ function renderImage(img, canvas, context, maxWidth, maxHeight) {
 }
 
 function save() {
-  ipcRenderer.send("edit-updated", {
+  ipcRenderer.send('edit-updated', {
     amount: document.getElementById('amount').value,
     date: document.getElementById('date').value
   });
@@ -154,5 +154,5 @@ function save() {
 }
 
 function close() {
-  ipcRenderer.send("close-edit");
+  ipcRenderer.send('close-edit');
 }

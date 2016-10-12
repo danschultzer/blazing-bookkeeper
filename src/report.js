@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function send() {
   if (global.file.uploading) {
-    console.log("Already uploading report.");
+    console.log('Already uploading report.');
     return;
   }
 
@@ -71,14 +71,14 @@ function send() {
     { url: url, formData: formData },
     function (error, httpResponse, body) {
       global.file.uploading = false;
-      if (error || httpResponse.statusCode != 200) {
+      if (error || httpResponse.statusCode !== 200) {
         if (error) {
           console.error('Upload failed:', error);
         } else {
-          console.log("Error: " + httpResponse.statusMessage);
+          console.log('Error: ' + httpResponse.statusMessage);
           console.log(body);
         }
-        return alert("Could not send report. Please check your internet connection, or try again later.");
+        return alert('Could not send report. Please check your internet connection, or try again later.');
       }
       console.log('Upload successful!');
       close();
@@ -86,7 +86,7 @@ function send() {
 }
 
 function close() {
-  ipcRenderer.send("close-report");
+  ipcRenderer.send('close-report');
 }
 
 function fileObject() {
@@ -101,7 +101,7 @@ function fileObject() {
 
   if (global.file.anonymized && fileJSON.error) {
     fileJSON.error = JSON.stringify(fileJSON.error)
-      .replace(new RegExp(process.cwd(), "g"), "~");
+      .replace(new RegExp(process.cwd(), 'g'), '~');
     fileJSON.error = JSON.parse(fileJSON.error);
   }
 

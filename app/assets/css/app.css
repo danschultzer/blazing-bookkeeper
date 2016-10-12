@@ -161,27 +161,27 @@ body {
 
 
 header.titlebar {
-  width:100%;
-  text-align:center;
+  width: 100%;
+  text-align: center;
   color: rgb(60, 60, 60);
-  font-weight:400;
-  font-size:12px;
-  margin:0;
+  font-weight: 400;
+  font-size: 12px;
+  margin: 0;
 }
 
 .blurred header.titlebar {
-  width:100%;
-  text-align:center;
+  width: 100%;
+  text-align: center;
   color: rgb(172, 172, 172);
-  font-weight:400;
-  font-size:12px;
-  margin:0;
+  font-weight: 400;
+  font-size: 12px;
+  margin: 0;
 }
 
 /* Toolbar */
 .bottom-toolbar {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   height: 35px;
   width: 100%;
 
@@ -201,7 +201,7 @@ header.titlebar {
   border: none;
   background-color: rgb(240, 240, 240);
   text-decoration: none;
-  outline:0;
+  outline: 0;
   width: 100px;
 }
 

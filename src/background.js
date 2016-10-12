@@ -24,14 +24,14 @@ var setApplicationMenu = function () {
 
     if (!editWindow) {
         menus[0].submenu.push({
-            label: "Deselect All",
-            accelerator: "CmdOrCtrl+D",
+            label: 'Deselect All',
+            accelerator: 'CmdOrCtrl+D',
             click() {
               BrowserWindow.getFocusedWindow().webContents.executeJavaScript("document.dispatchEvent(new CustomEvent('deselectAll'));");
             }
         });
         menus[0].submenu.push({
-            role: "delete"
+            role: 'delete'
         });
     }
 
@@ -143,21 +143,39 @@ if (env.name !== 'production') {
     app.setPath('userData', userDataPath + ' (' + env.name + ')');
 }
 
+function openWindow(windowName, parentWindow) {
+  var opts = {
+      width: 500,
+      height: 400,
+      minWidth: 400,
+      minHeight: 310,
+      titleBarStyle: 'hidden'
+    };
+
+    if (parentWindow)
+      opts.parent = parentWindow;
+
+  return createWindow(windowName, opts);
+
+}
+
+function blur(windowName, eventName) {
+  windowName.on('blur', function() {
+    windowName.webContents.send(eventName);
+  });
+}
+
+function load(windowName, file) {
+  windowName.loadURL('file://' + __dirname + file);
+}
+
 app.on('ready', function () {
     require('./helpers/crash_reporter.js')(env);
     setApplicationMenu();
 
-    mainWindow = createWindow('main', {
-        width: 500,
-        height: 400,
-        minWidth: 400,
-        minHeight: 310,
-        titleBarStyle: 'hidden'
-    });
+    mainWindow = openWindow('main');
 
-    mainWindow.on('blur', function() {
-      mainWindow.webContents.send('main-blur');
-    });
+    blur(mainWindow, 'main-blur');
 
     mainWindow.on('focus', function() {
       mainWindow.webContents.send('main-focus');
@@ -170,13 +188,13 @@ app.on('ready', function () {
       }
     });
 
-    mainWindow.loadURL('file://' + __dirname + '/app.html');
+    load(mainWindow, '/app.html');
 
     mainWindow.on('closed', function() {
       mainWindow = null;
     });
 
-    if (env.name == 'development') {
+    if (env.name === 'development') {
       mainWindow.openDevTools();
     }
 
@@ -186,20 +204,11 @@ app.on('ready', function () {
       global.editObjectIndex = arg[0];
       global.editObject = arg[1];
 
-      editWindow = createWindow('edit', {
-          width: 500,
-          height: 400,
-          minWidth: 400,
-          minHeight: 310,
-          parent: mainWindow,
-          titleBarStyle: 'hidden'
-      });
-
       setApplicationMenu();
 
-      editWindow.on('blur', function() {
-        editWindow.webContents.send('edit-blur');
-      });
+      editWindow = openWindow('edit', mainWindow);
+
+      blur(editWindow, 'edit-blur');
 
       editWindow.on('focus', function() {
         editWindow.webContents.send('edit-focus');
@@ -209,7 +218,7 @@ app.on('ready', function () {
         }
       });
 
-      editWindow.loadURL('file://' + __dirname + '/edit.html');
+      load(editWindow, '/edit.html');
 
       editWindow.on('closed', function() {
         editWindow = null;
@@ -247,26 +256,18 @@ app.on('ready', function () {
 
       global.reportFile = file;
 
-      reportWindow = createWindow('report', {
-          width: 500,
-          height: 400,
-          minWidth: 400,
-          minHeight: 310,
-          parent: mainWindow,
-          titleBarStyle: 'hidden'
-      });
-
       setApplicationMenu();
 
-      reportWindow.on('blur', function() {
-        editWindow.webContents.send('report-blur');
-      });
+      reportWindow = openWindow('edit', editWindow);
+
+      blur(reportWindow, 'report-blur');
 
       reportWindow.on('focus', function() {
         reportWindow.webContents.send('report-focus');
       });
 
-      reportWindow.loadURL('file://' + __dirname + '/report.html');
+      load(reportWindow, '/report.html');
+
 
       reportWindow.on('closed', function() {
         reportWindow = null;

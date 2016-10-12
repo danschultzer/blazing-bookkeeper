@@ -8,8 +8,8 @@ var istanbul = require('rollup-plugin-istanbul');
 // Spec files are scattered through the whole project. Here we're searching
 // for them and generate one entry file which will run all the tests.
 var generateEntryFile = function (dir, destFileName, filePattern) {
-    var fileBanner = "// This file is generated automatically.\n"
-        + "// All modifications will be lost.\n";
+    var fileBanner = '// This file is generated automatically.\n' +
+      '// All modifications will be lost.\n';
 
     return dir.findAsync('.', { matching: filePattern })
     .then(function (specPaths) {

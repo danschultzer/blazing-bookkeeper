@@ -57,22 +57,22 @@
 .drag .window:before {
   content: '';
   position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 99;
   cursor: copy;
 }
 
 .window .table {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 
 .window .table {
-  width:100%;
+  width: 100%;
 }
 
 .window .table .head {
@@ -115,7 +115,7 @@
 
   flex: 1 1 auto;
 
-  text-align:left;
+  text-align: left;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -123,7 +123,7 @@
 }
 
 .window .cell:last-child {
-  text-align:right;
+  text-align: right;
 }
 
 .window .table .cell:nth-of-type(1) {
@@ -151,11 +151,11 @@
 
 .window .table .body {
   position: fixed;
-  position:absolute;
+  position: absolute;
   top: 46px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow-y: scroll;
   bottom: var(--table-body-files-bottom);
   /*border-top: 2px solid var(--row-white-border);*/
@@ -257,11 +257,11 @@ footer#summary div .color-green {
 }
 
 footer#summary div:first-child {
-  text-align:left;
+  text-align: left;
 }
 
 footer#summary div:last-child {
-  text-align:right;
+  text-align: right;
 }
 
 .blurred footer#summary {

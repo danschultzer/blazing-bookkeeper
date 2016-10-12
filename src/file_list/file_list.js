@@ -29,7 +29,7 @@ export class FileList {
   }
 
   getFileIndexForIndex(index) {
-    return this.files.findIndex(function(f) { return f.index == index; });
+    return this.files.findIndex(function(f) { return f.index === index; });
   }
 
   createSmoothPercentProgressionInterval(index) {
@@ -95,7 +95,7 @@ export class FileList {
           processing: true
         });
 
-        var tmpFile = tmp.tmpNameSync({ postfix: name.substr(name.lastIndexOf(".")) }),
+        var tmpFile = tmp.tmpNameSync({ postfix: name.substr(name.lastIndexOf('.')) }),
           stream = jetpack.createReadStream(path),
           finishedCallback = (error, result) => {
             this.updateFile(index, {
@@ -155,7 +155,7 @@ export class FileList {
   }
 
   toCSV(files) {
-    var text = "Name\tAmount\tDate\tPath\n";
+    var text = 'Name\tAmount\tDate\tPath\n';
     for (var i = 0, length = files.length; i < length; ++i){
       var values = [
         files[i].file.name,
@@ -170,7 +170,7 @@ export class FileList {
         return value;
       });
 
-      text += values.join('\t') + "\n";
+      text += values.join('\t') + '\n';
     }
     return text;
   }
