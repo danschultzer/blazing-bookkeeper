@@ -10,6 +10,7 @@ import env from './env';
 import Vue from 'vue';
 import { FileList } from './file_list/file_list';
 
+require('./helpers/crash_reporter.js')(env);
 require('./helpers/context_menu');
 
 webFrame.setZoomLevelLimits(1, 1); // Don't allow any pinch zoom
@@ -56,10 +57,15 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         edit: function(event) {
           global.fileList.Select.select([event.currentTarget], true);
-          ipcRenderer.send('display-edit', [
-            global.fileList.getIndexForElement(event.currentTarget),
-            global.fileList.getFileForElement(event.currentTarget)
-          ]);
+          var index = global.fileList.getIndexForElement(event.currentTarget),
+            file = global.fileList.getFileForElement(event.currentTarget);
+          if (!file.done) return;
+
+          if (file.result.error) {
+            file.result.error.json = JSON.parse(JSON.stringify(file.result.error, Object.getOwnPropertyNames(file.result.error)));
+          }
+
+          ipcRenderer.send('display-edit', [index, file]);
         },
         export: exportCSV,
         select: selectFiles

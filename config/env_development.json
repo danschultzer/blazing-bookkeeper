@@ -1,4 +1,6 @@
 {
   "name": "development",
-  "description": "Add here any environment specific stuff you like."
+  "crashSubmitURL": "http://localhost:5000/api/v1/crash-report",
+  "autoSubmitCrashReports": true,
+  "bugReportSubmitURL": "http://localhost:5000/api/v1/bug-report"
 }

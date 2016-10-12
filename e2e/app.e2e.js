@@ -94,6 +94,43 @@ describe('application launch', function() {
             });
         });
       });
+
+      describe('when reporting an error', function() {
+        beforeEach(function() {
+          return this.app.client.windowByIndex(1).click("=Wrong results? Report it so Blazing Bookkeeper can be improved!")
+            .waitUntilWindowLoaded().windowByIndex(2);
+        });
+
+        it("shows new browser window with attached file, email and comments", function() {
+          return this.app.client.getWindowCount().then(function(count) {
+            assert.equal(count, 3);
+          }).isExisting("input[name=\"email\"]").then(function(exists) {
+            assert.equal(exists, true);
+          }).isExisting("textarea[name=\"comments\"]").then(function(exists) {
+            assert.equal(exists, true);
+          }).getText("html").then(function(text) {
+            assert.include(text, __dirname.replace('/app', '/e2e') + '/support/readable.pdf');
+          });
+        });
+
+        describe('when clicking to anonymize data', function() {
+          beforeEach(function() {
+            return this.app.client.click("[name=\"anonymized\"]");
+          });
+
+          it("hides email, attached file and paths", function() {
+            return this.app.client.getWindowCount().then(function(count) {
+              assert.equal(count, 3);
+            }).isExisting("input[name=\"email\"]").then(function(exists) {
+              assert.equal(exists, false);
+            }).isExisting("textarea[name=\"comments\"]").then(function(exists) {
+              assert.equal(exists, true);
+            }).getText("html").then(function(text) {
+              assert.notInclude(text, __dirname.replace('/app', '/e2e') + '/support/readable.pdf');
+            });
+          });
+        });
+      });
     });
   });
 });

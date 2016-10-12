@@ -1,4 +1,6 @@
 {
   "name": "production",
-  "description": "Add here any environment specific stuff you like."
+  "crashSubmitURL": "https://blazingbookkeeper.com/api/v1/crash-report",
+  "autoSubmitCrashReports": false,
+  "bugReportSubmitURL": "https://blazingbookkeeper.com/api/v1/bug-report"
 }
