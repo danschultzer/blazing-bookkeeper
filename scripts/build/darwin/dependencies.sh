@@ -171,3 +171,25 @@ then
 
   make install RUN_FC_CACHE_TEST=false
 fi
+
+# Little CMS 2
+cd $BUILDDIR
+if [ ! -d "$BUILDDIR/lcms2-src" ]
+then
+  if [ ! -f "$BUILDDIR/lcms2-2.8.tar.gz" ]
+  then
+    curl -o lcms2-2.8.tar.gz -L -z lcms2-2.8.tar.gz https://downloads.sourceforge.net/project/lcms/lcms/2.8/lcms2-2.8.tar.gz
+  fi
+  tar xzf lcms2-2.8.tar.gz
+  mv lcms2-2.8 lcms2-src
+fi
+if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/liblcms2.dylib" ]
+then
+  cd lcms2-src
+  ./configure \
+    --prefix=$DEST_DEPENDENCIES_DIR \
+    --disable-dependency-tracking \
+    --with-tiff=$DEST_DEPENDENCIES_DIR/lib \
+    --with-jpeg=$DEST_DEPENDENCIES_DIR/lib
+  make install
+fi
