@@ -15,18 +15,18 @@ then
 fi
 cd poppler-src
 
-if [ ! -f "$THIRDPARTYDIR/poppler/bin/pdftotext" ]
+if [ ! -f "$THIRDPARTYDIR/poppler/bin/pdftotext" ] || [ ! -f "$THIRDPARTYDIR/poppler/bin/pdfimages" ]
 then
   ./configure \
     --prefix=$THIRDPARTYDIR/poppler \
     --disable-libcurl \
-    --disable-zlib \
     --disable-splash-output \
     --disable-cairo-output \
     --disable-poppler-glib \
     --disable-poppler-qt4 \
     --disable-poppler-qt5 \
     --disable-poppler-cpp \
+    --disable-libopenjpeg \
     --disable-gtk-test \
 
   make install

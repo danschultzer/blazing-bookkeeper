@@ -71,31 +71,6 @@ then
   make install
 fi
 
-# Build dependencies
-brew install cmake
-
-# Compile openjpeg
-cd $BUILDDIR
-if [ ! -d "$BUILDDIR/openjpeg-src" ]
-then
-  if [ ! -f "$BUILDDIR/openjpeg-2.1.1.tar.gz" ]
-  then
-    curl -o openjpeg-2.1.1.tar.gz -L -z openjpeg-2.1.1.tar.gz https://github.com/uclouvain/openjpeg/archive/v2.1.1.tar.gz
-  fi
-  tar xzf openjpeg-2.1.1.tar.gz
-  mv openjpeg-2.1.1 openjpeg-src
-fi
-if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libopenjp2.dylib" ]
-then
-  cd openjpeg-src
-  cmake -D CMAKE_INSTALL_PREFIX=$DEST_DEPENDENCIES_DIR ./
-  make install
-
-  # Fix for missing openjpeg.h in poppler install
-  cd $DEST_DEPENDENCIES_DIR
-  ln -s include/openjpeg-2.1/openjpeg.h include/openjpeg.h
-fi
-
 # Compile leptonica
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/leptonica-src" ]
@@ -115,9 +90,9 @@ then
     --prefix=$DEST_DEPENDENCIES_DIR \
     --exec-prefix=$DEST_DEPENDENCIES_DIR \
     --disable-dependency-tracking \
-    --without-zlib \
     --without-libwebp \
     --without-giflib \
+    --without-libopenjpeg \
     --disable-static \
     --disable-programs
   chmod +x config/install-sh
