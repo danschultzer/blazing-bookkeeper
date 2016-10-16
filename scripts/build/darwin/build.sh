@@ -36,3 +36,16 @@ rm -rf dependencies/share dependencies/include dependencies/bin
 rm -rf poppler/share $(find poppler/bin -type f ! -name 'pdftotext' -and ! -name 'pdfimages')
 rm -rf opencv/share
 rm -rf tesseract/include tesseract/share/man
+
+for f in $(find $THIRDPARTYDIR -type f -name '*.dylib' -or -path '*/bin/*')
+do
+  if [ -f "$f" ]
+  then
+    DIR_PREFIX="@loader_path/../.."
+    DYLIBS=`otool -L $f | grep "$THIRDPARTYDIR" | awk -F' ' '{ print $1 }'`
+    for dylib in $DYLIBS
+    do
+      install_name_tool -change $dylib "$DIR_PREFIX${dylib#$THIRDPARTYDIR}" "$f"
+    done
+  fi
+done
