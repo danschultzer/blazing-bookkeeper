@@ -24,26 +24,26 @@ gulp.task('dependencies', function () {
 
       return new Promise(function(resolve, reject) {
           if (!jetpack.exists(buildScript)) {
-            gutil.log("No build file for", gutil.colors.cyan("'" + platform + "'"));
+            gutil.log('No build file for', `'${gutil.colors.cyan(platform)}'`);
             return resolve();
           }
 
-          gutil.log("Going to build for", gutil.colors.cyan("'" + platform + "'"));
+          gutil.log('Going to build for', `'${gutil.colors.cyan(platform)}'`);
 
           var buildCommand = [
-            "BUILDDIR=" + buildDir,
-            "THIRDPARTYDIR=" + buildDestDir,
+            'BUILDDIR=' + buildDir,
+            'THIRDPARTYDIR=' + buildDestDir,
             'sh ' + buildScript,
-          ].join(" ");
+          ].join(' ');
           var child = exec(buildCommand, {
               maxBuffer: 1024 * 1024 * 10
             },
             function(error, stdout, stderr) {
               if (!error) {
-                  gutil.log("Build succesful");
+                  gutil.log('Build succesful');
                   resolve();
               } else {
-                  gutil.log("Build failed");
+                  gutil.log('Build failed');
                   reject();
                   throw error;
               }
