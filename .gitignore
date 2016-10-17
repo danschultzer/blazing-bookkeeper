@@ -16,3 +16,6 @@ app/report.js
 
 /dist
 /coverage
+
+/thirdparty
+/build

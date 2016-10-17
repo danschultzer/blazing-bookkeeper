@@ -10,6 +10,14 @@
 
 ![](https://cloud.githubusercontent.com/assets/1254724/18614273/5b964992-7d40-11e6-991c-39e7ab7d25d9.gif)
 
+### Before install and release
+
+Third party libraries are installed in `/thirdparty`. To successfully compile `node-opencv` with no global OpenCV installation, you'll need to set `PKG_CONFIG_PATH`. Run commands like so:
+```
+PKG_CONFIG_PATH=$(pwd)/thirdparty/opencv/lib/pkgconfig npm install
+PKG_CONFIG_PATH=$(pwd)/thirdparty/opencv/lib/pkgconfig npm run release
+```
+
 ### Unit tests
 
 Using [electron-mocha](https://github.com/jprichardson/electron-mocha) test runner with the [chai](http://chaijs.com/api/assert/) assertion library. To run the tests go with standard:
@@ -26,7 +34,6 @@ Using [mocha](https://mochajs.org/) test runner and [spectron](http://electron.a
 npm run e2e
 ```
 All `*.e2e.js` in `e2e` will be included.
-
 
 ### Code coverage
 

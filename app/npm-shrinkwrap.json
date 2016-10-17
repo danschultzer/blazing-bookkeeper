@@ -1,0 +1,11 @@
+{
+  "name": "blazing-bookkeeper",
+  "version": "0.1.0",
+  "dependencies": {
+    "opencv": {
+      "version": "6.0.0",
+      "from": "git://github.com/peterbraden/node-opencv#6728efde9fc5e8be6cd556a4e9c3ee50fb28bf2b",
+      "chosen": "git://github.com/peterbraden/node-opencv#6728efde9fc5e8be6cd556a4e9c3ee50fb28bf2b"
+    }
+  }
+}
