@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import testUtils from './utils';
 import sinon from 'sinon';
+import testUtils from './utils';
 
 describe('application launch', function() {
   beforeEach(testUtils.beforeEach);

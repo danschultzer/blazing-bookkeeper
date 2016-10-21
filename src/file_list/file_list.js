@@ -22,7 +22,7 @@ export class FileList {
   addFiles(files) {
     for(var i = 0; i < files.length; ++i) {
       var extractedFiles = this.Util.extractFiles(files[i]);
-      for(var j = 0; j < extractedFiles.length; ++j){
+      for(var j = 0; j < extractedFiles.length; ++j) {
         this.addFile(extractedFiles[j].name, extractedFiles[j].path, extractedFiles[j].size, extractedFiles[j].type);
       }
     }
@@ -156,7 +156,7 @@ export class FileList {
 
   toCSV(files) {
     var text = 'Name\tAmount\tDate\tPath\n';
-    for (var i = 0, length = files.length; i < length; ++i){
+    for (var i = 0, length = files.length; i < length; ++i) {
       var values = [
         files[i].file.name,
         (files[i].result && files[i].result.parsed) ? files[i].result.parsed.amount : '',

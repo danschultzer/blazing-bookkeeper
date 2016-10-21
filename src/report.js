@@ -115,7 +115,7 @@ function render() {
   var results = document.body.querySelector('.json.results');
   if (results) {
     formatter = new JSONFormatter(fileJSON.parsed, [0], { hoverPreviewEnabled: true, hoverPreviewFieldCount: 0});
-    results.innerHTML = "";
+    results.innerHTML = '';
     results.appendChild(formatter.render());
   }
 
@@ -123,7 +123,7 @@ function render() {
   if (fullError) {
     var errorJSON;
     formatter = new JSONFormatter(fileJSON.error, [0], { hoverPreviewEnabled: true, hoverPreviewFieldCount: 0});
-    fullError.innerHTML = "";
+    fullError.innerHTML = '';
     fullError.appendChild(formatter.render());
   }
 }

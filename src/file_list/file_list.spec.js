@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import sinon from 'sinon';
 import jetpack from 'fs-jetpack';
-import { FileList } from './file_list';
 import scanner from 'receipt-scanner';
+import { FileList } from './file_list';
 
 describe('fileList', function() {
   var fileList;

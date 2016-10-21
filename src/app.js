@@ -5,9 +5,8 @@
 import os from 'os'; // native node.js module
 import { webFrame, remote, ipcRenderer, clipboard } from 'electron'; // native electron module
 import jetpack from 'fs-jetpack'; // module loaded from npm
-import env from './env';
-
 import Vue from 'vue';
+import env from './env';
 import { FileList } from './file_list/file_list';
 
 require('./helpers/crash_reporter.js')(env);
@@ -44,13 +43,13 @@ document.addEventListener('DOMContentLoaded', function () {
         selectUp: function(event) { global.fileList.Select.moveDirection('up', !event.shiftKey); },
         selectDown: function(event) { global.fileList.Select.moveDirection('down', !event.shiftKey); },
         handleCmdOrCtrlA: function(event) {
-          if ((event.metaKey || e.ctrlKey) && event.keyCode == 65) {
+          if ((event.metaKey || e.ctrlKey) && event.keyCode === 65) {
             event.preventDefault();
             global.fileList.Select.selectAll();
           }
         },
         handleCmdOrCtrlBackspace: function(event) {
-          if ((event.metaKey || e.ctrlKey) && event.keyCode == 8) {
+          if ((event.metaKey || e.ctrlKey) && event.keyCode === 8) {
             event.preventDefault();
             global.fileList.Select.removeSelected();
           }

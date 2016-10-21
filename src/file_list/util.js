@@ -21,7 +21,7 @@ export default class Util {
   }
 
   isDir(path) {
-    return jetpack.exists(path) && jetpack.inspect(path).type == 'dir';
+    return jetpack.exists(path) && jetpack.inspect(path).type === 'dir';
   }
 
   filterFiles(filelist) {
@@ -50,7 +50,7 @@ export default class Util {
     // Filter invalid files
     files = this.filterFiles(files);
 
-    return files.map(function(file){
+    return files.map(function(file) {
       if (!file.path) {
         var object = jetpack.inspect(file);
 
