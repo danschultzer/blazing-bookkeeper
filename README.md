@@ -6,7 +6,6 @@
 [![Codecov](https://img.shields.io/codecov/c/github/danschultzer/blazing-bookkeeper/master.svg)](https://codecov.io/gh/danschultzer/blazing-bookkeeper)
 [![David (app)](https://david-dm.org/danschultzer/blazing-bookkeeper/status.svg?path=app)](https://david-dm.org/danschultzer/blazing-bookkeeper?path=app)
 [![David (boilerplate)](https://david-dm.org/danschultzer/blazing-bookkeeper/dev-status.svg)](https://david-dm.org/danschultzer/blazing-bookkeeper?type=dev)
-[![Code Climate](https://codeclimate.com/github/danschultzer/blazing-bookkeeper/badges/gpa.svg)](https://codeclimate.com/github/danschultzer/blazing-bookkeeper)
 
 
 ![](https://cloud.githubusercontent.com/assets/1254724/18614273/5b964992-7d40-11e6-991c-39e7ab7d25d9.gif)
