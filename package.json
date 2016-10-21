@@ -1,7 +1,6 @@
 {
   "build": {
     "appId": "com.blazing-bookkeeper.blazing-bookkeeper",
-    "app-category-type": "productivity",
     "win": {
       "target": [
         "nsis"
@@ -13,6 +12,7 @@
       "installerHeaderIcon": "resources/windows/setup-icon.ico"
     },
     "mac": {
+      "category": "productivity",
       "icon": "resources/osx/icon.icns"
     },
     "dmg": {
