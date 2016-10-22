@@ -9,10 +9,10 @@
   ],
   "main": "background.js",
   "dependencies": {
-    "fs-jetpack": "^0.9.0",
+    "fs-jetpack": "^0.10.0",
     "json-formatter-js": "^1.2.0",
     "mime": "^1.3.4",
-    "pdfjs-dist": "1.5.500",
+    "pdfjs-dist": "^1.6.263",
     "receipt-scanner": "^0.3.0",
     "request": "2.75.0",
     "tmp": "^0.0.29",
