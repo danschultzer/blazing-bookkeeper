@@ -17,17 +17,17 @@
   border: 3px dashed rgb(128, 128, 128);
   padding: 60px;
   border-radius: 30px;
-  font-size:15px;
+  font-size: 15px;
 }
 
 .window.welcome p {
-  padding-top:20px;
+  padding-top: 20px;
 }
 
 .window.welcome .plus {
   box-sizing: border-box;
   position: relative;
-  margin:auto;
+  margin: auto;
   width: 100px;
   height: 100px;
   border: 5px solid rgb(128, 128, 128);
@@ -46,7 +46,7 @@
   content: '';
   position: absolute;
   border: 5px solid rgb(128, 128, 128);
-  top:43px;
+  top: 43px;
   left: 28px;
   width: 25px;
   border-bottom: 20px;

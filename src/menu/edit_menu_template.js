@@ -16,13 +16,13 @@ export var editMenuTemplate = {
         role: 'cut'
       },
       {
-        role: "copy"
+        role: 'copy'
       },
       {
         role: 'paste'
       },
       {
-        role: "selectall"
+        role: 'selectall'
       }
     ]
 };

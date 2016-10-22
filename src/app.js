@@ -5,9 +5,8 @@
 import os from 'os'; // native node.js module
 import { webFrame, remote, ipcRenderer, clipboard } from 'electron'; // native electron module
 import jetpack from 'fs-jetpack'; // module loaded from npm
-import env from './env';
-
 import Vue from 'vue';
+import env from './env';
 import { FileList } from './file_list/file_list';
 
 require('./helpers/crash_reporter.js')(env);
@@ -26,7 +25,7 @@ var app = remote.app,
 console.log('The author of this app is:', appDir.read('package.json', 'json').author);
 
 document.addEventListener('DOMContentLoaded', function () {
-  global.fileList = new FileList("files");
+  global.fileList = new FileList('files');
 
   var summaryComponent = Vue.extend({}),
     fileListComponent = Vue.extend({}),
@@ -44,13 +43,13 @@ document.addEventListener('DOMContentLoaded', function () {
         selectUp: function(event) { global.fileList.Select.moveDirection('up', !event.shiftKey); },
         selectDown: function(event) { global.fileList.Select.moveDirection('down', !event.shiftKey); },
         handleCmdOrCtrlA: function(event) {
-          if ((event.metaKey || e.ctrlKey) && event.keyCode == 65) {
+          if ((event.metaKey || e.ctrlKey) && event.keyCode === 65) {
             event.preventDefault();
             global.fileList.Select.selectAll();
           }
         },
         handleCmdOrCtrlBackspace: function(event) {
-          if ((event.metaKey || e.ctrlKey) && event.keyCode == 8) {
+          if ((event.metaKey || e.ctrlKey) && event.keyCode === 8) {
             event.preventDefault();
             global.fileList.Select.removeSelected();
           }
@@ -76,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
         successRateLabel: function() {
           var total = this.result.done.successful / (this.result.done.total || 1) * 100,
             color = total < 85 ? 'red' : total < 95 ? 'yellow' : 'green';
-          return "<span class=\"color-" + color + "\">" + total.toFixed(1) + "%</span>";
+          return '<span class="color-' + color + '">' + total.toFixed(1) + '%</span>';
         }
       },
       components: {
@@ -103,8 +102,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-document.addEventListener("copy", copySelectedToClipboard, true);
-document.addEventListener("deselectAll", function() { global.fileList.Select.deselectAll(); }, true);
+document.addEventListener('copy', copySelectedToClipboard, true);
+document.addEventListener('deselectAll', function() { global.fileList.Select.deselectAll(); }, true);
 
 function selectFiles(event) {
   // If user does shift + click
@@ -126,11 +125,11 @@ function openFiles() {
   dialog.showOpenDialog({
     properties: ['openFile', 'openDirectory', 'multiSelections'],
     filters: [
-      { name: "JPG", extensions: ['jpg', 'jpeg'] },
-      { name: "PNG", extensions: ['png'] },
-      { name: "PDF", extensions: ['pdf'] },
-      { name: "TIFF", extensions: ['tif', 'tiff'] },
-      { name: "BMP", extensions: ['BMP'] }
+      { name: 'JPG', extensions: ['jpg', 'jpeg'] },
+      { name: 'PNG', extensions: ['png'] },
+      { name: 'PDF', extensions: ['pdf'] },
+      { name: 'TIFF', extensions: ['tif', 'tiff'] },
+      { name: 'BMP', extensions: ['bmp'] }
     ]
     },
     function(paths) {
@@ -148,9 +147,9 @@ function exportCSV() {
   saveFileDialog = true;
 
   dialog.showSaveDialog({
-    defaultPath: "results.csv",
+    defaultPath: 'results.csv',
     filters: [
-      { name: "CSV", extensions: ['csv'] }
+      { name: 'CSV', extensions: ['csv'] }
     ]
   }, function(filename) {
     saveFileDialog = false;
@@ -159,8 +158,8 @@ function exportCSV() {
 }
 
 function exportButtonLabel() {
-  if (this.selectedFiles.length > 0) return "Export " + this.selectedFiles.length + " item(s)";
-  return "Export";
+  if (this.selectedFiles.length > 0) return 'Export ' + this.selectedFiles.length + ' item(s)';
+  return 'Export';
 }
 
 function handleDragnDrop() {
@@ -170,7 +169,7 @@ function handleDragnDrop() {
   };
 
   document.body.ondrop = function(ev) {
-    if (document.body.classList.contains('drag')) document.body.classList.remove("drag");
+    if (document.body.classList.contains('drag')) document.body.classList.remove('drag');
 
     if (ev.dataTransfer.files.length) {
       global.fileList.addFiles(ev.dataTransfer.files);
@@ -187,7 +186,7 @@ function handleDragnDrop() {
   document.body.ondragend = document.body.ondragleave = function(ev) {
     dragCounter--;
     if (dragCounter > 0) return;
-    if (document.body.classList.contains('drag')) document.body.classList.remove("drag");
+    if (document.body.classList.contains('drag')) document.body.classList.remove('drag');
   };
 }
 

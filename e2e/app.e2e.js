@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import testUtils from './utils';
 import sinon from 'sinon';
+import testUtils from './utils';
 
 describe('application launch', function() {
   beforeEach(testUtils.beforeEach);
@@ -9,7 +9,7 @@ describe('application launch', function() {
   });
   afterEach(testUtils.afterEach);
 
-  it("shows one window", function() {
+  it('shows one window', function() {
     return this.app.browserWindow.isVisible().then(function(visible) {
       assert.equal(visible, true);
     }).getWindowCount().then(function(count) {
@@ -17,7 +17,7 @@ describe('application launch', function() {
     });
   });
 
-  it("shows welcome screen", function() {
+  it('shows welcome screen', function() {
     return this.app.client.element('.welcome').isVisible().then(function(visible) {
       assert.equal(visible, true);
     });
@@ -25,44 +25,44 @@ describe('application launch', function() {
 
   describe('when clicking to add file', function() {
     beforeEach(function() {
-      return this.app.client.click('#plus-button-open').waitForVisible(".table .body .row", 1000);
+      return this.app.client.click('#plus-button-open').waitForVisible('.table .body .row', 1000);
     });
 
-    it("should show file", function() {
+    it('should show file', function() {
       var app = this.app;
 
-      return this.app.client.element(".table .body .row:nth-child(1)")
+      return this.app.client.element('.table .body .row:nth-child(1)')
         .isVisible().then(function(visible) {
           assert.equal(visible, true);
         })
-        .waitUntilTextExists(".table .body .row .cell:nth-child(2)", "2016-06-13")
-        .getText(".table .body .row").then(function(text) {
-          assert.include(text, "readable.pdf");
-          assert.include(text, "2016-06-13");
-          assert.include(text, "6000.00");
+        .waitUntilTextExists('.table .body .row .cell:nth-child(2)', '2016-06-13')
+        .getText('.table .body .row').then(function(text) {
+          assert.include(text, 'readable.pdf');
+          assert.include(text, '2016-06-13');
+          assert.include(text, '6000.00');
         });
     });
 
     describe('when copying', function() {
-      it("should copy CSV to clipboard", function() {
-        return this.app.client.click(".table .body .row")
+      it('should copy CSV to clipboard', function() {
+        return this.app.client.click('.table .body .row')
           .execute(function() {
             document.dispatchEvent(new Event('copy'));
           })
           .electron.clipboard.readText().then(function(text) {
-            assert.include(text, "Name\tAmount\tDate\tPath\n");
-            assert.include(text, "readable.pdf\t");
+            assert.include(text, 'Name\tAmount\tDate\tPath\n');
+            assert.include(text, 'readable.pdf\t');
           });
       });
     });
 
     describe('when double clicking on file row', function() {
       beforeEach(function() {
-        return this.app.client.doubleClick(".table .body .row")
+        return this.app.client.doubleClick('.table .body .row')
           .waitUntilWindowLoaded();
       });
 
-      it("shows new browser window", function() {
+      it('shows new browser window', function() {
         return this.app.client.getWindowCount().then(function(count) {
           assert.equal(count, 2);
         });
@@ -72,41 +72,41 @@ describe('application launch', function() {
         beforeEach(function() {
           return this.app.client.windowByIndex(1).setValue('#date', '2016-01-01')
             .setValue('#amount', '125.00')
-            .click("button=Update");
+            .click('button=Update');
         });
 
-        it("closes window", function() {
+        it('closes window', function() {
           var app = this.app;
 
           return app.client.waitUntil(function() {
             return app.client.getWindowCount().then(function(count) {
-              return count == 1;
+              return count === 1;
             });
           }, 1000, 'expected window to close');
         });
 
-        it("updates values", function() {
+        it('updates values', function() {
           return this.app.client.windowByIndex(0)
-            .getText(".table .body .row").then(function(text) {
-              assert.include(text, "readable.pdf");
-              assert.include(text, "2016-01-01");
-              assert.include(text, "125.00");
+            .getText('.table .body .row').then(function(text) {
+              assert.include(text, 'readable.pdf');
+              assert.include(text, '2016-01-01');
+              assert.include(text, '125.00');
             });
         });
       });
 
       describe('when reporting an error', function() {
         beforeEach(function() {
-          return this.app.client.windowByIndex(1).click("=Wrong results? Report it so Blazing Bookkeeper can be improved!")
+          return this.app.client.windowByIndex(1).click('=Wrong results? Report it so Blazing Bookkeeper can be improved!')
             .waitUntilWindowLoaded().windowByIndex(2);
         });
 
-        it("shows new browser window with attached file, email and comments", function() {
+        it('shows new browser window with attached file, email and comments', function() {
           return this.app.client.getWindowCount().then(function(count) {
             assert.equal(count, 3);
-          }).isExisting("input[name=\"email\"]").then(function(exists) {
+          }).isExisting('input[name="email"]').then(function(exists) {
             assert.equal(exists, true);
-          }).isExisting("textarea[name=\"comments\"]").then(function(exists) {
+          }).isExisting('textarea[name="comments"]').then(function(exists) {
             assert.equal(exists, true);
           }).getText("html").then(function(text) {
             assert.include(text, __dirname.replace('/app', '/e2e') + '/support/readable.pdf');
@@ -115,15 +115,15 @@ describe('application launch', function() {
 
         describe('when clicking to anonymize data', function() {
           beforeEach(function() {
-            return this.app.client.click("[name=\"anonymized\"]");
+            return this.app.client.click('[name="anonymized"]');
           });
 
-          it("hides email, attached file and paths", function() {
+          it('hides email, attached file and paths', function() {
             return this.app.client.getWindowCount().then(function(count) {
               assert.equal(count, 3);
-            }).isExisting("input[name=\"email\"]").then(function(exists) {
+            }).isExisting('input[name="email"]').then(function(exists) {
               assert.equal(exists, false);
-            }).isExisting("textarea[name=\"comments\"]").then(function(exists) {
+            }).isExisting('textarea[name="comments"]').then(function(exists) {
               assert.equal(exists, true);
             }).getText("html").then(function(text) {
               assert.notInclude(text, __dirname.replace('/app', '/e2e') + '/support/readable.pdf');

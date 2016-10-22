@@ -8,14 +8,14 @@ export default class Select {
   }
 
   items() {
-    return this.el().querySelectorAll(".row");
+    return this.el().querySelectorAll('.row');
   }
 
   indexOf(item) {
       var children = this.items(),
           i = 0;
       for (; i < children.length; i++) {
-          if (children[i] == item) {
+          if (children[i] === item) {
               return i;
           }
       }
@@ -97,18 +97,18 @@ export default class Select {
     var selected = this.selected(),
       nextFile,
       currentIndex;
-    if (direction == 'up') {
+    if (direction === 'up') {
       currentIndex = this.indexOf(selected[0]);
 
       // In case everything is selected, revert to the first item
-      if (removeSelected && selected.length == this.items().length) currentIndex++;
+      if (removeSelected && selected.length === this.items().length) currentIndex++;
 
       nextFile = this.items()[currentIndex - 1];
     } else {
       currentIndex = this.indexOf(selected[selected.length - 1]);
 
       // In case everything is selected, revert to the last item
-      if (removeSelected && selected.length == this.items().length) currentIndex--;
+      if (removeSelected && selected.length === this.items().length) currentIndex--;
 
       nextFile = this.items()[currentIndex + 1];
     }
@@ -136,7 +136,7 @@ export default class Select {
   }
 
   scrollTop(el, position) {
-    if (typeof position == "undefined") {
+    if (typeof position === 'undefined') {
       return el.scrollTop;
     }
     return el.scrollTop = position;
@@ -148,7 +148,7 @@ export default class Select {
       scrollTop,
       elHeight = this.el().getBoundingClientRect().height;
 
-    if (direction == 'up') {
+    if (direction === 'up') {
       scrollTop = items[0].getBoundingClientRect().top;
     } else {
       scrollTop = items[items.length - 1].getBoundingClientRect().bottom - elHeight;
@@ -156,8 +156,8 @@ export default class Select {
 
     scrollTop = scrollTop - this.el().getBoundingClientRect().top + curScrollTop;
     if (
-      (direction == "up" && scrollTop < curScrollTop) ||
-      (direction !== "up" && scrollTop > (curScrollTop - elHeight)))
+      (direction === 'up' && scrollTop < curScrollTop) ||
+      (direction !== 'up' && scrollTop > (curScrollTop - elHeight)))
       this.scrollTop(this.el(), scrollTop);
   }
 }

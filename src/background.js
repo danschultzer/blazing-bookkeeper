@@ -7,7 +7,7 @@ import { app, Menu, ipcMain, shell, BrowserWindow } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
-import thirdparty_env from './utils/thirdparty_env'
+import thirdparty_env from './utils/thirdparty_env';
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
@@ -24,14 +24,14 @@ var setApplicationMenu = function () {
 
     if (!editWindow) {
         menus[0].submenu.push({
-            label: "Deselect All",
-            accelerator: "CmdOrCtrl+D",
+            label: 'Deselect All',
+            accelerator: 'CmdOrCtrl+D',
             click() {
               BrowserWindow.getFocusedWindow().webContents.executeJavaScript("document.dispatchEvent(new CustomEvent('deselectAll'));");
             }
         });
         menus[0].submenu.push({
-            role: "delete"
+            role: 'delete'
         });
     }
 
@@ -143,143 +143,126 @@ if (env.name !== 'production') {
     app.setPath('userData', userDataPath + ' (' + env.name + ')');
 }
 
+function openWindow(windowName, file, opts) {
+  opts = opts || {};
+  opts.width = opts.width || 500;
+  opts.height = opts.height || 400;
+  opts.minWidth = opts.minWidth || 400;
+  opts.minHeight = opts.minHeight || 310;
+  opts.titleBarStyle = opts.titleBarStyle || 'hidden';
+
+  var win = createWindow(windowName, opts);
+
+  blur(win, 'report-' + windowName);
+
+  win.loadURL('file://' + __dirname + file);
+
+  if (env.name === 'development') {
+    win.openDevTools();
+  }
+
+  return win;
+}
+
+function blur(windowName, eventName) {
+  windowName.on('blur', function() {
+    windowName.webContents.send(eventName);
+  });
+}
+
 app.on('ready', function () {
-    require('./helpers/crash_reporter.js')(env);
+  require('./helpers/crash_reporter.js')(env);
+  setApplicationMenu();
+
+  mainWindow = openWindow('main', '/app.html', { width: 640, height: 480 });
+
+  mainWindow.on('focus', function() {
+    mainWindow.webContents.send('main-focus');
+    if (editWindow) {
+      editWindow.focus();
+      if (reportWindow) {
+        reportWindow.focus();
+      }
+      shell.beep();
+    }
+  });
+
+  mainWindow.on('closed', function() {
+    mainWindow = null;
+  });
+
+  ipcMain.on('display-edit', function(event, arg) {
+    if (!arg[1].done || editWindow) return;
+
+    global.editObjectIndex = arg[0];
+    global.editObject = arg[1];
+
     setApplicationMenu();
 
-    mainWindow = createWindow('main', {
-        width: 500,
-        height: 400,
-        minWidth: 400,
-        minHeight: 310,
-        titleBarStyle: 'hidden'
-    });
+    editWindow = openWindow('edit', '/edit.html', { parentWindow: mainWindow });
 
-    mainWindow.on('blur', function() {
-      mainWindow.webContents.send('main-blur');
-    });
-
-    mainWindow.on('focus', function() {
-      mainWindow.webContents.send('main-focus');
-      if (editWindow) {
-        editWindow.focus();
-        if (reportWindow) {
-          reportWindow.focus();
-        }
+    editWindow.on('focus', function() {
+      editWindow.webContents.send('edit-focus');
+      if (reportWindow) {
+        reportWindow.focus();
         shell.beep();
       }
     });
 
-    mainWindow.loadURL('file://' + __dirname + '/app.html');
-
-    mainWindow.on('closed', function() {
-      mainWindow = null;
-    });
-
-    if (env.name == 'development') {
-      mainWindow.openDevTools();
-    }
-
-    ipcMain.on('display-edit', function(event, arg) {
-      if (!arg[1].done || editWindow) return;
-
-      global.editObjectIndex = arg[0];
-      global.editObject = arg[1];
-
-      editWindow = createWindow('edit', {
-          width: 500,
-          height: 400,
-          minWidth: 400,
-          minHeight: 310,
-          parent: mainWindow,
-          titleBarStyle: 'hidden'
-      });
-
-      setApplicationMenu();
-
-      editWindow.on('blur', function() {
-        editWindow.webContents.send('edit-blur');
-      });
-
-      editWindow.on('focus', function() {
-        editWindow.webContents.send('edit-focus');
-        if (reportWindow) {
-          reportWindow.focus();
-          shell.beep();
-        }
-      });
-
-      editWindow.loadURL('file://' + __dirname + '/edit.html');
-
-      editWindow.on('closed', function() {
-        editWindow = null;
-        setApplicationMenu();
-      });
-
-      var resizeId;
-      editWindow.on('resize', function() {
-        editWindow.webContents.send('edit-resizing');
-        clearTimeout(resizeId);
-        resizeId = setTimeout(function() {
-          if (editWindow) {
-            editWindow.webContents.send('edit-resized');
-          }
-        }, 750);
-      });
-    });
-
-    ipcMain.on('edit-updated', function(event, arg) {
-      if (!editWindow) return;
-
-      mainWindow.webContents.send('edit-updated', {
-        index: global.editObjectIndex,
-        updated: arg
-      });
-    });
-
-    ipcMain.on('close-edit', function(event) {
-      editWindow.close();
+    editWindow.on('closed', function() {
       editWindow = null;
-    });
-
-    ipcMain.on('display-report', function(event, file) {
-      if (reportWindow) return;
-
-      global.reportFile = file;
-
-      reportWindow = createWindow('report', {
-          width: 500,
-          height: 400,
-          minWidth: 400,
-          minHeight: 310,
-          parent: mainWindow,
-          titleBarStyle: 'hidden'
-      });
-
       setApplicationMenu();
-
-      reportWindow.on('blur', function() {
-        editWindow.webContents.send('report-blur');
-      });
-
-      reportWindow.on('focus', function() {
-        reportWindow.webContents.send('report-focus');
-      });
-
-      reportWindow.loadURL('file://' + __dirname + '/report.html');
-
-      reportWindow.on('closed', function() {
-        reportWindow = null;
-        setApplicationMenu();
-      });
     });
 
-    ipcMain.on('close-report', function(event) {
-      reportWindow.close();
+    var resizeId;
+    editWindow.on('resize', function() {
+      editWindow.webContents.send('edit-resizing');
+      clearTimeout(resizeId);
+      resizeId = setTimeout(function() {
+        if (editWindow) {
+          editWindow.webContents.send('edit-resized');
+        }
+      }, 750);
+    });
+  });
+
+  ipcMain.on('edit-updated', function(event, arg) {
+    if (!editWindow) return;
+
+    mainWindow.webContents.send('edit-updated', {
+      index: global.editObjectIndex,
+      updated: arg
+    });
+  });
+
+  ipcMain.on('close-edit', function(event) {
+    editWindow.close();
+  });
+
+  ipcMain.on('display-report', function(event, file) {
+    if (reportWindow) return;
+
+    global.reportFile = file;
+
+    setApplicationMenu();
+
+    reportWindow = openWindow('report', '/report.html', { parentWindow: editWindow });
+
+    reportWindow.on('focus', function() {
+      reportWindow.webContents.send('report-focus');
+    });
+
+    reportWindow.on('closed', function() {
       reportWindow = null;
+      setApplicationMenu();
     });
+  });
+
+  ipcMain.on('close-report', function(event) {
+    reportWindow.close();
+  });
 });
 
 app.on('window-all-closed', function () {
-    app.quit();
+  app.quit();
 });

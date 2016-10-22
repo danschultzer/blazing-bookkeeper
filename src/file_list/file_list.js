@@ -22,14 +22,14 @@ export class FileList {
   addFiles(files) {
     for(var i = 0; i < files.length; ++i) {
       var extractedFiles = this.Util.extractFiles(files[i]);
-      for(var j = 0; j < extractedFiles.length; ++j){
+      for(var j = 0; j < extractedFiles.length; ++j) {
         this.addFile(extractedFiles[j].name, extractedFiles[j].path, extractedFiles[j].size, extractedFiles[j].type);
       }
     }
   }
 
   getFileIndexForIndex(index) {
-    return this.files.findIndex(function(f) { return f.index == index; });
+    return this.files.findIndex(function(f) { return f.index === index; });
   }
 
   createSmoothPercentProgressionInterval(index) {
@@ -95,7 +95,7 @@ export class FileList {
           processing: true
         });
 
-        var tmpFile = tmp.tmpNameSync({ postfix: name.substr(name.lastIndexOf(".")) }),
+        var tmpFile = tmp.tmpNameSync({ postfix: name.substr(name.lastIndexOf('.')) }),
           stream = jetpack.createReadStream(path),
           finishedCallback = (error, result) => {
             this.updateFile(index, {
@@ -155,8 +155,8 @@ export class FileList {
   }
 
   toCSV(files) {
-    var text = "Name\tAmount\tDate\tPath\n";
-    for (var i = 0, length = files.length; i < length; ++i){
+    var text = 'Name\tAmount\tDate\tPath\n';
+    for (var i = 0, length = files.length; i < length; ++i) {
       var values = [
         files[i].file.name,
         (files[i].result && files[i].result.parsed) ? files[i].result.parsed.amount : '',
@@ -170,7 +170,7 @@ export class FileList {
         return value;
       });
 
-      text += values.join('\t') + "\n";
+      text += values.join('\t') + '\n';
     }
     return text;
   }
