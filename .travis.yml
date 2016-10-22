@@ -33,4 +33,5 @@ script:
 
 deploy:
   provider: script
-  script: npm build --x64
+  script: ".travis/deploy.sh"
+  skip_cleanup: true
