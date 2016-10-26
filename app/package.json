@@ -17,16 +17,5 @@
     "request": "2.75.0",
     "tmp": "^0.0.29",
     "vue": "^1.0.28"
-  },
-  "packageNameTemplate": "{{name}}-v{{version}}-{{platform}}-{{arch}}",
-  "osx": {
-    "build": "1",
-    "identifier": "com.blazing-bookkeeper.blazing-bookkeeper",
-    "LSApplicationCategoryType": "public.app-category.productivity",
-    "//codeSignIdentitiy": {
-      "dmg": "Developer ID Application: Company Name (APPIDENTITY)",
-      "MAS": "3rd Party Mac Developer Application: Company Name (APPIDENTITY)",
-      "MASInstaller": "3rd Party Mac Developer Installer: Company Name (APPIDENTITY)"
-    }
   }
 }
