@@ -32,7 +32,7 @@ cd $BASEDIR && ./opencv.sh
 
 echo [darwin-build] Remove files
 cd $THIRDPARTYDIR
-rm -rf dependencies/share dependencies/include dependencies/bin
+rm -rf dependencies/share dependencies/include dependencies/bin dependencies/etc/fonts/conf.d
 rm -rf poppler/share $(find poppler/bin -type f ! -name 'pdftotext' -and ! -name 'pdfimages')
 rm -rf opencv/share
 rm -rf tesseract/include tesseract/share/man

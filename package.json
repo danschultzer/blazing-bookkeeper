@@ -19,6 +19,17 @@
       "icon": "resources/osx/dmg-icon.icns",
       "background": "resources/osx/dmg-background.png"
     },
+    "mas": {
+      "entitlements": "resources/osx/entitlements.mas.plist",
+      "entitlementsInherit": "resources/osx/entitlements.mas.inherit.plist"
+    },
+    "osx-sign": {
+      "binaries": [
+        "thirdparty/poppler/bin/pdftotext",
+        "thirdparty/poppler/bin/pdfimages",
+        "thirdparty/tesseract/bin/tesseract"
+      ]
+    },
     "extraResources": [
       "thirdparty"
     ]
