@@ -1,4 +1,4 @@
-var istanbul = require('istanbul'),
+var istanbul = require('istanbul');
 
 /**
  * Expose `Istanbul`.

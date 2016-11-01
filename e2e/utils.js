@@ -5,7 +5,6 @@ var beforeEach = function () {
     this.timeout(10000);
     this.app = new Application({
         path: electron,
-        args: ['app'],
         startTimeout: 10000,
         waitTimeout: 10000,
         args: ['-r', './e2e/mocks.js', './app'],
