@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         deselectAll: function() { global.fileList.Select.deselectAll(); },
         selectUp: function(event) { global.fileList.Select.moveDirection('up', !event.shiftKey); },
         selectDown: function(event) { global.fileList.Select.moveDirection('down', !event.shiftKey); },
-        // removeSelected: function() { global.fileList.Select.removeSelected(); },
         handleCmdOrCtrlA: function(event) {
           if ((event.metaKey || e.ctrlKey) && event.keyCode === 65) {
             event.preventDefault();
@@ -104,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('copy', copySelectedToClipboard, true);
-document.addEventListener('removeSelected', function() { global.fileList.Select.removeSelected(); }, true);
+document.addEventListener('removeSelected', global.fileList.Select.removeSelected(), true);
 
 
 function selectFiles(event) {
