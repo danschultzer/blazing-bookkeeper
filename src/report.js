@@ -66,7 +66,7 @@ function send() {
     formData.email = document.querySelector('[name="email"]').value;
   }
 
-  var url = env.bugReportSubmitURL || 'https://localhost/bug-report/upload';
+  var url = env.bugReportSubmitURL || 'https://localhost:5000/bug-report/upload';
   global.file.uploading = request.post(
     { url: url, formData: formData },
     function (error, httpResponse, body) {
