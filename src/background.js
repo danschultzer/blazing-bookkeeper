@@ -4,8 +4,11 @@
 // window from here.
 
 import { app, Menu, ipcMain, shell, BrowserWindow } from 'electron';
-import { devMenuTemplate } from './menu/dev_menu_template';
+import { appMenuTemplate } from './menu/app_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
+import { windowMenuTemplate } from './menu/window_menu_template';
+import { helpMenuTemplate } from './menu/help_menu_template';
+import { devMenuTemplate } from './menu/dev_menu_template';
 import createWindow from './helpers/window';
 import thirdparty_env from './utils/thirdparty_env';
 
@@ -18,120 +21,37 @@ console.log('Settings thirdparty environment variables:', thirdparty_env);
 
 var mainWindow, editWindow, reportWindow;
 
-var setApplicationMenu = function () {
-    // We clone editMenuTemplate object so we can append to submenu
-    var menus = [JSON.parse(JSON.stringify(editMenuTemplate))];
+var setApplicationMenu = function() {
+    // We clone editMenuTemplate, windowMenuTemplate and helpMenuTemplate object so we can append to submenu
+    var menus = [JSON.parse(JSON.stringify(appMenuTemplate)), JSON.parse(JSON.stringify(editMenuTemplate)), JSON.parse(JSON.stringify(windowMenuTemplate)), JSON.parse(JSON.stringify(helpMenuTemplate))];
 
-    if (!editWindow) {
-        menus[0].submenu.push({
-            label: 'Deselect All',
-            accelerator: 'CmdOrCtrl+D',
-            click() {
-              BrowserWindow.getFocusedWindow().webContents.executeJavaScript("document.dispatchEvent(new CustomEvent('deselectAll'));");
-            }
-        });
-        menus[0].submenu.push({
-            role: 'delete'
-        });
-    }
-
+    // Developer menu
     if (env.name !== 'production') {
         menus.push(devMenuTemplate);
     }
 
-    if (process.platform === 'darwin') {
-      const name = app.getName();
-      menus.unshift({
-        label: name,
-        submenu: [
-          {
-            label: 'About ' + name,
-            role: 'about'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            label: 'Services',
-            role: 'services',
-            submenu: []
-          },
-          {
-            type: 'separator'
-          },
-          {
-            label: 'Hide ' + name,
-            accelerator: 'Command+H',
-            role: 'hide'
-          },
-          {
-            label: 'Hide Others',
-            accelerator: 'Command+Alt+H',
-            role: 'hideothers'
-          },
-          {
-            label: 'Show All',
-            role: 'unhide'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            label: 'Quit',
-            accelerator: 'Command+Q',
-            click() {
-              if (reportWindow) {
-                reportWindow.close();
-              }
-              if (editWindow) {
-                editWindow.close();
-              }
-
-              app.quit();
+    menus[0].submenu.push({
+          label: 'Quit',
+          accelerator: 'Command+Q',
+          click() {
+            if (reportWindow) {
+              reportWindow.close();
             }
-          },
-        ]
-      });
-      // Window menu.
-      menus.push({
-        label: 'Window',
-        submenu: [
-          {
-            label: 'Close',
-            accelerator: 'CmdOrCtrl+W',
-            role: 'close'
-          },
-          {
-            label: 'Minimize',
-            accelerator: 'CmdOrCtrl+M',
-            role: 'minimize'
-          },
-          {
-            label: 'Zoom',
-            role: 'zoom'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            label: 'Bring All to Front',
-            role: 'front'
+            if (editWindow) {
+              editWindow.close();
+            }
+
+            app.quit();
           }
-        ]
-      });
-      menus.push({
-        role: 'help',
-        submenu: [
-            {
-              label: 'Learn More',
-              click () {
-                require('electron').shell.openExternal('https://github.com/danschultzer/blazing-bookkeeper');
-              }
-            }
-          ]
-      });
-    }
+        });
 
+    if (!editWindow) {
+        menus[1].submenu.push({
+              label: 'Delete',
+              accelerator: 'CmdOrCtrl+Delete',
+              click() { BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`document.dispatchEvent(new CustomEvent('removeSelected'));`); }
+        });
+    }
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
 
@@ -170,7 +90,7 @@ function blur(windowName, eventName) {
   });
 }
 
-app.on('ready', function () {
+app.on('ready', function() {
   require('./helpers/crash_reporter.js')(env);
   setApplicationMenu();
 
@@ -263,6 +183,6 @@ app.on('ready', function () {
   });
 });
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', function() {
   app.quit();
 });

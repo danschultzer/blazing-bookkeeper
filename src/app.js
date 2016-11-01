@@ -42,13 +42,14 @@ document.addEventListener('DOMContentLoaded', function () {
         deselectAll: function() { global.fileList.Select.deselectAll(); },
         selectUp: function(event) { global.fileList.Select.moveDirection('up', !event.shiftKey); },
         selectDown: function(event) { global.fileList.Select.moveDirection('down', !event.shiftKey); },
+        // removeSelected: function() { global.fileList.Select.removeSelected(); },
         handleCmdOrCtrlA: function(event) {
           if ((event.metaKey || e.ctrlKey) && event.keyCode === 65) {
             event.preventDefault();
             global.fileList.Select.selectAll();
           }
         },
-        handleCmdOrCtrlBackspace: function(event) {
+        handleCmdOrCtrlDelete: function(event) {
           if ((event.metaKey || e.ctrlKey) && event.keyCode === 8) {
             event.preventDefault();
             global.fileList.Select.removeSelected();
@@ -103,7 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('copy', copySelectedToClipboard, true);
-document.addEventListener('deselectAll', function() { global.fileList.Select.deselectAll(); }, true);
+document.addEventListener('removeSelected', function() { global.fileList.Select.removeSelected(); }, true);
+
 
 function selectFiles(event) {
   // If user does shift + click
