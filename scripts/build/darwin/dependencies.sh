@@ -28,12 +28,12 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/libpng-src" ]
 then
-  if [ ! -f "$BUILDDIR/libpng-1.6.25.tar.xz" ]
+  if [ ! -f "$BUILDDIR/libpng-1.6.26.tar.xz" ]
   then
-    curl -o libpng-1.6.25.tar.xz -L -z libpng-1.6.25.tar.xz ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.25.tar.xz
+    curl -o libpng-1.6.26.tar.xz -L -z libpng-1.6.26.tar.xz ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.26.tar.xz
   fi
-  tar xzf libpng-1.6.25.tar.xz
-  mv libpng-1.6.25 libpng-src
+  tar xzf libpng-1.6.26.tar.xz
+  mv libpng-1.6.26 libpng-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libpng.dylib" ]
 then
