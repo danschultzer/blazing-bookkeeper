@@ -1,6 +1,7 @@
 {
   "build": {
     "appId": "com.blazing-bookkeeper.blazing-bookkeeper",
+    "copyright":"Copyright © 2016. MIT licensed.",
     "win": {
       "target": [
         "nsis"
