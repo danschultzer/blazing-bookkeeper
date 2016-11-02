@@ -7,7 +7,6 @@ import { app, Menu, ipcMain, shell, BrowserWindow } from 'electron';
 import { appMenuTemplate } from './menu/app_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import { windowMenuTemplate } from './menu/window_menu_template';
-import { helpMenuTemplate } from './menu/help_menu_template';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import createWindow from './helpers/window';
 import thirdparty_env from './utils/thirdparty_env';
@@ -22,36 +21,23 @@ console.log('Settings thirdparty environment variables:', thirdparty_env);
 var mainWindow, editWindow, reportWindow;
 
 var setApplicationMenu = function() {
-    // We clone editMenuTemplate, windowMenuTemplate and helpMenuTemplate object so we can append to submenu
-    var menus = [JSON.parse(JSON.stringify(appMenuTemplate)), JSON.parse(JSON.stringify(editMenuTemplate)), JSON.parse(JSON.stringify(windowMenuTemplate)), JSON.parse(JSON.stringify(helpMenuTemplate))];
+    var menus = [JSON.parse(JSON.stringify(appMenuTemplate)), JSON.parse(JSON.stringify(editMenuTemplate)), JSON.parse(JSON.stringify(windowMenuTemplate))];
 
     // Developer menu
     if (env.name !== 'production') {
         menus.push(devMenuTemplate);
     }
 
-    menus[0].submenu.push({
-          label: 'Quit',
-          accelerator: 'Command+Q',
-          click() {
-            if (reportWindow) {
-              reportWindow.close();
-            }
-            if (editWindow) {
-              editWindow.close();
-            }
-
-            app.quit();
+    menus.push({
+      role: 'help',
+      submenu: [
+          {
+            label: 'Learn More',
+            click: function() { shell.openExternal('https://github.com/danschultzer/blazing-bookkeeper'); }
           }
-        });
+        ]
+    });
 
-    if (!editWindow) {
-        menus[1].submenu.push({
-              label: 'Delete',
-              accelerator: 'CmdOrCtrl+Delete',
-              click() { BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`document.dispatchEvent(new CustomEvent('removeSelected'));`); }
-        });
-    }
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
 
