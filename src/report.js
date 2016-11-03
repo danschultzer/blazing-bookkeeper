@@ -13,7 +13,7 @@ webFrame.setZoomLevelLimits(1, 1); // Don't allow any pinch zoom
 
 var appDir = jetpack.cwd(remote.app.getAppPath());
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
   global.file = remote.getGlobal('reportFile');
   global.file.anonymized = document.body.querySelector('[name="anonymized"]').checked;
   global.file.uploading = false;
@@ -69,7 +69,7 @@ function send() {
   var url = env.bugReportSubmitURL || 'https://localhost:5000/bug-report/upload';
   global.file.uploading = request.post(
     { url: url, formData: formData },
-    function (error, httpResponse, body) {
+    function(error, httpResponse, body) {
       global.file.uploading = false;
       if (error || httpResponse.statusCode !== 200) {
         if (error) {

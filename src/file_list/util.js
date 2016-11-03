@@ -85,7 +85,7 @@ export default class Util {
 Util.Interval = function(fn, interval) {
   var id = setInterval(fn, interval);
   this.cleared = false;
-  this.clear = function () {
+  this.clear = function() {
     this.cleared = true;
     clearInterval(id);
   };

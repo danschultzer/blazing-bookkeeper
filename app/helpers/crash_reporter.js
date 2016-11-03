@@ -1,4 +1,4 @@
-module.exports = function (env) {
+module.exports = function(env) {
   if (env.crashSubmitURL) {
     const { crashReporter } = require ('electron');
     crashReporter.start({
@@ -6,6 +6,6 @@ module.exports = function (env) {
       companyName: 'Blazing Bookkeeper',
       submitURL: env.crashSubmitURL,
       autoSubmit: !!env.autoSubmitCrashReports
-    });    
+    });
   }
 };

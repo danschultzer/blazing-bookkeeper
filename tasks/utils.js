@@ -2,10 +2,10 @@
 
 var argv = require('yargs').argv;
 
-exports.getEnvName = function () {
+exports.getEnvName = function() {
     return argv.env || 'development';
 };
 
-exports.beepSound = function () {
+exports.beepSound = function() {
     process.stdout.write('\u0007');
 };
