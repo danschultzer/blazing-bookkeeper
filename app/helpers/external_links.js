@@ -13,16 +13,16 @@
 //    <a href="http://bing.com">bing</a>
 // </p>
 
-(function () {
+(function() {
     'use strict';
 
     var shell = require('electron').shell;
 
-    var supportExternalLinks = function (e) {
+    var supportExternalLinks = function(e) {
         var href;
         var isExternal = false;
 
-        var checkDomElement = function (element) {
+        var checkDomElement = function(element) {
             if (element.nodeName === 'A') {
                 href = element.getAttribute('href');
             }

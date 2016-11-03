@@ -12,18 +12,18 @@ var nodeBuiltInModules = ['assert', 'buffer', 'child_process', 'cluster',
 
 var electronBuiltInModules = ['electron'];
 
-var npmModulesUsedInApp = function () {
+var npmModulesUsedInApp = function() {
     var appManifest = require('../app/package.json');
     return Object.keys(appManifest.dependencies);
 };
 
-var generateExternalModulesList = function () {
+var generateExternalModulesList = function() {
     return [].concat(nodeBuiltInModules, electronBuiltInModules, npmModulesUsedInApp());
 };
 
 var cached = {};
 
-module.exports = function (src, dest, opts) {
+module.exports = function(src, dest, opts) {
     opts = opts || {};
     opts.rollupPlugins = opts.rollupPlugins || [];
     return rollup({
@@ -32,7 +32,7 @@ module.exports = function (src, dest, opts) {
         cache: cached[src],
         plugins: opts.rollupPlugins,
     })
-    .then(function (bundle) {
+    .then(function(bundle) {
         cached[src] = bundle;
 
         var jsFile = path.basename(dest);

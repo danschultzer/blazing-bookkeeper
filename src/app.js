@@ -24,7 +24,7 @@ var app = remote.app,
 // here files like it is node.js! Welcome to Electron world :)
 console.log('The author of this app is:', appDir.read('package.json', 'json').author);
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
   global.fileList = new FileList('files');
 
   var summaryComponent = Vue.extend({}),

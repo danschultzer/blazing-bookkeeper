@@ -15,7 +15,7 @@ var projectDir = jetpack;
 var srcDir = jetpack.cwd('./src');
 var destDir = jetpack.cwd('./app');
 
-gulp.task('dependencies', function () {
+gulp.task('dependencies', function() {
     var rootDir = jetpack.cwd('./').path(),
         platform = process.platform,
         buildScript = jetpack.cwd('./scripts').path('build/' + platform + '/build.sh'),
@@ -54,7 +54,7 @@ gulp.task('dependencies', function () {
       });
 });
 
-gulp.task('bundle', function () {
+gulp.task('bundle', function() {
     return Promise.all([
         bundle(srcDir.path('background.js'), destDir.path('background.js')),
         bundle(srcDir.path('app.js'), destDir.path('app.js')),
@@ -63,21 +63,21 @@ gulp.task('bundle', function () {
     ]);
 });
 
-gulp.task('less', function () {
+gulp.task('less', function() {
     return gulp.src(srcDir.path('stylesheets/main.less'))
         .pipe(plumber())
         .pipe(less())
         .pipe(gulp.dest(destDir.path('stylesheets')));
 });
 
-gulp.task('environment', function () {
+gulp.task('environment', function() {
     var configFile = 'config/env_' + utils.getEnvName() + '.json';
     projectDir.copy(configFile, destDir.path('env.json'), { overwrite: true });
 });
 
-gulp.task('watch', function () {
-    var beepOnError = function (done) {
-        return function (err) {
+gulp.task('watch', function() {
+    var beepOnError = function(done) {
+        return function(err) {
             if (err) {
                 utils.beepSound();
             }
@@ -85,10 +85,10 @@ gulp.task('watch', function () {
         };
     };
 
-    watch('src/**/*.js', batch(function (events, done) {
+    watch('src/**/*.js', batch(function(events, done) {
         gulp.start('bundle', beepOnError(done));
     }));
-    watch('src/**/*.less', batch(function (events, done) {
+    watch('src/**/*.less', batch(function(events, done) {
         gulp.start('less', beepOnError(done));
     }));
 });

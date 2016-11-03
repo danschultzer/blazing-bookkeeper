@@ -10,7 +10,7 @@ require('./helpers/external_links');
 
 webFrame.setZoomLevelLimits(1, 1); // Don't allow any pinch zoom
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
   global.file = remote.getGlobal('editObject');
   global.page = 1;
   var mainView = new Vue({
