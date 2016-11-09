@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
             global.fileList.Select.selectAll();
           }
         },
-        handleCmdOrCtrlDelete: function(event) {
+        handleCmdOrCtrlBackspace: function(event) {
           if ((event.metaKey || e.ctrlKey) && event.keyCode === 8) {
             event.preventDefault();
             global.fileList.Select.removeSelected();
