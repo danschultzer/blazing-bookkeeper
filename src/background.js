@@ -4,10 +4,7 @@
 // window from here.
 
 import { app, Menu, ipcMain, shell, BrowserWindow } from 'electron';
-import { appMenuTemplate } from './menu/app_menu_template';
-import { editMenuTemplate } from './menu/edit_menu_template';
-import { windowMenuTemplate } from './menu/window_menu_template';
-import { devMenuTemplate } from './menu/dev_menu_template';
+import { appMenuTemplate, editMenuTemplate, windowMenuTemplate, devMenuTemplate, helpMenuTemplate } from './menu/templates';
 import createWindow from './helpers/window';
 import thirdparty_env from './utils/thirdparty_env';
 
@@ -21,22 +18,21 @@ console.log('Settings thirdparty environment variables:', thirdparty_env);
 var mainWindow, editWindow, reportWindow;
 
 var setApplicationMenu = function() {
-    var menus = [JSON.parse(JSON.stringify(appMenuTemplate)), JSON.parse(JSON.stringify(editMenuTemplate)), JSON.parse(JSON.stringify(windowMenuTemplate))];
+    var menus = [
+      editMenuTemplate,
+      windowMenuTemplate
+    ];
+
+    if (process.platform === 'darwin') {
+      menus.unshift(appMenuTemplate);
+    }
 
     // Developer menu
     if (env.name !== 'production') {
-        menus.push(devMenuTemplate);
+      menus.push(devMenuTemplate);
     }
 
-    menus.push({
-      role: 'help',
-      submenu: [
-          {
-            label: 'Learn More',
-            click: function() { shell.openExternal('https://github.com/danschultzer/blazing-bookkeeper'); }
-          }
-        ]
-    });
+    menus.push(helpMenuTemplate);
 
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
@@ -45,8 +41,8 @@ var setApplicationMenu = function() {
 // Thanks to this you can use production and development versions of the app
 // on same machine like those are two separate apps.
 if (env.name !== 'production') {
-    var userDataPath = app.getPath('userData');
-    app.setPath('userData', userDataPath + ' (' + env.name + ')');
+  var userDataPath = app.getPath('userData');
+  app.setPath('userData', userDataPath + ' (' + env.name + ')');
 }
 
 function openWindow(windowName, file, opts) {

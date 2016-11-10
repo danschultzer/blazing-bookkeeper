@@ -1,6 +1,6 @@
 import { app } from 'electron';
 
-export var appMenuTemplate = {
+export default {
   label: app.getName(),
   submenu: [
     {

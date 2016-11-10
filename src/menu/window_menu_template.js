@@ -1,4 +1,4 @@
-export var windowMenuTemplate = {
+export default {
   label: 'Window',
   submenu: [
     {
