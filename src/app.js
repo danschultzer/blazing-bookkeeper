@@ -103,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('copy', copySelectedToClipboard, true);
-document.addEventListener('deselectAll', function() { global.fileList.Select.deselectAll(); }, true);
 
 function selectFiles(event) {
   // If user does shift + click

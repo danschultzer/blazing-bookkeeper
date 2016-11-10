@@ -4,8 +4,7 @@
 // window from here.
 
 import { app, Menu, ipcMain, shell, BrowserWindow } from 'electron';
-import { devMenuTemplate } from './menu/dev_menu_template';
-import { editMenuTemplate } from './menu/edit_menu_template';
+import { appMenuTemplate, editMenuTemplate, windowMenuTemplate, devMenuTemplate, helpMenuTemplate } from './menu/templates';
 import createWindow from './helpers/window';
 import thirdparty_env from './utils/thirdparty_env';
 
@@ -18,119 +17,22 @@ console.log('Settings thirdparty environment variables:', thirdparty_env);
 
 var mainWindow, editWindow, reportWindow;
 
-var setApplicationMenu = function () {
-    // We clone editMenuTemplate object so we can append to submenu
-    var menus = [JSON.parse(JSON.stringify(editMenuTemplate))];
-
-    if (!editWindow) {
-        menus[0].submenu.push({
-            label: 'Deselect All',
-            accelerator: 'CmdOrCtrl+D',
-            click() {
-              BrowserWindow.getFocusedWindow().webContents.executeJavaScript("document.dispatchEvent(new CustomEvent('deselectAll'));");
-            }
-        });
-        menus[0].submenu.push({
-            role: 'delete'
-        });
-    }
-
-    if (env.name !== 'production') {
-        menus.push(devMenuTemplate);
-    }
+var setApplicationMenu = function() {
+    var menus = [
+      editMenuTemplate,
+      windowMenuTemplate
+    ];
 
     if (process.platform === 'darwin') {
-      const name = app.getName();
-      menus.unshift({
-        label: name,
-        submenu: [
-          {
-            label: 'About ' + name,
-            role: 'about'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            label: 'Services',
-            role: 'services',
-            submenu: []
-          },
-          {
-            type: 'separator'
-          },
-          {
-            label: 'Hide ' + name,
-            accelerator: 'Command+H',
-            role: 'hide'
-          },
-          {
-            label: 'Hide Others',
-            accelerator: 'Command+Alt+H',
-            role: 'hideothers'
-          },
-          {
-            label: 'Show All',
-            role: 'unhide'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            label: 'Quit',
-            accelerator: 'Command+Q',
-            click() {
-              if (reportWindow) {
-                reportWindow.close();
-              }
-              if (editWindow) {
-                editWindow.close();
-              }
-
-              app.quit();
-            }
-          },
-        ]
-      });
-      // Window menu.
-      menus.push({
-        label: 'Window',
-        submenu: [
-          {
-            label: 'Close',
-            accelerator: 'CmdOrCtrl+W',
-            role: 'close'
-          },
-          {
-            label: 'Minimize',
-            accelerator: 'CmdOrCtrl+M',
-            role: 'minimize'
-          },
-          {
-            label: 'Zoom',
-            role: 'zoom'
-          },
-          {
-            type: 'separator'
-          },
-          {
-            label: 'Bring All to Front',
-            role: 'front'
-          }
-        ]
-      });
-      menus.push({
-        role: 'help',
-        submenu: [
-            {
-              label: 'Learn More',
-              click () {
-                require('electron').shell.openExternal('https://github.com/danschultzer/blazing-bookkeeper');
-              }
-            }
-          ]
-      });
+      menus.unshift(appMenuTemplate);
     }
+
+    // Developer menu
+    if (env.name !== 'production') {
+      menus.push(devMenuTemplate);
+    }
+
+    menus.push(helpMenuTemplate);
 
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
@@ -139,8 +41,8 @@ var setApplicationMenu = function () {
 // Thanks to this you can use production and development versions of the app
 // on same machine like those are two separate apps.
 if (env.name !== 'production') {
-    var userDataPath = app.getPath('userData');
-    app.setPath('userData', userDataPath + ' (' + env.name + ')');
+  var userDataPath = app.getPath('userData');
+  app.setPath('userData', userDataPath + ' (' + env.name + ')');
 }
 
 function openWindow(windowName, file, opts) {
@@ -170,7 +72,7 @@ function blur(windowName, eventName) {
   });
 }
 
-app.on('ready', function () {
+app.on('ready', function() {
   require('./helpers/crash_reporter.js')(env);
   setApplicationMenu();
 
@@ -263,6 +165,6 @@ app.on('ready', function () {
   });
 });
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', function() {
   app.quit();
 });
