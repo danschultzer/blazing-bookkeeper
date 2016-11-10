@@ -22,11 +22,7 @@ export default {
       role: 'paste'
     },
     {
-      label: 'Select All',
-      accelerator: 'CmdOrCtrl+A',
-      click: function() {
-          BrowserWindow.getFocusedWindow().webContents.executeJavaScript("document.dispatchEvent(new CustomEvent('selectAll'));");
-      }
+      role: 'selectall'
     }
   ]
 };
