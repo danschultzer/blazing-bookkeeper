@@ -159,8 +159,8 @@ export class FileList {
     for (var i = 0, length = files.length; i < length; ++i) {
       var values = [
         files[i].file.name,
-        (files[i].result && files[i].result.parsed) ? files[i].result.parsed.amount : '',
-        (files[i].result &&  files[i].result.parsed) ? files[i].result.parsed.date : '',
+        files[i].result && files[i].result.parsed ? (files[i].result.updated || {}).amount || files[i].result.parsed.amount : '',
+        files[i].result && files[i].result.parsed ? (files[i].result.updated || {}).date || files[i].result.parsed.date : '',
         files[i].file.path
       ];
       values = values.map(function(value) {
