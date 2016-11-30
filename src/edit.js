@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
   })
 })
 
-var loaded_pdf, loaded_img
+var loadedPdf
+var loadedImg
 function updatePreviewCanvas () {
   var canvas = document.getElementById('preview')
   var context = canvas.getContext('2d')
@@ -60,25 +61,25 @@ function updatePreviewCanvas () {
   context.clearRect(0, 0, canvas.width, canvas.height)
   switch (true) {
     case mimetype === 'application/pdf':
-      if (!loaded_pdf) {
+      if (!loadedPdf) {
         PDFJS.getDocument(path).then(function (pdf) {
-          loaded_pdf = pdf
-          renderPDF(loaded_pdf, canvas, context, maxWidth, maxHeight)
+          loadedPdf = pdf
+          renderPDF(loadedPdf, canvas, context, maxWidth, maxHeight)
         })
       } else {
-        renderPDF(loaded_pdf, canvas, context, maxWidth, maxHeight)
+        renderPDF(loadedPdf, canvas, context, maxWidth, maxHeight)
       }
       break
     case /^image\/.*/.test(mimetype):
-      if (!loaded_img) {
         var img = new Image()
+      if (!loadedImg) {
         img.onload = function () {
-          loaded_img = img
-          renderImage(loaded_img, canvas, context, maxWidth, maxHeight)
+          loadedImg = img
+          renderImage(loadedImg, canvas, context, maxWidth, maxHeight)
         }
         img.src = path
       } else {
-        renderImage(loaded_img, canvas, context, maxWidth, maxHeight)
+        renderImage(loadedImg, canvas, context, maxWidth, maxHeight)
       }
       break
   }

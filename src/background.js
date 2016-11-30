@@ -6,14 +6,14 @@
 import { app, Menu, ipcMain, shell } from 'electron'
 import { appMenuTemplate, editMenuTemplate, windowMenuTemplate, devMenuTemplate, helpMenuTemplate } from './menu/templates'
 import createWindow from './helpers/window'
-import thirdparty_env from './utils/thirdparty_env'
+import thirdpartyEnv from './utils/thirdparty_env'
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from './env'
 
-Object.assign(process.env, thirdparty_env)
-console.log('Settings thirdparty environment variables:', thirdparty_env)
+Object.assign(process.env, thirdpartyEnv)
+console.log('Settings thirdparty environment variables:', thirdpartyEnv)
 
 var mainWindow, editWindow, reportWindow
 

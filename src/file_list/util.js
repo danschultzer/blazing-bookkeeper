@@ -41,9 +41,9 @@ export default class Util {
     // Expand directories
     for (var i = 0; i < files.length; i++) {
       if (this.isDir(files[i].path || files[i])) {
-        var expanded_files = this.walkSync(files[i].path || files[i])
+        var expandedFiles = this.walkSync(files[i].path || files[i])
         files.splice(i, 1)
-        files.push.apply(files, expanded_files)
+        files.push.apply(files, expandedFiles)
       }
     }
 
