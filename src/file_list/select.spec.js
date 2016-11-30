@@ -175,10 +175,10 @@ describe('fileList.Select', function () {
   })
 
   describe('#scrollToSelection()', function () {
-    var fileContainerRect,
-      fileRow1Rect,
-      fileRow2Rect,
       scrollTopSpy
+    var fileContainerRect
+    var fileRow1Rect
+    var fileRow2Rect
 
     beforeEach(function () {
       filesContainer.innerHTML = '<div class="row"></div><div class="row"></div>'

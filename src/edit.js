@@ -49,13 +49,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var loaded_pdf, loaded_img
 function updatePreviewCanvas () {
-  var canvas = document.getElementById('preview'),
-    context = canvas.getContext('2d'),
-    path = global.file.file.path,
-    mimetype = mime.lookup(path),
-    boundingRect = canvas.parentNode.getBoundingClientRect(),
-    maxWidth = boundingRect.width - 20,
-    maxHeight = boundingRect.height - 20
+  var canvas = document.getElementById('preview')
+  var context = canvas.getContext('2d')
+  var path = global.file.file.path
+  var mimetype = mime.lookup(path)
+  var boundingRect = canvas.parentNode.getBoundingClientRect()
+  var maxWidth = boundingRect.width - 20
+  var maxHeight = boundingRect.height - 20
 
   context.clearRect(0, 0, canvas.width, canvas.height)
   switch (true) {
@@ -86,7 +86,8 @@ function updatePreviewCanvas () {
 
 function renderPDF (pdf, canvas, context, maxWidth, maxHeight) {
   pdf.getPage(global.page).then(function (page) {
-    var ratio = 1, viewport = page.getViewport(1)
+    var ratio = 1
+    var viewport = page.getViewport(1)
     if (viewport.height > maxHeight) {
       ratio = maxHeight / viewport.height
       viewport = page.getViewport(ratio)
@@ -100,9 +101,9 @@ function renderPDF (pdf, canvas, context, maxWidth, maxHeight) {
     canvas.style.width = canvas.width + 'px'
     canvas.style.height = canvas.height + 'px'
 
-    var devicePixelRatio = window.devicePixelRatio || 1,
-      backingStoreRatio = context.backingStorePixelRatio || 1,
-      pixelRatio = devicePixelRatio / backingStoreRatio
+    var devicePixelRatio = window.devicePixelRatio || 1
+    var backingStoreRatio = context.backingStorePixelRatio || 1
+    var pixelRatio = devicePixelRatio / backingStoreRatio
 
     canvas.width = canvas.width * pixelRatio
     canvas.height = canvas.height * pixelRatio
@@ -116,9 +117,9 @@ function renderPDF (pdf, canvas, context, maxWidth, maxHeight) {
 }
 
 function renderImage (img, canvas, context, maxWidth, maxHeight) {
-  var ratio,
-    height = img.height,
-    width = img.width
+  var ratio
+  var height = img.height
+  var width = img.width
   if (height > maxHeight) {
     ratio = maxHeight / height
     height = height * ratio
@@ -134,9 +135,9 @@ function renderImage (img, canvas, context, maxWidth, maxHeight) {
   canvas.style.width = canvas.width + 'px'
   canvas.style.height = canvas.height + 'px'
 
-  var devicePixelRatio = window.devicePixelRatio || 1,
-    backingStoreRatio = context.backingStorePixelRatio || 1,
-    pixelRatio = devicePixelRatio / backingStoreRatio
+  var devicePixelRatio = window.devicePixelRatio || 1
+  var backingStoreRatio = context.backingStorePixelRatio || 1
+  var pixelRatio = devicePixelRatio / backingStoreRatio
   canvas.width = canvas.width * pixelRatio
   canvas.height = canvas.height * pixelRatio
   context.scale(pixelRatio, pixelRatio)

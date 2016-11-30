@@ -16,11 +16,11 @@ var srcDir = jetpack.cwd('./src')
 var destDir = jetpack.cwd('./app')
 
 gulp.task('dependencies', function () {
-  var rootDir = jetpack.cwd('./').path(),
-    platform = process.platform,
-    buildScript = jetpack.cwd('./scripts').path('build/' + platform + '/build.sh'),
-    buildDir = rootDir + '/build',
-    buildDestDir = rootDir + '/thirdparty'
+  var rootDir = jetpack.cwd('./').path()
+  var platform = process.platform
+  var buildScript = jetpack.cwd('./scripts').path('build/' + platform + '/build.sh')
+  var buildDir = rootDir + '/build'
+  var buildDestDir = rootDir + '/thirdparty'
 
   return new Promise(function (resolve, reject) {
     if (!jetpack.exists(buildScript)) {

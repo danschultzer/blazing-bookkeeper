@@ -16,9 +16,9 @@ webFrame.setZoomLevelLimits(1, 1) // Don't allow any pinch zoom
 
 console.log('Loaded environment variables:', env)
 
-var app = remote.app,
-  dialog = remote.dialog,
-  appDir = jetpack.cwd(app.getAppPath())
+var app = remote.app
+var dialog = remote.dialog
+var appDir = jetpack.cwd(app.getAppPath())
 
 // Holy crap! This is browser window with HTML and stuff, but I can read
 // here files like it is node.js! Welcome to Electron world :)
@@ -27,14 +27,14 @@ console.log('The author of this app is:', appDir.read('package.json', 'json').au
 document.addEventListener('DOMContentLoaded', function () {
   global.fileList = new FileList('files')
 
-  var summaryComponent = Vue.extend({}),
-    fileListComponent = Vue.extend({}),
-    toolbarComponent = Vue.extend({}),
     mainView = new Vue({
       el: '#main',
       data: {
         selectedFiles: global.fileList.selectedFiles,
         files: global.fileList.files
+  var summaryComponent = Vue.extend({})
+  var fileListComponent = Vue.extend({})
+  var toolbarComponent = Vue.extend({})
       },
       methods: {
         open: openFiles,
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   ipcRenderer.on('edit-updated', function (event, arg) {
     var fileIndex = global.fileList.getFileIndexForIndex(arg.index),
-      result = global.fileList.getFileForIndex(arg.index).result
+    var result = global.fileList.getFileForIndex(arg.index).result
     result.updated = arg.updated
     global.fileList.updateFile(arg.index, { result: result })
   })

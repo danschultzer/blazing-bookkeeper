@@ -12,8 +12,8 @@ export default class Select {
   }
 
   indexOf (item) {
-    var children = this.items(),
-      i = 0
+    var children = this.items()
+    var i = 0
     for (; i < children.length; i++) {
       if (children[i] === item) {
         return i
@@ -62,16 +62,16 @@ export default class Select {
   }
 
   selectUntil (item) {
-    var selected = this.selected(),
-      items = this.items(),
-      itemPos = this.indexOf(item),
-      itemsToSelect = [],
-      firstSelectedItem = selected[0],
-      lastSelectedItem = selected[selected.length - 1]
-
     if (!selected.length) {
       return false
     }
+    var selected = this.selected()
+    var items = this.items()
+    var itemPos = this.indexOf(item)
+    var itemsToSelect = []
+    var firstSelectedItem = selected[0]
+    var lastSelectedItem = selected[selected.length - 1]
+
 
     if (itemPos < this.indexOf(lastSelectedItem)) {
       itemsToSelect = [].slice.call(items).filter((element, index, array) => {
@@ -94,9 +94,9 @@ export default class Select {
   }
 
   moveDirection (direction, removeSelected) {
-    var selected = this.selected(),
-      nextFile,
-      currentIndex
+    var selected = this.selected()
+    var nextFile
+    var currentIndex
     if (direction === 'up') {
       currentIndex = this.indexOf(selected[0])
 
@@ -143,10 +143,10 @@ export default class Select {
   }
 
   scrollToSelection (direction) {
-    var items = this.selected(),
-      curScrollTop = this.scrollTop(this.el()),
-      scrollTop,
-      elHeight = this.el().getBoundingClientRect().height
+    var items = this.selected()
+    var curScrollTop = this.scrollTop(this.el())
+    var scrollTop
+    var elHeight = this.el().getBoundingClientRect().height
 
     if (direction === 'up') {
       scrollTop = items[0].getBoundingClientRect().top

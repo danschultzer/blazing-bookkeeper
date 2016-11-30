@@ -37,7 +37,7 @@ export class FileList {
       var file = this.getFileForIndex(index)
       if (!file || file.done) return interval.clear()
       var maxAmount = parseInt(file.percentDone * 100),
-        amount = file.progressBar
+      var amount = file.progressBar
       if (amount < maxAmount) {
         ++amount
         this.updateFile(index, { progressBar: amount })
@@ -86,18 +86,18 @@ export class FileList {
 
   processQueue () {
     if (this.processingCount() < this.maxConcurrent && this.queuedCount() > 0) {
-      var file = this.queued()[0],
-        index = file.index,
-        name = file.file.name,
-        path = file.file.path
+      var file = this.queued()[0]
+      var index = file.index
+      var name = file.file.name
+      var path = file.file.path
 
       this.updateFile(index, {
         processing: true
       })
 
-      var tmpFile = tmp.tmpNameSync({ postfix: name.substr(name.lastIndexOf('.')) }),
-        stream = jetpack.createReadStream(path),
-        finishedCallback = (error, result) => {
+      tmp.tmpNameSync({ postfix: name.substr(name.lastIndexOf('.')) })
+      var stream = jetpack.createReadStream(path)
+      var finishedCallback = (error, result) => {
           this.updateFile(index, {
             processing: false,
             done: true,
@@ -164,8 +164,9 @@ export class FileList {
         files[i].file.path
       ]
       values = values.map(function (value) {
-        if (value && value.length && (value.indexOf('"') > -1 || value.indexOf('\t') > -1))
-          { return '"' + value.replace('"', '\\"') + '"' }
+        if (value && value.length && (value.indexOf('"') > -1 || value.indexOf('\t') > -1)) {
+          return '"' + value.replace('"', '\\"') + '"'
+        }
 
         return value
       })
@@ -176,7 +177,7 @@ export class FileList {
   }
 
   getIndexForElement (el) {
-    return parseInt(el.getAttribute('data-index'))
+    return parseInt(el.getAttribute('data-index'), 10)
   }
 
   getFileForElement (el) {

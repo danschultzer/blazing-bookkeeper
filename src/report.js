@@ -109,8 +109,8 @@ function fileObject () {
 }
 
 function render () {
-  var formatter,
-    fileJSON = fileObject()
+  var formatter
+  var fileJSON = fileObject()
 
   var results = document.body.querySelector('.json.results')
   if (results) {

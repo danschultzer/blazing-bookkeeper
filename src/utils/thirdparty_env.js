@@ -1,7 +1,7 @@
 import getResourcesPath from './resources'
 
-var thirdpartyPath = getResourcesPath('thirdparty'),
-  env = {}
+var thirdpartyPath = getResourcesPath('thirdparty')
+var env = {}
 
 if (process.platform === 'darwin') {
   // Set 3rd party binaries and libraries
