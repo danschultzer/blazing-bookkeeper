@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var fileListComponent = Vue.extend({})
   var toolbarComponent = Vue.extend({})
   new Vue({ // eslint-disable-line no-new
+        if ((event.metaKey || event.ctrlKey) && event.keyCode === 65) {
       },
       methods: {
         open: openFiles,
@@ -42,13 +43,11 @@ document.addEventListener('DOMContentLoaded', function () {
         selectUp: function (event) { global.fileList.Select.moveDirection('up', !event.shiftKey) },
         selectDown: function (event) { global.fileList.Select.moveDirection('down', !event.shiftKey) },
         handleCmdOrCtrlA: function (event) {
-          if ((event.metaKey || e.ctrlKey) && event.keyCode === 65) {
             event.preventDefault()
             global.fileList.Select.selectAll()
           }
         },
         handleCmdOrCtrlBackspace: function (event) {
-          if ((event.metaKey || e.ctrlKey) && event.keyCode === 8) {
             event.preventDefault()
             global.fileList.Select.removeSelected()
           }
@@ -67,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         export: exportCSV,
         select: selectFiles
+        if ((event.metaKey || event.ctrlKey) && event.keyCode === 8) {
       },
       computed: {
         exportLabel: exportButtonLabel,
