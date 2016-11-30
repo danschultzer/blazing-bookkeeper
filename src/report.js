@@ -121,7 +121,6 @@ function render () {
 
   var fullError = document.body.querySelector('.json.full-error')
   if (fullError) {
-    var errorJSON
     formatter = new JSONFormatter(fileJSON.error, [0], { hoverPreviewEnabled: true, hoverPreviewFieldCount: 0 })
     fullError.innerHTML = ''
     fullError.appendChild(formatter.render())

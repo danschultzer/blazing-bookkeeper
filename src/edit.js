@@ -1,4 +1,4 @@
-import { remote, webFrame, ipcRenderer, nativeImage } from 'electron'
+import { remote, webFrame, ipcRenderer } from 'electron'
 import Vue from 'vue'
 import { PDFJS } from 'pdfjs-dist/build/pdf.combined'
 import mime from 'mime'
