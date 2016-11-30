@@ -36,7 +36,7 @@ export class FileList {
     var interval = new Util.Interval(() => {
       var file = this.getFileForIndex(index)
       if (!file || file.done) return interval.clear()
-      var maxAmount = parseInt(file.percentDone * 100),
+      var maxAmount = parseInt(file.percentDone * 100, 10)
       var amount = file.progressBar
       if (amount < maxAmount) {
         ++amount

@@ -181,7 +181,7 @@ describe('fileList.Select', function () {
       sinon.stub(filesContainer.childNodes[1], 'getBoundingClientRect', function () { return fileRow2Rect })
       sinon.stub(Select, 'scrollTop', function (el, position) {
         if (typeof position === 'undefined') {
-          return parseInt(el.getAttribute('scroll-top'))
+          return parseInt(el.getAttribute('scroll-top'), 10)
         }
         return el.setAttribute('scroll-top', position)
       })
