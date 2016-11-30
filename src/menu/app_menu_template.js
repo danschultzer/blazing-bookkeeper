@@ -1,4 +1,4 @@
-import { app } from 'electron';
+import { app } from 'electron'
 
 export default {
   label: app.getName(),
@@ -32,4 +32,4 @@ export default {
       role: 'quit'
     }
   ]
-};
+}

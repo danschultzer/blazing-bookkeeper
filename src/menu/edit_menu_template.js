@@ -1,4 +1,4 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow } from 'electron'
 
 export default {
   label: 'Edit',
@@ -25,4 +25,4 @@ export default {
       role: 'selectall'
     }
   ]
-};
+}

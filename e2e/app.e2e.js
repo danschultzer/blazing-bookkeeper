@@ -1,136 +1,136 @@
-import { assert } from 'chai';
-import sinon from 'sinon';
-import testUtils from './utils';
+import { assert } from 'chai'
+import sinon from 'sinon'
+import testUtils from './utils'
 
-describe('application launch', function() {
-  beforeEach(testUtils.beforeEach);
-  beforeEach(function() {
-    return this.app.client.windowByIndex(0);
-  });
-  afterEach(testUtils.afterEach);
+describe('application launch', function () {
+  beforeEach(testUtils.beforeEach)
+  beforeEach(function () {
+    return this.app.client.windowByIndex(0)
+  })
+  afterEach(testUtils.afterEach)
 
-  it('shows one window', function() {
-    return this.app.browserWindow.isVisible().then(function(visible) {
-      assert.equal(visible, true);
-    }).getWindowCount().then(function(count) {
-      assert.equal(count, 1);
-    });
-  });
+  it('shows one window', function () {
+    return this.app.browserWindow.isVisible().then(function (visible) {
+      assert.equal(visible, true)
+    }).getWindowCount().then(function (count) {
+      assert.equal(count, 1)
+    })
+  })
 
-  it('shows welcome screen', function() {
-    return this.app.client.element('.welcome').isVisible().then(function(visible) {
-      assert.equal(visible, true);
-    });
-  });
+  it('shows welcome screen', function () {
+    return this.app.client.element('.welcome').isVisible().then(function (visible) {
+      assert.equal(visible, true)
+    })
+  })
 
-  describe('when clicking to add file', function() {
-    beforeEach(function() {
-      return this.app.client.click('#plus-button-open').waitForVisible('.table .body .row', 1000);
-    });
+  describe('when clicking to add file', function () {
+    beforeEach(function () {
+      return this.app.client.click('#plus-button-open').waitForVisible('.table .body .row', 1000)
+    })
 
-    it('should show file', function() {
-      var app = this.app;
+    it('should show file', function () {
+      var app = this.app
 
       return this.app.client.element('.table .body .row:nth-child(1)')
-        .isVisible().then(function(visible) {
-          assert.equal(visible, true);
+        .isVisible().then(function (visible) {
+          assert.equal(visible, true)
         })
         .waitUntilTextExists('.table .body .row .cell:nth-child(2)', '2016-06-13')
-        .getText('.table .body .row').then(function(text) {
-          assert.include(text, 'readable.pdf');
-          assert.include(text, '2016-06-13');
-          assert.include(text, '6000.00');
-        });
-    });
+        .getText('.table .body .row').then(function (text) {
+          assert.include(text, 'readable.pdf')
+          assert.include(text, '2016-06-13')
+          assert.include(text, '6000.00')
+        })
+    })
 
-    describe('when copying', function() {
-      it('should copy CSV to clipboard', function() {
+    describe('when copying', function () {
+      it('should copy CSV to clipboard', function () {
         return this.app.client.click('.table .body .row')
-          .execute(function() {
-            document.dispatchEvent(new Event('copy'));
+          .execute(function () {
+            document.dispatchEvent(new Event('copy'))
           })
-          .electron.clipboard.readText().then(function(text) {
-            assert.include(text, 'Name\tAmount\tDate\tPath\n');
-            assert.include(text, 'readable.pdf\t');
-          });
-      });
-    });
+          .electron.clipboard.readText().then(function (text) {
+            assert.include(text, 'Name\tAmount\tDate\tPath\n')
+            assert.include(text, 'readable.pdf\t')
+          })
+      })
+    })
 
-    describe('when double clicking on file row', function() {
-      beforeEach(function() {
+    describe('when double clicking on file row', function () {
+      beforeEach(function () {
         return this.app.client.doubleClick('.table .body .row')
-          .waitUntilWindowLoaded();
-      });
+          .waitUntilWindowLoaded()
+      })
 
-      it('shows new browser window', function() {
-        return this.app.client.getWindowCount().then(function(count) {
-          assert.equal(count, 2);
-        });
-      });
+      it('shows new browser window', function () {
+        return this.app.client.getWindowCount().then(function (count) {
+          assert.equal(count, 2)
+        })
+      })
 
-      describe('when entering information, and clicking save', function() {
-        beforeEach(function() {
+      describe('when entering information, and clicking save', function () {
+        beforeEach(function () {
           return this.app.client.windowByIndex(1).setValue('#date', '2016-01-01')
             .setValue('#amount', '125.00')
-            .click('button=Update');
-        });
+            .click('button=Update')
+        })
 
-        it('closes window', function() {
-          var app = this.app;
+        it('closes window', function () {
+          var app = this.app
 
-          return app.client.waitUntil(function() {
-            return app.client.getWindowCount().then(function(count) {
-              return count === 1;
-            });
-          }, 1000, 'expected window to close');
-        });
+          return app.client.waitUntil(function () {
+            return app.client.getWindowCount().then(function (count) {
+              return count === 1
+            })
+          }, 1000, 'expected window to close')
+        })
 
-        it('updates values', function() {
+        it('updates values', function () {
           return this.app.client.windowByIndex(0)
-            .getText('.table .body .row').then(function(text) {
-              assert.include(text, 'readable.pdf');
-              assert.include(text, '2016-01-01');
-              assert.include(text, '125.00');
-            });
-        });
-      });
+            .getText('.table .body .row').then(function (text) {
+              assert.include(text, 'readable.pdf')
+              assert.include(text, '2016-01-01')
+              assert.include(text, '125.00')
+            })
+        })
+      })
 
-      describe('when reporting an error', function() {
-        beforeEach(function() {
+      describe('when reporting an error', function () {
+        beforeEach(function () {
           return this.app.client.windowByIndex(1).click('=Wrong results? Report it so Blazing Bookkeeper can be improved!')
-            .waitUntilWindowLoaded().windowByIndex(2);
-        });
+            .waitUntilWindowLoaded().windowByIndex(2)
+        })
 
-        it('shows new browser window with attached file, email and comments', function() {
-          return this.app.client.getWindowCount().then(function(count) {
-            assert.equal(count, 3);
-          }).isExisting('input[name="email"]').then(function(exists) {
-            assert.equal(exists, true);
-          }).isExisting('textarea[name="comments"]').then(function(exists) {
-            assert.equal(exists, true);
-          }).getText("html").then(function(text) {
-            assert.include(text, __dirname.replace('/app', '/e2e') + '/support/readable.pdf');
-          });
-        });
+        it('shows new browser window with attached file, email and comments', function () {
+          return this.app.client.getWindowCount().then(function (count) {
+            assert.equal(count, 3)
+          }).isExisting('input[name="email"]').then(function (exists) {
+            assert.equal(exists, true)
+          }).isExisting('textarea[name="comments"]').then(function (exists) {
+            assert.equal(exists, true)
+          }).getText('html').then(function (text) {
+            assert.include(text, __dirname.replace('/app', '/e2e') + '/support/readable.pdf')
+          })
+        })
 
-        describe('when clicking to anonymize data', function() {
-          beforeEach(function() {
-            return this.app.client.click('[name="anonymized"]');
-          });
+        describe('when clicking to anonymize data', function () {
+          beforeEach(function () {
+            return this.app.client.click('[name="anonymized"]')
+          })
 
-          it('hides email, attached file and paths', function() {
-            return this.app.client.getWindowCount().then(function(count) {
-              assert.equal(count, 3);
-            }).isExisting('input[name="email"]').then(function(exists) {
-              assert.equal(exists, false);
-            }).isExisting('textarea[name="comments"]').then(function(exists) {
-              assert.equal(exists, true);
-            }).getText("html").then(function(text) {
-              assert.notInclude(text, __dirname.replace('/app', '/e2e') + '/support/readable.pdf');
-            });
-          });
-        });
-      });
-    });
-  });
-});
+          it('hides email, attached file and paths', function () {
+            return this.app.client.getWindowCount().then(function (count) {
+              assert.equal(count, 3)
+            }).isExisting('input[name="email"]').then(function (exists) {
+              assert.equal(exists, false)
+            }).isExisting('textarea[name="comments"]').then(function (exists) {
+              assert.equal(exists, true)
+            }).getText('html').then(function (text) {
+              assert.notInclude(text, __dirname.replace('/app', '/e2e') + '/support/readable.pdf')
+            })
+          })
+        })
+      })
+    })
+  })
+})
