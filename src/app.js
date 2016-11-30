@@ -26,63 +26,63 @@ console.log('The author of this app is:', appDir.read('package.json', 'json').au
 document.addEventListener('DOMContentLoaded', function () {
   global.fileList = new FileList('files')
 
-      el: '#main',
-      data: {
-        selectedFiles: global.fileList.selectedFiles,
-        files: global.fileList.files
   var summaryComponent = Vue.extend({})
   var fileListComponent = Vue.extend({})
   var toolbarComponent = Vue.extend({})
   new Vue({ // eslint-disable-line no-new
+    el: '#main',
+    data: {
+      selectedFiles: global.fileList.selectedFiles,
+      files: global.fileList.files
+    },
+    methods: {
+      open: openFiles,
+      selectAll: function () { global.fileList.Select.selectAll() },
+      deselectAll: function () { global.fileList.Select.deselectAll() },
+      selectUp: function (event) { global.fileList.Select.moveDirection('up', !event.shiftKey) },
+      selectDown: function (event) { global.fileList.Select.moveDirection('down', !event.shiftKey) },
+      handleCmdOrCtrlA: function (event) {
         if ((event.metaKey || event.ctrlKey) && event.keyCode === 65) {
-      },
-      methods: {
-        open: openFiles,
-        selectAll: function () { global.fileList.Select.selectAll() },
-        deselectAll: function () { global.fileList.Select.deselectAll() },
-        selectUp: function (event) { global.fileList.Select.moveDirection('up', !event.shiftKey) },
-        selectDown: function (event) { global.fileList.Select.moveDirection('down', !event.shiftKey) },
-        handleCmdOrCtrlA: function (event) {
-            event.preventDefault()
-            global.fileList.Select.selectAll()
-          }
-        },
-        handleCmdOrCtrlBackspace: function (event) {
-            event.preventDefault()
-            global.fileList.Select.removeSelected()
-          }
-        },
-        edit: function (event) {
-          global.fileList.Select.select([event.currentTarget], true)
-          var index = global.fileList.getIndexForElement(event.currentTarget),
-            file = global.fileList.getFileForElement(event.currentTarget)
-          if (!file.done) return
-
-          if (file.result.error) {
-            file.result.error.json = JSON.parse(JSON.stringify(file.result.error, Object.getOwnPropertyNames(file.result.error)))
-          }
-
-          ipcRenderer.send('display-edit', [index, file])
-        },
-        export: exportCSV,
-        select: selectFiles
-        if ((event.metaKey || event.ctrlKey) && event.keyCode === 8) {
-      },
-      computed: {
-        exportLabel: exportButtonLabel,
-        result: global.fileList.results,
-        successRateLabel: function () {
-          var total = this.result.done.successful / (this.result.done.total || 1) * 100,
-            color = total < 85 ? 'red' : total < 95 ? 'yellow' : 'green'
-          return '<span class="color-' + color + '">' + total.toFixed(1) + '%</span>'
+          event.preventDefault()
+          global.fileList.Select.selectAll()
         }
       },
-      components: {
-        'file-list-component': fileListComponent,
-        'summary-component': summaryComponent,
-        'toolbar-component': toolbarComponent
+      handleCmdOrCtrlBackspace: function (event) {
+        if ((event.metaKey || event.ctrlKey) && event.keyCode === 8) {
+          event.preventDefault()
+          global.fileList.Select.removeSelected()
+        }
+      },
+      edit: function (event) {
+        global.fileList.Select.select([event.currentTarget], true)
+        var index = global.fileList.getIndexForElement(event.currentTarget)
+        var file = global.fileList.getFileForElement(event.currentTarget)
+        if (!file.done) return
+
+        if (file.result.error) {
+          file.result.error.json = JSON.parse(JSON.stringify(file.result.error, Object.getOwnPropertyNames(file.result.error)))
+        }
+
+        ipcRenderer.send('display-edit', [index, file])
+      },
+      export: exportCSV,
+      select: selectFiles
+    },
+    computed: {
+      exportLabel: exportButtonLabel,
+      result: global.fileList.results,
+      successRateLabel: function () {
+        var total = this.result.done.successful / (this.result.done.total || 1) * 100
+        var color = total < 85 ? 'red' : total < 95 ? 'yellow' : 'green'
+        return '<span class="color-' + color + '">' + total.toFixed(1) + '%</span>'
       }
-    })
+    },
+    components: {
+      'file-list-component': fileListComponent,
+      'summary-component': summaryComponent,
+      'toolbar-component': toolbarComponent
+    }
+  })
   handleDragnDrop()
 
   ipcRenderer.on('edit-updated', function (event, arg) {

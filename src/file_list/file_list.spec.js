@@ -48,17 +48,17 @@ describe('fileList', function () {
   })
 
   describe('#createSmoothPercentProgressionInterval()', function () {
-        setTimeout(function () {
-          try {
-            callback()
-            done()
-          } catch (e) {
-            done(e)
-          }
-        }, timeout || 15)
-      }
     var interval
     var checkAfter = function (done, callback, timeout) {
+      setTimeout(function () {
+        try {
+          callback()
+          done()
+        } catch (e) {
+          done(e)
+        }
+      }, timeout || 15)
+    }
 
     beforeEach(function () {
       fileList.addFile('readable.jpg', '/path/to/readable.jpg', 1345000)
