@@ -47,7 +47,7 @@ describe('application launch', function () {
       it('should copy CSV to clipboard', function () {
         return this.app.client.click('.table .body .row')
           .execute(function () {
-            document.dispatchEvent(new Event('copy'))
+            document.dispatchEvent(new window.Event('copy'))
           })
           .electron.clipboard.readText().then(function (text) {
             assert.include(text, 'Name\tAmount\tDate\tPath\n')
