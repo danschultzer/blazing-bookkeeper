@@ -139,7 +139,8 @@ export default class Select {
     if (typeof position === 'undefined') {
       return el.scrollTop
     }
-    return el.scrollTop = position
+    el.scrollTop = position
+    return el.scrollTop
   }
 
   scrollToSelection (direction) {
