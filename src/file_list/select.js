@@ -28,8 +28,9 @@ export default class Select {
 
   deselect (items) {
     for (var i = 0, length = items.length; i < length; ++i) {
-      if (items[i].classList.contains('selected'))
-        { items[i].classList.remove('selected') }
+      if (items[i].classList.contains('selected')) {
+        items[i].classList.remove('selected')
+      }
     }
     this.updateFileListSelect()
   }
@@ -41,8 +42,9 @@ export default class Select {
   select (items, removeSelected) {
     if (removeSelected) this.deselectAll()
     for (var i = 0, length = items.length; i < length; ++i) {
-      if (!items[i].classList.contains('selected'))
-        { items[i].classList.add('selected') }
+      if (!items[i].classList.contains('selected')) {
+        items[i].classList.add('selected')
+      }
     }
     this.updateFileListSelect()
   }
@@ -62,9 +64,6 @@ export default class Select {
   }
 
   selectUntil (item) {
-    if (!selected.length) {
-      return false
-    }
     var selected = this.selected()
     var items = this.items()
     var itemPos = this.indexOf(item)
@@ -72,6 +71,7 @@ export default class Select {
     var firstSelectedItem = selected[0]
     var lastSelectedItem = selected[selected.length - 1]
 
+    if (!selected.length) return false
 
     if (itemPos < this.indexOf(lastSelectedItem)) {
       itemsToSelect = [].slice.call(items).filter((element, index, array) => {
@@ -157,7 +157,8 @@ export default class Select {
     scrollTop = scrollTop - this.el().getBoundingClientRect().top + curScrollTop
     if (
       (direction === 'up' && scrollTop < curScrollTop) ||
-      (direction !== 'up' && scrollTop > (curScrollTop - elHeight)))
-      { this.scrollTop(this.el(), scrollTop) }
+      (direction !== 'up' && scrollTop > (curScrollTop - elHeight))) {
+      this.scrollTop(this.el(), scrollTop)
+    }
   }
 }
