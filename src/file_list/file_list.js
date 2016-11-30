@@ -6,12 +6,12 @@ import Util from './util'
 
 export class FileList {
   constructor (elId) {
-    this.elId = elId,
-    this.files = [],
-    this.fileIndex = -1,
-    this.selectedFiles = [],
-    this.Select = new Select(this),
-    this.Util = new Util(this),
+    this.elId = elId
+    this.files = []
+    this.fileIndex = -1
+    this.selectedFiles = []
+    this.Select = new Select(this)
+    this.Util = new Util(this)
     this.maxConcurrent = 2
   }
 
