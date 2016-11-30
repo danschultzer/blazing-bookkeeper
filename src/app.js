@@ -26,7 +26,6 @@ console.log('The author of this app is:', appDir.read('package.json', 'json').au
 document.addEventListener('DOMContentLoaded', function () {
   global.fileList = new FileList('files')
 
-    mainView = new Vue({
       el: '#main',
       data: {
         selectedFiles: global.fileList.selectedFiles,
@@ -34,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var summaryComponent = Vue.extend({})
   var fileListComponent = Vue.extend({})
   var toolbarComponent = Vue.extend({})
+  new Vue({ // eslint-disable-line no-new
       },
       methods: {
         open: openFiles,
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
   handleDragnDrop()
 
   ipcRenderer.on('edit-updated', function (event, arg) {
-    var fileIndex = global.fileList.getFileIndexForIndex(arg.index),
+    global.fileList.getFileIndexForIndex(arg.index)
     var result = global.fileList.getFileForIndex(arg.index).result
     result.updated = arg.updated
     global.fileList.updateFile(arg.index, { result: result })
