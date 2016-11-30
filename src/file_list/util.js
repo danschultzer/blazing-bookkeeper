@@ -69,9 +69,9 @@ export default class Util {
     if (Math.abs(bytes) < thresh) {
       return bytes + ' B'
     }
-    var units = si ?
-        ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] :
-        ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+    var units = si
+        ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
     var u = -1
     do {
       bytes /= thresh
