@@ -189,5 +189,5 @@ function handleDragnDrop () {
 }
 
 function copySelectedToClipboard () {
-  clipboard.writeText(fileList.Select.selectedToCSV(), 'text/csv')
+  clipboard.writeText(global.fileList.Select.selectedToCSV(), 'text/csv')
 }
