@@ -1,5 +1,5 @@
 var istanbul = require('istanbul')
-
+var mocha = require('mocha')
 /**
  * Expose `Istanbul`.
  */

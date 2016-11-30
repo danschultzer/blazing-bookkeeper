@@ -98,22 +98,22 @@ export class FileList {
       tmp.tmpNameSync({ postfix: name.substr(name.lastIndexOf('.')) })
       var stream = jetpack.createReadStream(path)
       var finishedCallback = (error, result) => {
-          this.updateFile(index, {
-            processing: false,
-            done: true,
-            timeEnded: new Date(),
-            result: {
-              error: error,
-              parsed: result
-            }
-          })
-          this.processQueue()
-        },
-        tickerCallback = (percent, time) => {
-          this.updateFile(index, {
-            percentDone: percent
-          })
-        }
+        this.updateFile(index, {
+          processing: false,
+          done: true,
+          timeEnded: new Date(),
+          result: {
+            error: error,
+            parsed: result
+          }
+        })
+        this.processQueue()
+      }
+      var tickerCallback = (percent, time) => {
+        this.updateFile(index, {
+          percentDone: percent
+        })
+      }
 
         // Async call
       setTimeout(() => {
