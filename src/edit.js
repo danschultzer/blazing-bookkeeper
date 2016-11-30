@@ -71,8 +71,8 @@ function updatePreviewCanvas () {
       }
       break
     case /^image\/.*/.test(mimetype):
-        var img = new Image()
       if (!loadedImg) {
+        var img = new window.Image()
         img.onload = function () {
           loadedImg = img
           renderImage(loadedImg, canvas, context, maxWidth, maxHeight)
