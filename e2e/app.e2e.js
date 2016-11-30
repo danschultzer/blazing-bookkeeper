@@ -1,6 +1,5 @@
 /* eslint-env mocha */
 import { assert } from 'chai'
-import sinon from 'sinon'
 import testUtils from './utils'
 
 describe('application launch', function () {
@@ -30,7 +29,7 @@ describe('application launch', function () {
     })
 
     it('should show file', function () {
-      var app = this.app
+      this.app
 
       return this.app.client.element('.table .body .row:nth-child(1)')
         .isVisible().then(function (visible) {
