@@ -1,4 +1,5 @@
+const path = require('path')
 const electron = require('electron')
 electron.dialog.showOpenDialog = (opts, cb) => {
-  cb([__dirname + '/support/readable.pdf'])
+  cb([path.join(__dirname, '/support/readable.pdf')])
 }

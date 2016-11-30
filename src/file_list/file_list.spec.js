@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 import { assert } from 'chai'
+import path from 'path'
 import sinon from 'sinon'
 import jetpack from 'fs-jetpack'
 import scanner from 'receipt-scanner'
@@ -31,18 +32,18 @@ describe('fileList', function () {
     })
 
     it('should handle directories', function () {
-      fileList.addFiles([__dirname + '/../resources/icons'])
+      fileList.addFiles([path.join(__dirname, '/../resources/icons')])
       assert.equal(fileList.addFile.calledOnce, true)
-      assert.equal(fileList.addFile.calledWith('512x512.png', __dirname + '/../resources/icons/512x512.png', 74799, 'image/png'), true)
+      assert.equal(fileList.addFile.calledWith('512x512.png', path.join(__dirname, '/../resources/icons/512x512.png'), 74799, 'image/png'), true)
     })
 
     it('should filter invalid files', function () {
-      fileList.addFiles([__dirname + '/../resources'])
+      fileList.addFiles([path.join(__dirname, '/../resources')])
       assert.equal(fileList.addFile.callCount, 4)
     })
 
     it('should filter non existing files', function () {
-      fileList.addFiles(['/dir/dont/exist', '/file/dont/exist.jpg'])
+      fileList.addFiles([path.join('/dir/dont/exist', '/file/dont/exist.jpg')])
       assert.equal(fileList.addFile.called, false)
     })
   })

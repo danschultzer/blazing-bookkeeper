@@ -7,6 +7,7 @@ import { app, Menu, ipcMain, shell } from 'electron'
 import { appMenuTemplate, editMenuTemplate, windowMenuTemplate, devMenuTemplate, helpMenuTemplate } from './menu/templates'
 import createWindow from './helpers/window'
 import thirdpartyEnv from './utils/thirdparty_env'
+const path = require('path')
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
@@ -57,7 +58,7 @@ function openWindow (windowName, file, opts) {
 
   blur(win, 'report-' + windowName)
 
-  win.loadURL('file://' + __dirname + file)
+  win.loadURL(path.join('file://', __dirname, file))
 
   if (env.name === 'development') {
     win.openDevTools()
