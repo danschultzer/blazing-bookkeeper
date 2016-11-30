@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import electron from 'electron'
 import { Application } from 'spectron'
 
