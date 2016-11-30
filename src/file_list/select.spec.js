@@ -17,7 +17,6 @@ describe('fileList.Select', function () {
   })
 
   describe('#select()', function () {
-    var files
     beforeEach(function () {
       filesContainer.innerHTML = '<div class="row"></div><div class="row"></div>'
       Select.select([filesContainer.firstChild])
@@ -49,7 +48,6 @@ describe('fileList.Select', function () {
   })
 
   describe('#selectAll()', function () {
-    var files
     beforeEach(function () {
       filesContainer.innerHTML = '<div class="row"></div><div class="row"></div>'
       Select.selectAll()
@@ -61,7 +59,6 @@ describe('fileList.Select', function () {
   })
 
   describe('#toggleSelect()', function () {
-    var files
     beforeEach(function () {
       filesContainer.innerHTML = '<div class="row"></div><div class="row"></div>'
     })
@@ -76,7 +73,6 @@ describe('fileList.Select', function () {
   })
 
   describe('#selectUntil()', function () {
-    var files
     beforeEach(function () {
       filesContainer.innerHTML = '<div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>'
     })
@@ -99,7 +95,6 @@ describe('fileList.Select', function () {
   })
 
   describe('#moveDirection()', function () {
-    var files
     beforeEach(function () {
       filesContainer.innerHTML = '<div class="row"></div><div class="row"></div><div class="row"></div>'
     })
@@ -175,7 +170,6 @@ describe('fileList.Select', function () {
   })
 
   describe('#scrollToSelection()', function () {
-      scrollTopSpy
     var fileContainerRect
     var fileRow1Rect
     var fileRow2Rect

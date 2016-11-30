@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
   global.file.anonymized = document.body.querySelector('[name="anonymized"]').checked
   global.file.uploading = false
 
-  var mainView = new Vue({
+  new Vue({ // eslint-disable-line no-new
     el: '#main',
     data: {
       file: global.file

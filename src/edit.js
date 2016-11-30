@@ -13,7 +13,7 @@ webFrame.setZoomLevelLimits(1, 1) // Don't allow any pinch zoom
 document.addEventListener('DOMContentLoaded', function () {
   global.file = remote.getGlobal('editObject')
   global.page = 1
-  var mainView = new Vue({
+  new Vue({ // eslint-disable-line no-new
     el: '#main',
     data: {
       file: global.file

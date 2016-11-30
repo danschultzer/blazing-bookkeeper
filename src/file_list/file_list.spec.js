@@ -162,8 +162,6 @@ describe('fileList', function () {
     })
 
     describe('during parsing', function () {
-      var tickerCallback
-
       beforeEach(function (done) {
         sinon.stub(scanner.prototype, 'ticker', function (callback) {
           callback(0.5, 1000)

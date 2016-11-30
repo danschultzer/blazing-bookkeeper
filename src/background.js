@@ -3,7 +3,7 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
-import { app, Menu, ipcMain, shell, BrowserWindow } from 'electron'
+import { app, Menu, ipcMain, shell } from 'electron'
 import { appMenuTemplate, editMenuTemplate, windowMenuTemplate, devMenuTemplate, helpMenuTemplate } from './menu/templates'
 import createWindow from './helpers/window'
 import thirdparty_env from './utils/thirdparty_env'
