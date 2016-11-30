@@ -78,7 +78,7 @@ function send () {
           console.log('Error: ' + httpResponse.statusMessage)
           console.log(body)
         }
-        return alert('Could not send report. Please check your internet connection, or try again later.')
+        return window.alert('Could not send report. Please check your internet connection, or try again later.')
       }
       console.log('Upload successful!')
       close()
