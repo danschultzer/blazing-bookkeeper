@@ -86,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
   handleDragnDrop()
 
   ipcRenderer.on('edit-updated', function (event, arg) {
-    global.fileList.getFileIndexForIndex(arg.index)
     var result = global.fileList.getFileForIndex(arg.index).result
     result.updated = arg.updated
     global.fileList.updateFile(arg.index, { result: result })

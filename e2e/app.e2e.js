@@ -29,8 +29,6 @@ describe('application launch', function () {
     })
 
     it('should show file', function () {
-      this.app
-
       return this.app.client.element('.table .body .row:nth-child(1)')
         .isVisible().then(function (visible) {
           assert.equal(visible, true)
