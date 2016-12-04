@@ -3,11 +3,12 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
+import path from 'path'
+import url from 'url'
 import { app, Menu, ipcMain, shell } from 'electron'
 import { appMenuTemplate, editMenuTemplate, windowMenuTemplate, devMenuTemplate, helpMenuTemplate } from './menu/templates'
 import createWindow from './helpers/window'
 import thirdpartyEnv from './utils/thirdparty_env'
-const path = require('path')
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
@@ -58,7 +59,11 @@ function openWindow (windowName, file, opts) {
 
   blur(win, 'report-' + windowName)
 
-  win.loadURL(path.join('file://', __dirname, file))
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, file),
+    protocol: 'file:',
+    slashes: true
+  }))
 
   if (env.name === 'development') {
     win.openDevTools()
@@ -77,7 +82,7 @@ app.on('ready', function () {
   require('./helpers/crash_reporter.js')(env)
   setApplicationMenu()
 
-  mainWindow = openWindow('main', '/app.html', { width: 640, height: 480 })
+  mainWindow = openWindow('main', 'app.html', { width: 640, height: 480 })
 
   mainWindow.on('focus', function () {
     mainWindow.webContents.send('main-focus')
@@ -102,7 +107,7 @@ app.on('ready', function () {
 
     setApplicationMenu()
 
-    editWindow = openWindow('edit', '/edit.html', { parentWindow: mainWindow })
+    editWindow = openWindow('edit', 'edit.html', { parentWindow: mainWindow })
 
     editWindow.on('focus', function () {
       editWindow.webContents.send('edit-focus')
@@ -149,7 +154,7 @@ app.on('ready', function () {
 
     setApplicationMenu()
 
-    reportWindow = openWindow('report', '/report.html', { parentWindow: editWindow })
+    reportWindow = openWindow('report', 'report.html', { parentWindow: editWindow })
 
     reportWindow.on('focus', function () {
       reportWindow.webContents.send('report-focus')
