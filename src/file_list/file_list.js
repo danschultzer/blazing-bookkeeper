@@ -162,7 +162,7 @@ export class FileList {
       ]
       values = values.map(function (value) {
         if (value && value.length && (value.indexOf('"') > -1 || value.indexOf('\t') > -1)) {
-          return '"' + value.replace('"', '\\"') + '"'
+          return '"' + value.replace('"', '\\"', '\t') + '"'
         }
 
         return value
