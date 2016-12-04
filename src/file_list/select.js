@@ -12,10 +12,8 @@ export default class Select {
   }
 
   indexOf (item) {
-    var children = this.items()
-    var i = 0
-    for (; i < children.length; i++) {
-      if (children[i] === item) {
+    for (var i = 0; i < this.items().length; i++) {
+      if (this.items()[i] === item) {
         return i
       }
     }
