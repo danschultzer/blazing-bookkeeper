@@ -1,4 +1,3 @@
-import tmp from 'tmp'
 import jetpack from 'fs-jetpack'
 import scanner from 'receipt-scanner'
 import Select from './select'
@@ -88,14 +87,12 @@ export class FileList {
     if (this.processingCount() < this.maxConcurrent && this.queuedCount() > 0) {
       var file = this.queued()[0]
       var index = file.index
-      var name = file.file.name
       var path = file.file.path
 
       this.updateFile(index, {
         processing: true
       })
 
-      tmp.tmpNameSync({ postfix: name.substr(name.lastIndexOf('.')) })
       var stream = jetpack.createReadStream(path)
       var finishedCallback = (error, result) => {
         this.updateFile(index, {
