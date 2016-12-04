@@ -15,7 +15,6 @@
     "pdfjs-dist": "^1.6.263",
     "receipt-scanner": "^0.4.0",
     "request": "2.75.0",
-    "tmp": "^0.0.29",
     "vue": "^1.0.28"
   }
 }
