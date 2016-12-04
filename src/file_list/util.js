@@ -1,5 +1,6 @@
-import jetpack from 'fs-jetpack' // module loaded from npm
+import jetpack from 'fs-jetpack'
 import mime from 'mime'
+import path from 'path'
 
 export default class Util {
   constructor (fileList) {
@@ -11,10 +12,10 @@ export default class Util {
     var files = jetpack.list(dir)
     filelist = filelist || []
     files.forEach((file) => {
-      if (this.isDir(dir + '/' + file)) {
-        filelist = this.walkSync(dir + '/' + file, filelist)
+      if (this.isDir(path.join(dir, file))) {
+        filelist = this.walkSync(path.join(dir, file), filelist)
       } else {
-        filelist.push(dir + '/' + file)
+        filelist.push(path.join(dir, file))
       }
     })
     return filelist
