@@ -1,53 +1,52 @@
-import tmp from 'tmp';
-import jetpack from 'fs-jetpack';
-import scanner from 'receipt-scanner';
-import Select from './select';
-import Util from './util';
+import jetpack from 'fs-jetpack'
+import scanner from 'receipt-scanner'
+import Select from './select'
+import Util from './util'
 
 export class FileList {
-  constructor(elId) {
-    this.elId = elId,
-    this.files = [],
-    this.fileIndex = -1,
-    this.selectedFiles = [],
-    this.Select = new Select(this),
-    this.Util = new Util(this),
-    this.maxConcurrent = 2;
+  constructor (elId) {
+    this.elId = elId
+    this.files = []
+    this.fileIndex = -1
+    this.selectedFiles = []
+    this.Select = new Select(this)
+    this.Util = new Util(this)
+    this.maxConcurrent = 2
   }
 
-  el() {
-    return document.getElementById(this.elId);
+  el () {
+    return document.getElementById(this.elId)
   }
 
-  addFiles(files) {
-    for(var i = 0; i < files.length; ++i) {
-      var extractedFiles = this.Util.extractFiles(files[i]);
-      for(var j = 0; j < extractedFiles.length; ++j) {
-        this.addFile(extractedFiles[j].name, extractedFiles[j].path, extractedFiles[j].size, extractedFiles[j].type);
+  addFiles (files) {
+    for (var i = 0; i < files.length; ++i) {
+      var extractedFiles = this.Util.extractFiles(files[i])
+      for (var j = 0; j < extractedFiles.length; ++j) {
+        this.addFile(extractedFiles[j].name, extractedFiles[j].path, extractedFiles[j].size, extractedFiles[j].type)
       }
     }
   }
 
-  getFileIndexForIndex(index) {
-    return this.files.findIndex(function(f) { return f.index === index; });
+  getFileIndexForIndex (index) {
+    return this.files.findIndex(function (f) { return f.index === index })
   }
 
-  createSmoothPercentProgressionInterval(index) {
+  createSmoothPercentProgressionInterval (index) {
     var interval = new Util.Interval(() => {
-      var file = this.getFileForIndex(index);
-      if (!file || file.done) return interval.clear();
-      var maxAmount = parseInt(file.percentDone * 100),
-        amount = file.progressBar;
+      var file = this.getFileForIndex(index)
+      if (!file || file.done) return interval.clear()
+      var maxAmount = parseInt(file.percentDone * 100, 10)
+      var amount = file.progressBar
       if (amount < maxAmount) {
-        ++amount;
-        this.updateFile(index, { progressBar: amount });
+        ++amount
+        this.updateFile(index, { progressBar: amount })
       }
-    }, 15);
+    }, 15)
 
-    return interval;
+    return interval
   }
 
-  addFile(name, path, filesize) {
+  addFile (name, path, filesize) {
     this.files.push({
       index: this.fileIndex++,
       file: {
@@ -63,133 +62,130 @@ export class FileList {
       timeElapsed: 0,
       processing: false,
       done: false
-    });
+    })
 
-    this.processQueue();
+    this.processQueue()
   }
 
-  queued() {
-    return this.files.filter(function(f) {
-      return f.done === false && f.processing === false;
-    });
+  queued () {
+    return this.files.filter(function (f) {
+      return f.done === false && f.processing === false
+    })
   }
 
-  queuedCount() {
-    return this.queued().length;
+  queuedCount () {
+    return this.queued().length
   }
 
-  processingCount() {
-    return this.files.filter(function(f) {
-      return f.done === false && f.processing === true;
-    }).length;
+  processingCount () {
+    return this.files.filter(function (f) {
+      return f.done === false && f.processing === true
+    }).length
   }
 
-  processQueue() {
+  processQueue () {
     if (this.processingCount() < this.maxConcurrent && this.queuedCount() > 0) {
-      var file = this.queued()[0],
-        index = file.index,
-        name = file.file.name,
-        path = file.file.path;
+      var file = this.queued()[0]
+      var index = file.index
+      var path = file.file.path
 
+      this.updateFile(index, {
+        processing: true
+      })
+
+      var stream = jetpack.createReadStream(path)
+      var finishedCallback = (error, result) => {
         this.updateFile(index, {
-          processing: true
-        });
-
-        var tmpFile = tmp.tmpNameSync({ postfix: name.substr(name.lastIndexOf('.')) }),
-          stream = jetpack.createReadStream(path),
-          finishedCallback = (error, result) => {
-            this.updateFile(index, {
-              processing: false,
-              done: true,
-              timeEnded: new Date(),
-              result: {
-                error: error,
-                parsed: result
-              }
-            });
-            this.processQueue();
-          },
-          tickerCallback = (percent, time) => {
-            this.updateFile(index, {
-              percentDone: percent
-            });
-          };
+          processing: false,
+          done: true,
+          timeEnded: new Date(),
+          result: {
+            error: error,
+            parsed: result
+          }
+        })
+        this.processQueue()
+      }
+      var tickerCallback = (percent, time) => {
+        this.updateFile(index, {
+          percentDone: percent
+        })
+      }
 
         // Async call
-        setTimeout(() => {
-          scanner(stream)
+      setTimeout(() => {
+        scanner(stream)
             .ticker(tickerCallback)
-            .parse(finishedCallback);
-        }, 0);
+            .parse(finishedCallback)
+      }, 0)
 
-        this.createSmoothPercentProgressionInterval(index);
-        this.processQueue();
+      this.createSmoothPercentProgressionInterval(index)
+      this.processQueue()
     }
   }
 
-  updateFile(index, object) {
-    index = this.getFileIndexForIndex(index);
-    var updatedFileObj = this.files[index];
+  updateFile (index, object) {
+    index = this.getFileIndexForIndex(index)
+    var updatedFileObj = this.files[index]
 
     if (updatedFileObj) {
-      this.files[index] = Object.assign({}, this.files[index], object);
+      this.files[index] = Object.assign({}, this.files[index], object)
 
       // For ticker
-      this.files[index] = Object.assign({}, this.files[index], { timeElapsed: (((updatedFileObj.timeEnded || new Date()) - updatedFileObj.timeStarted) / 1000).toFixed(1) });
+      this.files[index] = Object.assign({}, this.files[index], { timeElapsed: (((updatedFileObj.timeEnded || new Date()) - updatedFileObj.timeStarted) / 1000).toFixed(1) })
 
-      this.files.$set(index, this.files[index]);
+      this.files.$set(index, this.files[index])
     }
   }
 
-  results() {
+  results () {
     return {
       done: {
-        total: this.files.filter(function(element) { return element.done; }).length,
-        successful: this.files.filter(function(element) { return element.done && element.result.parsed && element.result.parsed.amount && element.result.parsed.date; }).length,
-        failures: this.files.filter(function(element) { return element.done && element.result.error; }).length
+        total: this.files.filter(function (element) { return element.done }).length,
+        successful: this.files.filter(function (element) { return element.done && element.result.parsed && element.result.parsed.amount && element.result.parsed.date }).length,
+        failures: this.files.filter(function (element) { return element.done && element.result.error }).length
       },
       processing: {
-        total: this.files.filter(function(element) { return !element.done; }).length
+        total: this.files.filter(function (element) { return !element.done }).length
       }
-    };
+    }
   }
-
-  toCSV(files) {
-    var text = 'Name\tAmount\tDate\tPath\n';
+  toCSV (files) {
+    var text = 'Name\tAmount\tDate\tPath\n'
     for (var i = 0, length = files.length; i < length; ++i) {
       var values = [
         files[i].file.name,
         files[i].result && files[i].result.parsed ? (files[i].result.updated || {}).amount || files[i].result.parsed.amount : '',
         files[i].result && files[i].result.parsed ? (files[i].result.updated || {}).date || files[i].result.parsed.date : '',
         files[i].file.path
-      ];
-      values = values.map(function(value) {
-        if (value && value.length && (value.indexOf('"') > -1 || value.indexOf('\t') > -1))
-          return '"' + value.replace('"', '\\"') + '"';
+      ]
+      values = values.map(function (value) {
+        if (value && value.length && (value.indexOf('"') > -1 || value.indexOf('\t') > -1)) {
+          return '"' + value.replace('"', '\\"') + '"'
+        }
+        return value
+      })
 
-        return value;
-      });
-
-      text += values.join('\t') + '\n';
+      text += values.join('\t') + '\n'
     }
-    return text;
+    return text
   }
 
-  getIndexForElement(el) {
-    return parseInt(el.getAttribute('data-index'));
+  getIndexForElement (el) {
+    return parseInt(el.getAttribute('data-index'), 10)
   }
 
-  getFileForElement(el) {
-    return this.getFileForIndex(this.getIndexForElement(el));
+  getFileForElement (el) {
+    return this.getFileForIndex(this.getIndexForElement(el))
   }
 
-  getFileForIndex(index) {
-    return this.files[this.getFileIndexForIndex(index)];
+  getFileForIndex (index) {
+    return this.files[this.getFileIndexForIndex(index)]
   }
 
-  removeFiles(files) {
-    for(var i = 0, length = files.length;i < length;++i) {
-      this.files.splice(this.files.indexOf(files[i]), 1);
+  removeFiles (files) {
+    for (var i = 0, length = files.length; i < length; ++i) {
+      this.files.splice(this.files.indexOf(files[i]), 1)
     }
   }
 }

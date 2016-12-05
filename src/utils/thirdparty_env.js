@@ -1,7 +1,7 @@
 import getResourcesPath from './resources'
 
-var thirdpartyPath = getResourcesPath('thirdparty'),
-  env = {};
+var thirdpartyPath = getResourcesPath('thirdparty')
+var env = {}
 
 if (process.platform === 'darwin') {
   // Set 3rd party binaries and libraries
@@ -9,7 +9,7 @@ if (process.platform === 'darwin') {
     '$PATH',
     thirdpartyPath + '/poppler/bin',
     thirdpartyPath + '/tesseract/bin'
-  ].join(':');
+  ].join(':')
 
   env.DYLD_LIBRARY_PATH = [
     '$DYLD_LIBRARY_PATH',
@@ -18,9 +18,9 @@ if (process.platform === 'darwin') {
     thirdpartyPath + '/poppler/lib',
     thirdpartyPath + '/opencv/lib',
     thirdpartyPath + '/tesseract/lib'
-  ].join(':');
+  ].join(':')
 
-  env.TESSDATA_PREFIX = thirdpartyPath + '/tesseract/share/tessdata';
+  env.TESSDATA_PREFIX = thirdpartyPath + '/tesseract/share/tessdata'
 }
 
-export default env;
+export default env

@@ -1,9 +1,9 @@
-var istanbul = require('istanbul');
-
+var istanbul = require('istanbul')
+var mocha = require('mocha')
 /**
  * Expose `Istanbul`.
  */
-exports = module.exports = Istanbul;
+exports = module.exports = Istanbul
 
 /**
  * Initialize a new Istanbul reporter.
@@ -12,28 +12,26 @@ exports = module.exports = Istanbul;
  * @param {Object} options
  * @public
  */
-function Istanbul(runner, options) {
-    mocha.reporters.Base.call(this, runner);
+function Istanbul (runner, options) {
+  mocha.reporters.Base.call(this, runner)
 
-    var reporterOpts = { dir: 'coverage' },
-        reporters = ['text-summary', 'html'];
+  var reporterOpts = { dir: 'coverage' }
+  var reporters = ['text-summary', 'html']
 
-    options = options || {};
-    if (options.reporters) reporters = options.reporters.split(',');
-    if (process.env.ISTANBUL_REPORTERS) reporters = process.env.ISTANBUL_REPORTERS.split(',');
-    if (options.reportDir) reporterOpts.dir = options.reportDir;
-    if (process.env.ISTANBUL_REPORT_DIR) reporterOpts.dir = process.env.ISTANBUL_REPORT_DIR;
+  options = options || {}
+  if (options.reporters) reporters = options.reporters.split(',')
+  if (process.env.ISTANBUL_REPORTERS) reporters = process.env.ISTANBUL_REPORTERS.split(',')
+  if (options.reportDir) reporterOpts.dir = options.reportDir
+  if (process.env.ISTANBUL_REPORT_DIR) reporterOpts.dir = process.env.ISTANBUL_REPORT_DIR
 
-    runner.on('end', function(){
-        var cov = global.__coverage__ || {},
-            collector = new istanbul.Collector();
+  runner.on('end', function () {
+    var cov = global.__coverage__ || {}
+    var collector = new istanbul.Collector()
 
-        collector.add(cov);
+    collector.add(cov)
 
-        reporters.forEach(function(reporter) {
-            istanbul.Report.create(reporter, reporterOpts).writeReport(collector, true);
-        });
-
-    });
-
+    reporters.forEach(function (reporter) {
+      istanbul.Report.create(reporter, reporterOpts).writeReport(collector, true)
+    })
+  })
 }

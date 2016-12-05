@@ -1,5 +1,3 @@
-import { BrowserWindow } from 'electron';
-
 export default {
   label: 'Edit',
   submenu: [
@@ -25,4 +23,4 @@ export default {
       role: 'selectall'
     }
   ]
-};
+}
