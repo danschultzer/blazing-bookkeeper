@@ -150,7 +150,6 @@ export class FileList {
       }
     }
   }
-
   toCSV (files) {
     var text = 'Name\tAmount\tDate\tPath\n'
     for (var i = 0, length = files.length; i < length; ++i) {
@@ -162,9 +161,8 @@ export class FileList {
       ]
       values = values.map(function (value) {
         if (value && value.length && (value.indexOf('"') > -1 || value.indexOf('\t') > -1)) {
-          return '"' + value.replace('"', '\\"', '\t') + '"'
+          return '"' + value.replace('"', '\\"') + '"'
         }
-
         return value
       })
 
