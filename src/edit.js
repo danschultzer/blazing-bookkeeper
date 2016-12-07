@@ -2,15 +2,16 @@ import { remote, webFrame, ipcRenderer } from 'electron'
 import Vue from 'vue'
 import { PDFJS } from 'pdfjs-dist/build/pdf.combined'
 import mime from 'mime'
-import env from './env'
+import crashReporter from './helpers/crash_reporter'
+import contextMenu from './menu/context_menu'
 
-require('./helpers/crash_reporter.js')(env)
-require('./helpers/context_menu')
-require('./helpers/external_links')
+// Initialize
+crashReporter()
+contextMenu()
 
 webFrame.setZoomLevelLimits(1, 1) // Don't allow any pinch zoom
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   global.file = remote.getGlobal('editObject')
   global.page = 1
   new Vue({ // eslint-disable-line no-new
@@ -21,35 +22,31 @@ document.addEventListener('DOMContentLoaded', function () {
     methods: {
       close: close,
       save: save,
-      report: function (event) {
-        ipcRenderer.send('display-report', global.file)
-      }
+      report: event => ipcRenderer.send('display-report', global.file)
     }
   })
   updatePreviewCanvas()
 
   var preview = document.getElementById('preview')
-  ipcRenderer.on('edit-resizing', function () {
-    preview.style.opacity = 0
-  })
+  ipcRenderer.on('edit-resizing', () => { preview.style.opacity = 0 })
 
-  ipcRenderer.on('edit-resized', function () {
+  ipcRenderer.on('edit-resized', () => {
     preview.style.opacity = 1
     updatePreviewCanvas()
   })
 
-  ipcRenderer.on('edit-blur', function (event) {
+  ipcRenderer.on('edit-blur', event => {
     if (!document.body.classList.contains('blurred')) document.body.classList.add('blurred')
   })
 
-  ipcRenderer.on('edit-focus', function (event) {
+  ipcRenderer.on('edit-focus', event => {
     if (document.body.classList.contains('blurred')) document.body.classList.remove('blurred')
   })
 })
 
 var loadedPdf
 var loadedImg
-function updatePreviewCanvas () {
+var updatePreviewCanvas = () => {
   var canvas = document.getElementById('preview')
   var context = canvas.getContext('2d')
   var path = global.file.file.path
@@ -62,7 +59,7 @@ function updatePreviewCanvas () {
   switch (true) {
     case mimetype === 'application/pdf':
       if (!loadedPdf) {
-        PDFJS.getDocument(path).then(function (pdf) {
+        PDFJS.getDocument(path).then(pdf => {
           loadedPdf = pdf
           renderPDF(loadedPdf, canvas, context, maxWidth, maxHeight)
         })
@@ -73,7 +70,7 @@ function updatePreviewCanvas () {
     case /^image\/.*/.test(mimetype):
       if (!loadedImg) {
         var img = new window.Image()
-        img.onload = function () {
+        img.onload = () => {
           loadedImg = img
           renderImage(loadedImg, canvas, context, maxWidth, maxHeight)
         }
@@ -85,8 +82,8 @@ function updatePreviewCanvas () {
   }
 }
 
-function renderPDF (pdf, canvas, context, maxWidth, maxHeight) {
-  pdf.getPage(global.page).then(function (page) {
+var renderPDF = (pdf, canvas, context, maxWidth, maxHeight) => {
+  pdf.getPage(global.page).then(page => {
     var ratio = 1
     var viewport = page.getViewport(1)
     if (viewport.height > maxHeight) {
@@ -117,7 +114,7 @@ function renderPDF (pdf, canvas, context, maxWidth, maxHeight) {
   })
 }
 
-function renderImage (img, canvas, context, maxWidth, maxHeight) {
+var renderImage = (img, canvas, context, maxWidth, maxHeight) => {
   var ratio
   var height = img.height
   var width = img.width
@@ -146,7 +143,7 @@ function renderImage (img, canvas, context, maxWidth, maxHeight) {
   context.drawImage(img, 0, 0, width, height)
 }
 
-function save () {
+var save = () => {
   ipcRenderer.send('edit-updated', {
     amount: document.getElementById('amount').value,
     date: document.getElementById('date').value
@@ -154,6 +151,4 @@ function save () {
   close()
 }
 
-function close () {
-  ipcRenderer.send('close-edit')
-}
+var close = () => ipcRenderer.send('close-edit')
