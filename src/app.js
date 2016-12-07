@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   document.addEventListener('copy', copySelectedToClipboard, true)
+  document.addEventListener('remove', () => global.fileList.Select.removeSelected(), true)
 })
 
 var selectFiles = event => {

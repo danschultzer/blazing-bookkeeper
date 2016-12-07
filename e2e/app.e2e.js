@@ -41,6 +41,22 @@ describe('application launch', function () {
         })
     })
 
+    describe('when removing', function () {
+      it('should remove file', function () {
+        return this.app.client.element('.table .body .row:nth-child(1)')
+          .isVisible().then(function (visible) {
+            assert.equal(visible, true)
+          })
+          .waitUntilTextExists('.table .body .row .cell:nth-child(2)', '2016-06-13')
+          .click('.table .body .row:nth-child(1)').execute(function () {
+            document.dispatchEvent(new window.Event('remove'))
+          })
+          .isVisible('.table .body .row:nth-child(1)').then(function (visible) {
+            assert.equal(visible, false)
+          })
+      })
+    })
+
     describe('when copying', function () {
       it('should copy CSV to clipboard', function () {
         return this.app.client.click('.table .body .row')

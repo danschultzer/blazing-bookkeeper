@@ -9,6 +9,7 @@ env:
   - ISTANBUL_REPORT_DIR=coverage ISTANBUL_REPORTERS=lcovonly CASHER_TIME_OUT=54000
 
 cache:
+  timeout: 5000
   directories:
   - node_modules
   - app/node_modules
