@@ -1,4 +1,5 @@
-module.exports = function (env) {
+const crashReport = () => {
+  const env = require('./env')
   if (env.crashSubmitURL) {
     const { crashReporter } = require('electron')
     crashReporter.start({
@@ -9,3 +10,4 @@ module.exports = function (env) {
     })
   }
 }
+export default crashReport
