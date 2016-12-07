@@ -1,36 +1,30 @@
-// This is main process of Electron, started as first thing when your
-// app starts. This script is running through entire life of your application.
-// It doesn't have any windows which you can see on screen, but we can open
-// window from here.
-
 import path from 'path'
 import url from 'url'
 import { app, Menu, ipcMain, shell } from 'electron'
+import env from './env'
 import { appMenuTemplate, editMenuTemplate, windowMenuTemplate, devMenuTemplate, helpMenuTemplate } from './menu/templates'
 import createWindow from './helpers/window'
+import crashReporter from './helpers/crash_reporter'
 import thirdpartyEnv from './utils/thirdparty_env'
-
-// Special module holding environment variables which you declared
-// in config/env_xxx.json file.
-import env from './env'
 
 Object.assign(process.env, thirdpartyEnv)
 console.log('Settings thirdparty environment variables:', thirdpartyEnv)
 
 var mainWindow, editWindow, reportWindow
 
-var setApplicationMenu = function () {
+var setApplicationMenu = () => {
   var menus = [
     editMenuTemplate,
     windowMenuTemplate
   ]
 
+  // macOS menu
   if (process.platform === 'darwin') {
     menus.unshift(appMenuTemplate)
   }
 
-    // Developer menu
-  if (env.name !== 'production') {
+  // Developer menu
+  if (env.name === 'development') {
     menus.push(devMenuTemplate)
   }
 
@@ -39,15 +33,12 @@ var setApplicationMenu = function () {
   Menu.setApplicationMenu(Menu.buildFromTemplate(menus))
 }
 
-// Save userData in separate folders for each environment.
-// Thanks to this you can use production and development versions of the app
-// on same machine like those are two separate apps.
 if (env.name !== 'production') {
   var userDataPath = app.getPath('userData')
   app.setPath('userData', userDataPath + ' (' + env.name + ')')
 }
 
-function openWindow (windowName, file, opts) {
+var openWindow = (windowName, file, opts) => {
   opts = opts || {}
   opts.width = opts.width || 500
   opts.height = opts.height || 400
@@ -57,7 +48,7 @@ function openWindow (windowName, file, opts) {
 
   var win = createWindow(windowName, opts)
 
-  blur(win, 'report-' + windowName)
+  blur(win, windowName + '-blur')
 
   win.loadURL(url.format({
     pathname: path.join(__dirname, file),
@@ -72,19 +63,17 @@ function openWindow (windowName, file, opts) {
   return win
 }
 
-function blur (windowName, eventName) {
-  windowName.on('blur', function () {
-    windowName.webContents.send(eventName)
-  })
+var blur = (windowName, eventName) => {
+  windowName.on('blur', () => windowName.webContents.send(eventName))
 }
 
-app.on('ready', function () {
-  require('./helpers/crash_reporter.js')(env)
+app.on('ready', () => {
+  crashReporter()
   setApplicationMenu()
 
   mainWindow = openWindow('main', 'app.html', { width: 640, height: 480 })
 
-  mainWindow.on('focus', function () {
+  mainWindow.on('focus', () => {
     mainWindow.webContents.send('main-focus')
     if (editWindow) {
       editWindow.focus()
@@ -95,11 +84,9 @@ app.on('ready', function () {
     }
   })
 
-  mainWindow.on('closed', function () {
-    mainWindow = null
-  })
+  mainWindow.on('closed', () => { mainWindow = null })
 
-  ipcMain.on('display-edit', function (event, arg) {
+  ipcMain.on('display-edit', (event, arg) => {
     if (!arg[1].done || editWindow) return
 
     global.editObjectIndex = arg[0]
@@ -109,7 +96,7 @@ app.on('ready', function () {
 
     editWindow = openWindow('edit', 'edit.html', { parentWindow: mainWindow })
 
-    editWindow.on('focus', function () {
+    editWindow.on('focus', () => {
       editWindow.webContents.send('edit-focus')
       if (reportWindow) {
         reportWindow.focus()
@@ -117,16 +104,16 @@ app.on('ready', function () {
       }
     })
 
-    editWindow.on('closed', function () {
+    editWindow.on('closed', () => {
       editWindow = null
       setApplicationMenu()
     })
 
     var resizeId
-    editWindow.on('resize', function () {
+    editWindow.on('resize', () => {
       editWindow.webContents.send('edit-resizing')
       clearTimeout(resizeId)
-      resizeId = setTimeout(function () {
+      resizeId = setTimeout(() => {
         if (editWindow) {
           editWindow.webContents.send('edit-resized')
         }
@@ -134,7 +121,7 @@ app.on('ready', function () {
     })
   })
 
-  ipcMain.on('edit-updated', function (event, arg) {
+  ipcMain.on('edit-updated', (event, arg) => {
     if (!editWindow) return
 
     mainWindow.webContents.send('edit-updated', {
@@ -143,11 +130,9 @@ app.on('ready', function () {
     })
   })
 
-  ipcMain.on('close-edit', function (event) {
-    editWindow.close()
-  })
+  ipcMain.on('close-edit', event => editWindow.close())
 
-  ipcMain.on('display-report', function (event, file) {
+  ipcMain.on('display-report', (event, file) => {
     if (reportWindow) return
 
     global.reportFile = file
@@ -156,21 +141,15 @@ app.on('ready', function () {
 
     reportWindow = openWindow('report', 'report.html', { parentWindow: editWindow })
 
-    reportWindow.on('focus', function () {
-      reportWindow.webContents.send('report-focus')
-    })
+    reportWindow.on('focus', () => reportWindow.webContents.send('report-focus'))
 
-    reportWindow.on('closed', function () {
+    reportWindow.on('closed', () => {
       reportWindow = null
       setApplicationMenu()
     })
   })
 
-  ipcMain.on('close-report', function (event) {
-    reportWindow.close()
-  })
+  ipcMain.on('close-report', event => reportWindow.close())
 })
 
-app.on('window-all-closed', function () {
-  app.quit()
-})
+app.on('window-all-closed', () => app.quit())
