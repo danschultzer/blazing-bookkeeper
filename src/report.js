@@ -4,16 +4,20 @@ import Vue from 'vue'
 import jetpack from 'fs-jetpack'
 import request from 'request'
 import env from './env'
+import crashReporter from './helpers/crash_reporter'
+import contextMenu from './menu/context_menu'
+import externalLinks from './helpers/external_links'
 
-require('./helpers/crash_reporter.js')(env)
-require('./helpers/context_menu')
-require('./helpers/external_links')
+// Initialize
+crashReporter()
+contextMenu()
+externalLinks()
 
 webFrame.setZoomLevelLimits(1, 1) // Don't allow any pinch zoom
 
 var appDir = jetpack.cwd(remote.app.getAppPath())
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   global.file = remote.getGlobal('reportFile')
   global.file.anonymized = document.body.querySelector('[name="anonymized"]').checked
   global.file.uploading = false
@@ -26,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     methods: {
       close: close,
       send: send,
-      changeAnonymized: function () {
+      changeAnonymized: () => {
         if (global.file.uploading) {
           document.body.querySelector('[name="anonymized"]').checked = !!global.file.anonymized
         } else {
@@ -38,16 +42,16 @@ document.addEventListener('DOMContentLoaded', function () {
     compiled: render
   })
 
-  ipcRenderer.on('report-blur', function (event) {
+  ipcRenderer.on('report-blur', event => {
     if (!document.body.classList.contains('blurred')) document.body.classList.add('blurred')
   })
 
-  ipcRenderer.on('report-focus', function (event) {
+  ipcRenderer.on('report-focus', event => {
     if (document.body.classList.contains('blurred')) document.body.classList.remove('blurred')
   })
 })
 
-function send () {
+var send = () => {
   if (global.file.uploading) {
     console.log('Already uploading report.')
     return
@@ -69,7 +73,7 @@ function send () {
   var url = env.bugReportSubmitURL || 'https://localhost:5000/bug-report/upload'
   global.file.uploading = request.post(
     { url: url, formData: formData },
-    function (error, httpResponse, body) {
+    (error, httpResponse, body) => {
       global.file.uploading = false
       if (error || httpResponse.statusCode !== 200) {
         if (error) {
@@ -85,11 +89,9 @@ function send () {
     })
 }
 
-function close () {
-  ipcRenderer.send('close-report')
-}
+var close = () => ipcRenderer.send('close-report')
 
-function fileObject () {
+var fileObject = () => {
   var fileJSON = {}
   fileJSON = {
     name: global.file.file.name,
@@ -108,7 +110,7 @@ function fileObject () {
   return fileJSON
 }
 
-function render () {
+var render = () => {
   var formatter
   var fileJSON = fileObject()
 
