@@ -2,7 +2,7 @@ import jetpack from 'fs-jetpack'
 import mime from 'mime'
 import path from 'path'
 
-export default class Util {
+class Util {
   constructor (fileList) {
     this.fileList = fileList
   }
@@ -33,60 +33,59 @@ export default class Util {
 
   extractFiles (file) {
     var files = [file]
+      // Filter non existing files
+      files = files.filter((element, index, array) => jetpack.exists(element.path || element))
 
-    // Filter non existing files
-    files = files.filter(function (element, index, array) {
-      return jetpack.exists(element.path || element)
-    })
-
-    // Expand directories
-    for (var i = 0; i < files.length; i++) {
-      if (this.isDir(files[i].path || files[i])) {
-        var expandedFiles = this.walkSync(files[i].path || files[i])
-        files.splice(i, 1)
-        files.push.apply(files, expandedFiles)
+      // Expand directories
+      for (let i = 0; i < files.length; i++) {
+        if (this.isDir(files[i].path || files[i])) {
+          var expandedFiles = this.walkSync(files[i].path || files[i])
+          files.splice(i, 1)
+          files.push.apply(files, expandedFiles)
+        }
       }
+
+      // Filter invalid files
+      files = this.filterFiles(files)
+
+      return files.map(file => {
+        if (!file.path) {
+          var object = jetpack.inspect(file)
+
+          object.path = file
+          object.type = mime.lookup(file)
+
+          return object
+        } else {
+          return file
+        }
+      })
     }
-
-    // Filter invalid files
-    files = this.filterFiles(files)
-
-    return files.map(function (file) {
-      if (!file.path) {
-        var object = jetpack.inspect(file)
-
-        object.path = file
-        object.type = mime.lookup(file)
-
-        return object
-      } else {
-        return file
+    this.humanFileSize = (bytes, si) => {
+      var thresh = si ? 1000 : 1024
+      if (Math.abs(bytes) < thresh) {
+        return bytes + ' B'
       }
-    })
-  }
-
-  humanFileSize (bytes, si) {
-    var thresh = si ? 1000 : 1024
-    if (Math.abs(bytes) < thresh) {
-      return bytes + ' B'
+      var units = si
+          ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+          : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+      var u = -1
+      do {
+        bytes /= thresh
+        ++u
+      } while (Math.abs(bytes) >= thresh && u < units.length - 1)
+      return bytes.toFixed(1) + ' ' + units[u]
     }
-    var units = si
-        ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-        : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
-    var u = -1
-    do {
-      bytes /= thresh
-      ++u
-    } while (Math.abs(bytes) >= thresh && u < units.length - 1)
-    return bytes.toFixed(1) + ' ' + units[u]
   }
 }
 
 Util.Interval = function (fn, interval) {
   var id = setInterval(fn, interval)
   this.cleared = false
-  this.clear = function () {
+  this.clear = () => {
     this.cleared = true
     clearInterval(id)
   }
 }
+
+export default Util
