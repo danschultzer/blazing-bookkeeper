@@ -82,7 +82,7 @@ describe('fileList', function () {
       })
     })
 
-    it('doesn\'t increase above max percent', function (done) {
+    it('should not increase above max percent', function (done) {
       fileList.files[0].percentDone = 0.1
       checkAfter(done, function () {
         assert.equal(fileList.files[0].progressBar, 10)
@@ -267,7 +267,7 @@ describe('fileList', function () {
   })
 
   describe('#results()', function () {
-    it('returns results', function () {
+    it('should return results', function () {
       fileList.files = [{
         done: true,
         result: {
@@ -300,7 +300,7 @@ describe('fileList', function () {
   })
 
   describe('#toCSV()', function () {
-    it('returns CSV', function () {
+    it('should return CSV', function () {
       var files = [{
         file: {
           name: 'csv-test.jpg',
@@ -329,7 +329,7 @@ describe('fileList', function () {
       assert.equal(fileList.toCSV(files), expected)
     })
 
-    it('handles \\t in values', function () {
+    it('should handle \\t in values', function () {
       var files = [{
         file: {
           name: 'test\t.jpg',
@@ -340,7 +340,7 @@ describe('fileList', function () {
       assert.include(fileList.toCSV(files), 'test\t.jpg')
     })
 
-    it('handles " in values', function () {
+    it('should handle " in values', function () {
       var files = [{
         file: {
           name: 'test".jpg',
@@ -353,7 +353,7 @@ describe('fileList', function () {
   })
 
   describe('#toCSV()', function () {
-    it('converts items to CSV', function () {
+    it('should convert item to CSV', function () {
       var files = [{
         file: {
           name: 'test2.jpg',

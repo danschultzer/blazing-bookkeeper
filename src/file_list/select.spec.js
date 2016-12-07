@@ -133,7 +133,7 @@ describe('fileList.Select', function () {
   })
 
   describe('#selectedToCSV()', function () {
-    it('converts selected items to CSV', function () {
+    it('should convert selected items to CSV', function () {
       var files = [{
         file: {
           name: 'test.jpg',
