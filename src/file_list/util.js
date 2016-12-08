@@ -27,7 +27,7 @@ export default class Util {
 
   filterFiles (filelist) {
     return filelist.filter(function (element, index, array) {
-      return (['pdf', 'jpeg', 'jpg', 'gif', 'png', 'bmp'].indexOf((element.path || element).split('.').pop().toLowerCase()) !== -1)
+      return (['pdf', 'jpeg', 'jpg', 'tiff', 'png', 'bmp'].indexOf((element.path || element).split('.').pop().toLowerCase()) !== -1)
     })
   }
 
