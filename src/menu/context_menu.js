@@ -8,7 +8,9 @@ function contextMenu () {
   var Menu = remote.Menu
   var MenuItem = remote.MenuItem
 
-  function isAnyTextSelected () { return window.getSelection().toString() !== '' }
+  function isAnyTextSelected () {
+    return window.getSelection().toString() !== ''
+  }
 
   var cut = new MenuItem({
     label: 'Cut',

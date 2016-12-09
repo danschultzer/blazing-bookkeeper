@@ -152,4 +152,6 @@ function save () {
   close()
 }
 
-function close () { ipcRenderer.send('close-edit') }
+function close () {
+  ipcRenderer.send('close-edit')
+}
