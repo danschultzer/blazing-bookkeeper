@@ -67,8 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
     computed: {
       exportLabel: exportButtonLabel,
       result: global.fileList.results,
-      successRateLabel: event => {
-        var total = event.result.done.successful / (event.result.done.total || 1) * 100
+      successRateLabel () {
+        var total = this.result.done.successful / (this.result.done.total || 1) * 100
         var color = total < 85 ? 'red' : total < 95 ? 'yellow' : 'green'
         return '<span class="color-' + color + '">' + total.toFixed(1) + '%</span>'
       }
