@@ -38,13 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
       selectUp: event => global.fileList.Select.moveDirection('up', !event.shiftKey),
       selectDown: event => global.fileList.Select.moveDirection('down', !event.shiftKey),
       handleCmdOrCtrlA: event => {
-        if ((event.metaKey || event.ctrlKey) && event.keyCode === 65) {
+        if (global.fileList.el() && (event.metaKey || event.ctrlKey) && event.keyCode === 65) {
           event.preventDefault()
           global.fileList.Select.selectAll()
         }
       },
       handleCmdOrCtrlBackspace: event => {
-        if ((event.metaKey || event.ctrlKey) && event.keyCode === 8) {
+        if (global.fileList.el() && (event.metaKey || event.ctrlKey) && event.keyCode === 8) {
           event.preventDefault()
           global.fileList.Select.removeSelected()
         }
