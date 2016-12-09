@@ -152,4 +152,14 @@ app.on('ready', () => {
   ipcMain.on('close-report', () => reportWindow.close())
 })
 
-app.on('window-all-closed', () => app.quit())
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('activate', () => {
+  if (mainWindow === null) {
+    openWindow('main', 'app.html', { width: 640, height: 480 })
+  }
+})
