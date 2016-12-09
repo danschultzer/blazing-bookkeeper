@@ -6,7 +6,7 @@
 import { app, BrowserWindow, screen } from 'electron'
 import jetpack from 'fs-jetpack'
 
-const createWindow = (name, options) => {
+function createWindow (name, options) {
   var userDataDir = jetpack.cwd(app.getPath('userData'))
   var stateStoreFile = 'window-state-' + name + '.json'
   var defaultSize = {
@@ -16,7 +16,7 @@ const createWindow = (name, options) => {
   var state = {}
   var win
 
-  var restore = () => {
+  function restore () {
     var restoredState = {}
     try {
       restoredState = userDataDir.read(stateStoreFile, 'json')
@@ -27,7 +27,7 @@ const createWindow = (name, options) => {
     return Object.assign({}, defaultSize, restoredState)
   }
 
-  var getCurrentPosition = () => {
+  function getCurrentPosition () {
     var position = win.getPosition()
     var size = win.getSize()
     return {
@@ -38,14 +38,14 @@ const createWindow = (name, options) => {
     }
   }
 
-  var windowWithinBounds = (windowState, bounds) => {
+  function windowWithinBounds (windowState, bounds) {
     return windowState.x >= bounds.x &&
             windowState.y >= bounds.y &&
             windowState.x + windowState.width <= bounds.x + bounds.width &&
             windowState.y + windowState.height <= bounds.y + bounds.height
   }
 
-  var resetToDefaults = windowState => {
+  function resetToDefaults (windowState) {
     var bounds = screen.getPrimaryDisplay().bounds
     return Object.assign({}, defaultSize, {
       x: (bounds.width - defaultSize.width) / 2,
@@ -53,7 +53,7 @@ const createWindow = (name, options) => {
     })
   }
 
-  var ensureVisibleOnSomeDisplay = windowState => {
+  function ensureVisibleOnSomeDisplay (windowState) {
     var visible = screen.getAllDisplays().some(display => {
       return windowWithinBounds(windowState, display.bounds)
     })
@@ -65,7 +65,7 @@ const createWindow = (name, options) => {
     return windowState
   }
 
-  var saveState = () => {
+  function saveState () {
     if (!win.isMinimized() && !win.isMaximized()) {
       Object.assign(state, getCurrentPosition())
     }

@@ -7,7 +7,7 @@ import crashReporter from './helpers/crash_reporter'
 import contextMenu from './menu/context_menu'
 
 // Initialize
-crashReporter()
+crashReporter(env)
 contextMenu()
 
 webFrame.setZoomLevelLimits(1, 1) // Don't allow any pinch zoom
@@ -33,23 +33,23 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     methods: {
       open: openFiles,
-      selectAll: () => global.fileList.Select.selectAll(),
-      deselectAll: () => global.fileList.Select.deselectAll(),
-      selectUp: event => global.fileList.Select.moveDirection('up', !event.shiftKey),
-      selectDown: event => global.fileList.Select.moveDirection('down', !event.shiftKey),
-      handleCmdOrCtrlA: event => {
+      selectAll () { global.fileList.Select.selectAll() },
+      deselectAll () { global.fileList.Select.deselectAll() },
+      selectUp (event) { global.fileList.Select.moveDirection('up', !event.shiftKey) },
+      selectDown (event) { global.fileList.Select.moveDirection('down', !event.shiftKey) },
+      handleCmdOrCtrlA (event) {
         if (global.fileList.el() && (event.metaKey || event.ctrlKey) && event.keyCode === 65) {
           event.preventDefault()
           global.fileList.Select.selectAll()
         }
       },
-      handleCmdOrCtrlBackspace: event => {
+      handleCmdOrCtrlBackspace (event) {
         if (global.fileList.el() && (event.metaKey || event.ctrlKey) && event.keyCode === 8) {
           event.preventDefault()
-          global.fileList.Select.removeSelected()
+          document.dispatchEvent(new window.CustomEvent('removeSelected', event))
         }
       },
-      edit: event => {
+      edit (event) {
         global.fileList.Select.select([event.currentTarget], true)
         var index = global.fileList.getIndexForElement(event.currentTarget)
         var file = global.fileList.getFileForElement(event.currentTarget)
@@ -65,7 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
       select: selectFiles
     },
     computed: {
-      exportLabel: exportButtonLabel,
+      exportLabel () {
+        if (this.selectedFiles.length > 0) return 'Export ' + this.selectedFiles.length + ' item(s)'
+        return 'Export'
+      },
       result: global.fileList.results,
       successRateLabel () {
         var total = this.result.done.successful / (this.result.done.total || 1) * 100
@@ -87,19 +90,19 @@ document.addEventListener('DOMContentLoaded', () => {
     global.fileList.updateFile(arg.index, { result: result })
   })
 
-  ipcRenderer.on('main-blur', event => {
+  ipcRenderer.on('main-blur', () => {
     if (!document.body.classList.contains('blurred')) document.body.classList.add('blurred')
   })
 
-  ipcRenderer.on('main-focus', event => {
+  ipcRenderer.on('main-focus', () => {
     if (document.body.classList.contains('blurred')) document.body.classList.remove('blurred')
   })
 
   document.addEventListener('copy', copySelectedToClipboard, true)
-  document.addEventListener('remove', () => global.fileList.Select.removeSelected(), true)
+  document.addEventListener('removeSelected', removeSelected, true)
 })
 
-var selectFiles = event => {
+function selectFiles (event) {
   // If user does shift + click
   if (event.shiftKey) {
     global.fileList.Select.selectUntil(event.currentTarget)
@@ -112,7 +115,7 @@ var selectFiles = event => {
 }
 
 var openFilesDialog = false
-var openFiles = () => {
+function openFiles () {
   if (openFilesDialog === true) return
   openFilesDialog = true
 
@@ -136,7 +139,7 @@ var openFiles = () => {
 }
 
 var saveFileDialog = false
-var exportCSV = () => {
+function exportCSV () {
   if (saveFileDialog === true) return
   saveFileDialog = true
 
@@ -151,37 +154,36 @@ var exportCSV = () => {
   })
 }
 
-var exportButtonLabel = event => {
-  if (event.selectedFiles.length > 0) return 'Export ' + event.selectedFiles.length + ' item(s)'
-  return 'Export'
-}
-
-var handleDragnDrop = () => {
+function handleDragnDrop () {
   // Drag files
-  document.ondragover = document.ondrop = (ev) => ev.preventDefault()
+  document.ondragover = document.ondrop = event => event.preventDefault()
 
-  document.body.ondrop = ev => {
+  document.body.ondrop = event => {
     if (document.body.classList.contains('drag')) document.body.classList.remove('drag')
 
-    if (ev.dataTransfer.files.length) {
-      global.fileList.addFiles(ev.dataTransfer.files)
+    if (event.dataTransfer.files.length) {
+      global.fileList.addFiles(event.dataTransfer.files)
     }
 
-    ev.preventDefault()
+    event.preventDefault()
   }
 
   var dragCounter = 0
-  document.body.ondragenter = ev => {
+  document.body.ondragenter = () => {
     dragCounter++
     if (!document.body.classList.contains('drag')) document.body.classList.add('drag')
   }
-  document.body.ondragend = document.body.ondragleave = ev => {
+  document.body.ondragend = document.body.ondragleave = () => {
     dragCounter--
     if (dragCounter > 0) return
     if (document.body.classList.contains('drag')) document.body.classList.remove('drag')
   }
 }
 
-var copySelectedToClipboard = () => {
+function copySelectedToClipboard () {
   clipboard.writeText(global.fileList.Select.selectedToCSV(), 'text/csv')
+}
+
+function removeSelected () {
+  global.fileList.Select.removeSelected()
 }

@@ -49,7 +49,7 @@ describe('application launch', function () {
           })
           .waitUntilTextExists('.table .body .row .cell:nth-child(2)', '2016-06-13')
           .click('.table .body .row:nth-child(1)').execute(function () {
-            document.dispatchEvent(new window.Event('remove'))
+            document.dispatchEvent(new window.CustomEvent('removeSelected'))
           })
           .isExisting('.table .body .row:nth-child(1)').then(function (existing) {
             assert.equal(existing, false)

@@ -9,7 +9,7 @@ import contextMenu from './menu/context_menu'
 import externalLinks from './helpers/external_links'
 
 // Initialize
-crashReporter()
+crashReporter(env)
 contextMenu()
 externalLinks()
 
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     methods: {
       close: close,
       send: send,
-      changeAnonymized: () => {
+      changeAnonymized () {
         if (global.file.uploading) {
           document.body.querySelector('[name="anonymized"]').checked = !!global.file.anonymized
         } else {
@@ -42,16 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
     compiled: render
   })
 
-  ipcRenderer.on('report-blur', event => {
+  ipcRenderer.on('report-blur', () => {
     if (!document.body.classList.contains('blurred')) document.body.classList.add('blurred')
   })
 
-  ipcRenderer.on('report-focus', event => {
+  ipcRenderer.on('report-focus', () => {
     if (document.body.classList.contains('blurred')) document.body.classList.remove('blurred')
   })
 })
 
-var send = () => {
+function send () {
   if (global.file.uploading) {
     console.log('Already uploading report.')
     return
@@ -89,9 +89,9 @@ var send = () => {
     })
 }
 
-var close = () => ipcRenderer.send('close-report')
+function close () { ipcRenderer.send('close-report') }
 
-var fileObject = () => {
+function fileObject () {
   var fileJSON = {}
   fileJSON = {
     name: global.file.file.name,
@@ -110,7 +110,7 @@ var fileObject = () => {
   return fileJSON
 }
 
-var render = () => {
+function render () {
   var formatter
   var fileJSON = fileObject()
 

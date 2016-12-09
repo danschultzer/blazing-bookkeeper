@@ -12,7 +12,7 @@ console.log('Settings thirdparty environment variables:', thirdpartyEnv)
 
 var mainWindow, editWindow, reportWindow
 
-var setApplicationMenu = () => {
+function setApplicationMenu () {
   var menus = [
     editMenuTemplate,
     windowMenuTemplate
@@ -38,7 +38,7 @@ if (env.name !== 'production') {
   app.setPath('userData', userDataPath + ' (' + env.name + ')')
 }
 
-var openWindow = (windowName, file, opts) => {
+function openWindow (windowName, file, opts) {
   opts = opts || {}
   opts.width = opts.width || 500
   opts.height = opts.height || 400
@@ -63,12 +63,12 @@ var openWindow = (windowName, file, opts) => {
   return win
 }
 
-var blur = (windowName, eventName) => {
+function blur (windowName, eventName) {
   windowName.on('blur', () => windowName.webContents.send(eventName))
 }
 
 app.on('ready', () => {
-  crashReporter()
+  crashReporter(env)
   setApplicationMenu()
 
   mainWindow = openWindow('main', 'app.html', { width: 640, height: 480 })
@@ -130,7 +130,7 @@ app.on('ready', () => {
     })
   })
 
-  ipcMain.on('close-edit', event => editWindow.close())
+  ipcMain.on('close-edit', () => editWindow.close())
 
   ipcMain.on('display-report', (event, file) => {
     if (reportWindow) return
@@ -149,7 +149,7 @@ app.on('ready', () => {
     })
   })
 
-  ipcMain.on('close-report', event => reportWindow.close())
+  ipcMain.on('close-report', () => reportWindow.close())
 })
 
 app.on('window-all-closed', () => app.quit())

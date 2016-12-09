@@ -1,5 +1,4 @@
-const crashReport = () => {
-  const env = require('./env')
+function crashReport (env) {
   if (env.crashSubmitURL) {
     const { crashReporter } = require('electron')
     crashReporter.start({

@@ -1,28 +1,28 @@
 // This gives you default context menu (cut, copy, paste)
 // in all input fields and textareas across your app.
 
-const contextMenu = () => {
+function contextMenu () {
   'use strict'
 
   var remote = require('electron').remote
   var Menu = remote.Menu
   var MenuItem = remote.MenuItem
 
-  var isAnyTextSelected = () => window.getSelection().toString() !== ''
+  function isAnyTextSelected () { return window.getSelection().toString() !== '' }
 
   var cut = new MenuItem({
     label: 'Cut',
-    click: () => document.execCommand('cut')
+    click () { document.execCommand('cut') }
   })
 
   var copy = new MenuItem({
     label: 'Copy',
-    click: () => document.execCommand('copy')
+    click () { document.execCommand('copy') }
   })
 
   var paste = new MenuItem({
     label: 'Paste',
-    click: () => document.execCommand('paste')
+    click () { document.execCommand('paste') }
   })
 
   var normalMenu = new Menu()

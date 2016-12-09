@@ -2,11 +2,12 @@ import { remote, webFrame, ipcRenderer } from 'electron'
 import Vue from 'vue'
 import { PDFJS } from 'pdfjs-dist/build/pdf.combined'
 import mime from 'mime'
+import env from './env'
 import crashReporter from './helpers/crash_reporter'
 import contextMenu from './menu/context_menu'
 
 // Initialize
-crashReporter()
+crashReporter(env)
 contextMenu()
 
 webFrame.setZoomLevelLimits(1, 1) // Don't allow any pinch zoom
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     methods: {
       close: close,
       save: save,
-      report: event => ipcRenderer.send('display-report', global.file)
+      report () { ipcRenderer.send('display-report', global.file) }
     }
   })
   updatePreviewCanvas()
@@ -35,18 +36,18 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePreviewCanvas()
   })
 
-  ipcRenderer.on('edit-blur', event => {
+  ipcRenderer.on('edit-blur', () => {
     if (!document.body.classList.contains('blurred')) document.body.classList.add('blurred')
   })
 
-  ipcRenderer.on('edit-focus', event => {
+  ipcRenderer.on('edit-focus', () => {
     if (document.body.classList.contains('blurred')) document.body.classList.remove('blurred')
   })
 })
 
 var loadedPdf
 var loadedImg
-var updatePreviewCanvas = () => {
+function updatePreviewCanvas () {
   var canvas = document.getElementById('preview')
   var context = canvas.getContext('2d')
   var path = global.file.file.path
@@ -82,7 +83,7 @@ var updatePreviewCanvas = () => {
   }
 }
 
-var renderPDF = (pdf, canvas, context, maxWidth, maxHeight) => {
+function renderPDF (pdf, canvas, context, maxWidth, maxHeight) {
   pdf.getPage(global.page).then(page => {
     var ratio = 1
     var viewport = page.getViewport(1)
@@ -114,7 +115,7 @@ var renderPDF = (pdf, canvas, context, maxWidth, maxHeight) => {
   })
 }
 
-var renderImage = (img, canvas, context, maxWidth, maxHeight) => {
+function renderImage (img, canvas, context, maxWidth, maxHeight) {
   var ratio
   var height = img.height
   var width = img.width
@@ -143,7 +144,7 @@ var renderImage = (img, canvas, context, maxWidth, maxHeight) => {
   context.drawImage(img, 0, 0, width, height)
 }
 
-var save = () => {
+function save () {
   ipcRenderer.send('edit-updated', {
     amount: document.getElementById('amount').value,
     date: document.getElementById('date').value
@@ -151,4 +152,4 @@ var save = () => {
   close()
 }
 
-var close = () => ipcRenderer.send('close-edit')
+function close () { ipcRenderer.send('close-edit') }
