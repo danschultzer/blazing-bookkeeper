@@ -31,18 +31,18 @@ describe('fileList', function () {
       fileList.addFile.restore()
     })
 
-    it('handle directories', function () {
+    it('handles directories', function () {
       fileList.addFiles([path.join(__dirname, '/../resources/icons')])
       assert.equal(fileList.addFile.calledOnce, true)
       assert.equal(fileList.addFile.calledWith('512x512.png', path.join(__dirname, '/../resources/icons/512x512.png'), 74799, 'image/png'), true)
     })
 
-    it('filter invalid files', function () {
+    it('filters invalid files', function () {
       fileList.addFiles([path.join(__dirname, '/../resources')])
       assert.equal(fileList.addFile.callCount, 4)
     })
 
-    it('filter non existing files', function () {
+    it('filters non existing files', function () {
       fileList.addFiles([path.join('/dir/dont/exist', '/file/dont/exist.jpg')])
       assert.equal(fileList.addFile.called, false)
     })
@@ -72,7 +72,7 @@ describe('fileList', function () {
       sinon.stub(fileList, 'createSmoothPercentProgressionInterval') // We don't want to run progress interval
     })
 
-    it('smooth update progress after 15ms', function (done) {
+    it('smoothes update progress after 15ms', function (done) {
       assert.equal(fileList.files[0].progressBar, 0)
       fileList.files[0].percentDone = 0.1
       assert.equal(fileList.files[0].progressBar, 0)
@@ -82,14 +82,14 @@ describe('fileList', function () {
       })
     })
 
-    it('not increase above max percent', function (done) {
+    it('does not increase above max percent', function (done) {
       fileList.files[0].percentDone = 0.1
       checkAfter(done, function () {
         assert.equal(fileList.files[0].progressBar, 10)
       }, 15 * 20)
     })
 
-    it('stop interval after file parsed', function (done) {
+    it('stops interval after file parsed', function (done) {
       fileList.files[0].done = true
       assert.equal(interval.cleared, false)
       checkAfter(done, function () {
@@ -97,7 +97,7 @@ describe('fileList', function () {
       })
     })
 
-    it('stop interval after file removed', function (done) {
+    it('stops interval after file removed', function (done) {
       fileList.files.pop()
       assert.equal(interval.cleared, false)
       checkAfter(done, function () {
@@ -111,7 +111,7 @@ describe('fileList', function () {
     var name = 'readable.jpg'
     var filesize = 1345000
 
-    it('add file to list', function () {
+    it('adds file to list', function () {
       fileList.addFile(name, path, filesize)
       assert.equal(fileList.files.length, 1)
       assert.equal(fileList.files[0].done, false)
@@ -146,15 +146,15 @@ describe('fileList', function () {
         fileListFilesSet.restore()
       })
 
-      it('create file stream', function () {
+      it('creates file stream', function () {
         assert.ok(jetpack.createReadStream.called)
       })
 
-      it('update vue object', function () {
+      it('updates vue object', function () {
         assert.ok(fileListFilesSet.called)
       })
 
-      it('update values in list', function () {
+      it('updates values in list', function () {
         assert.equal(fileList.files[0].done, true)
         assert.equal(fileList.files[0].result.error, null)
         assert.equal(fileList.files[0].result.parsed.date, '2016-05-05')
@@ -176,7 +176,7 @@ describe('fileList', function () {
         scanner.prototype.ticker.restore()
       })
 
-      it('update percentDone', function () {
+      it('updates percentDone', function () {
         assert.equal(fileList.files[0].percentDone, 0.5)
       })
     })
@@ -185,7 +185,7 @@ describe('fileList', function () {
       describe('while file is procesing', function () {
         var callbacks = []
 
-        it('not update file upon completion', function (done) {
+        it('does not update file upon completion', function (done) {
           setTimeout(function () {
             scanner.prototype.parse.restore()
             sinon.stub(scanner.prototype, 'parse', function (callback) {
@@ -257,7 +257,7 @@ describe('fileList', function () {
       fileList.files = []
     })
 
-    it('only run two files at any given time', function () {
+    it('only runs two files at any given time', function () {
       assert.equal(fileList.processingCount(), 0)
       fileList.processQueue()
       assert.equal(fileList.processingCount(), 2)
@@ -267,7 +267,7 @@ describe('fileList', function () {
   })
 
   describe('#results()', function () {
-    it('return results', function () {
+    it('returns results', function () {
       fileList.files = [{
         done: true,
         result: {
@@ -300,7 +300,7 @@ describe('fileList', function () {
   })
 
   describe('#toCSV()', function () {
-    it('return CSV', function () {
+    it('returns CSV', function () {
       var files = [{
         file: {
           name: 'csv-test.jpg',
@@ -329,7 +329,7 @@ describe('fileList', function () {
       assert.equal(fileList.toCSV(files), expected)
     })
 
-    it('handle \\t in values', function () {
+    it('handles \\t in values', function () {
       var files = [{
         file: {
           name: 'test\t.jpg',
@@ -340,7 +340,7 @@ describe('fileList', function () {
       assert.include(fileList.toCSV(files), 'test\t.jpg')
     })
 
-    it('handle " in values', function () {
+    it('handles " in values', function () {
       var files = [{
         file: {
           name: 'test".jpg',
@@ -353,7 +353,7 @@ describe('fileList', function () {
   })
 
   describe('#toCSV()', function () {
-    it('convert item to CSV', function () {
+    it('converts item to CSV', function () {
       var files = [{
         file: {
           name: 'test2.jpg',

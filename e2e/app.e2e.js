@@ -9,7 +9,7 @@ describe('application launch', function () {
   })
   afterEach(testUtils.afterEach)
 
-  it('show one window', function () {
+  it('shows one window', function () {
     return this.app.browserWindow.isVisible().then(function (visible) {
       assert.equal(visible, true)
     }).getWindowCount().then(function (count) {
@@ -17,7 +17,7 @@ describe('application launch', function () {
     })
   })
 
-  it('show welcome screen', function () {
+  it('shows welcome screen', function () {
     return this.app.client.element('.welcome').isVisible().then(function (visible) {
       assert.equal(visible, true)
     })
@@ -28,7 +28,7 @@ describe('application launch', function () {
       return this.app.client.click('#plus-button-open').waitForVisible('.table .body .row', 1000)
     })
 
-    it('show file', function () {
+    it('shows file', function () {
       return this.app.client.element('.table .body .row:nth-child(1)')
         .isVisible().then(function (visible) {
           assert.equal(visible, true)
@@ -42,7 +42,7 @@ describe('application launch', function () {
     })
 
     describe('when copying', function () {
-      it('copy CSV to clipboard', function () {
+      it('copys CSV to clipboard', function () {
         return this.app.client.click('.table .body .row')
           .execute(function () {
             document.dispatchEvent(new window.Event('copy'))
@@ -60,7 +60,7 @@ describe('application launch', function () {
           .waitUntilWindowLoaded()
       })
 
-      it('show new browser window', function () {
+      it('shows new browser window', function () {
         return this.app.client.getWindowCount().then(function (count) {
           assert.equal(count, 2)
         })
@@ -73,7 +73,7 @@ describe('application launch', function () {
             .click('button=Update')
         })
 
-        it('close window', function () {
+        it('closes window', function () {
           var app = this.app
 
           return app.client.waitUntil(function () {
@@ -83,7 +83,7 @@ describe('application launch', function () {
           }, 1000, 'expected window to close')
         })
 
-        it('update values', function () {
+        it('updates values', function () {
           return this.app.client.windowByIndex(0)
             .getText('.table .body .row').then(function (text) {
               assert.include(text, 'readable.pdf')
@@ -99,7 +99,7 @@ describe('application launch', function () {
             .waitUntilWindowLoaded().windowByIndex(2)
         })
 
-        it('show new browser window with attached file, email and comment', function () {
+        it('shows new browser window with attached file, email and comment', function () {
           return this.app.client.getWindowCount().then(function (count) {
             assert.equal(count, 3)
           }).isExisting('input[name="email"]').then(function (exists) {
@@ -116,7 +116,7 @@ describe('application launch', function () {
             return this.app.client.click('[name="anonymized"]')
           })
 
-          it('hide email, attached file and path', function () {
+          it('hides email, attached file and absolute path', function () {
             return this.app.client.getWindowCount().then(function (count) {
               assert.equal(count, 3)
             }).isExisting('input[name="email"]').then(function (exists) {
