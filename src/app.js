@@ -1,15 +1,14 @@
-// Here is the starting point for your application code.
-// All stuff below is just to show you how it works. You can delete all of it.
-
-// Use new ES6 modules syntax for everything.
-import { webFrame, remote, ipcRenderer, clipboard } from 'electron' // native electron module
-import jetpack from 'fs-jetpack' // module loaded from npm
+import { webFrame, remote, ipcRenderer, clipboard } from 'electron'
+import jetpack from 'fs-jetpack'
 import Vue from 'vue'
 import env from './env'
 import { FileList } from './file_list/file_list'
+import crashReporter from './helpers/crash_reporter'
+import contextMenu from './menu/context_menu'
 
-require('./helpers/crash_reporter.js')(env)
-require('./helpers/context_menu')
+// Initialize
+crashReporter(env)
+contextMenu()
 
 webFrame.setZoomLevelLimits(1, 1) // Don't allow any pinch zoom
 
@@ -19,13 +18,10 @@ var app = remote.app
 var dialog = remote.dialog
 var appDir = jetpack.cwd(app.getAppPath())
 
-// Holy crap! This is browser window with HTML and stuff, but I can read
-// here files like it is node.js! Welcome to Electron world :)
 console.log('The author of this app is:', appDir.read('package.json', 'json').author)
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   global.fileList = new FileList('files')
-
   var summaryComponent = Vue.extend({})
   var fileListComponent = Vue.extend({})
   var toolbarComponent = Vue.extend({})
@@ -37,23 +33,23 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     methods: {
       open: openFiles,
-      selectAll: function () { global.fileList.Select.selectAll() },
-      deselectAll: function () { global.fileList.Select.deselectAll() },
-      selectUp: function (event) { global.fileList.Select.moveDirection('up', !event.shiftKey) },
-      selectDown: function (event) { global.fileList.Select.moveDirection('down', !event.shiftKey) },
-      handleCmdOrCtrlA: function (event) {
-        if ((event.metaKey || event.ctrlKey) && event.keyCode === 65) {
+      selectAll () { global.fileList.Select.selectAll() },
+      deselectAll () { global.fileList.Select.deselectAll() },
+      selectUp (event) { global.fileList.Select.moveDirection('up', !event.shiftKey) },
+      selectDown (event) { global.fileList.Select.moveDirection('down', !event.shiftKey) },
+      handleCmdOrCtrlA (event) {
+        if (global.fileList.el() && (event.metaKey || event.ctrlKey) && event.keyCode === 65) {
           event.preventDefault()
           global.fileList.Select.selectAll()
         }
       },
-      handleCmdOrCtrlBackspace: function (event) {
-        if ((event.metaKey || event.ctrlKey) && event.keyCode === 8) {
+      handleCmdOrCtrlBackspace (event) {
+        if (global.fileList.el() && (event.metaKey || event.ctrlKey) && event.keyCode === 8) {
           event.preventDefault()
-          global.fileList.Select.removeSelected()
+          document.dispatchEvent(new window.CustomEvent('removeSelected', event))
         }
       },
-      edit: function (event) {
+      edit (event) {
         global.fileList.Select.select([event.currentTarget], true)
         var index = global.fileList.getIndexForElement(event.currentTarget)
         var file = global.fileList.getFileForElement(event.currentTarget)
@@ -69,9 +65,12 @@ document.addEventListener('DOMContentLoaded', function () {
       select: selectFiles
     },
     computed: {
-      exportLabel: exportButtonLabel,
+      exportLabel () {
+        if (this.selectedFiles.length > 0) return 'Export ' + this.selectedFiles.length + ' item(s)'
+        return 'Export'
+      },
       result: global.fileList.results,
-      successRateLabel: function () {
+      successRateLabel () {
         var total = this.result.done.successful / (this.result.done.total || 1) * 100
         var color = total < 85 ? 'red' : total < 95 ? 'yellow' : 'green'
         return '<span class="color-' + color + '">' + total.toFixed(1) + '%</span>'
@@ -85,22 +84,23 @@ document.addEventListener('DOMContentLoaded', function () {
   })
   handleDragnDrop()
 
-  ipcRenderer.on('edit-updated', function (event, arg) {
+  ipcRenderer.on('edit-updated', (event, arg) => {
     var result = global.fileList.getFileForIndex(arg.index).result
     result.updated = arg.updated
     global.fileList.updateFile(arg.index, { result: result })
   })
 
-  ipcRenderer.on('main-blur', function (event) {
+  ipcRenderer.on('main-blur', () => {
     if (!document.body.classList.contains('blurred')) document.body.classList.add('blurred')
   })
 
-  ipcRenderer.on('main-focus', function (event) {
+  ipcRenderer.on('main-focus', () => {
     if (document.body.classList.contains('blurred')) document.body.classList.remove('blurred')
   })
-})
 
-document.addEventListener('copy', copySelectedToClipboard, true)
+  document.addEventListener('copy', copySelectedToClipboard, true)
+  document.addEventListener('removeSelected', removeSelected, true)
+})
 
 function selectFiles (event) {
   // If user does shift + click
@@ -129,7 +129,7 @@ function openFiles () {
       { name: 'BMP', extensions: ['bmp'] }
     ]
   },
-    function (paths) {
+    paths => {
       openFilesDialog = false
 
       if (paths && paths.length) {
@@ -148,39 +148,32 @@ function exportCSV () {
     filters: [
       { name: 'CSV', extensions: ['csv'] }
     ]
-  }, function (filename) {
+  }, filename => {
     saveFileDialog = false
     if (filename) jetpack.write(filename, global.fileList.Select.selectedToCSV())
   })
 }
 
-function exportButtonLabel () {
-  if (this.selectedFiles.length > 0) return 'Export ' + this.selectedFiles.length + ' item(s)'
-  return 'Export'
-}
-
 function handleDragnDrop () {
   // Drag files
-  document.ondragover = document.ondrop = function (ev) {
-    ev.preventDefault()
-  }
+  document.ondragover = document.ondrop = event => event.preventDefault()
 
-  document.body.ondrop = function (ev) {
+  document.body.ondrop = event => {
     if (document.body.classList.contains('drag')) document.body.classList.remove('drag')
 
-    if (ev.dataTransfer.files.length) {
-      global.fileList.addFiles(ev.dataTransfer.files)
+    if (event.dataTransfer.files.length) {
+      global.fileList.addFiles(event.dataTransfer.files)
     }
 
-    ev.preventDefault()
+    event.preventDefault()
   }
 
   var dragCounter = 0
-  document.body.ondragenter = function (ev) {
+  document.body.ondragenter = () => {
     dragCounter++
     if (!document.body.classList.contains('drag')) document.body.classList.add('drag')
   }
-  document.body.ondragend = document.body.ondragleave = function (ev) {
+  document.body.ondragend = document.body.ondragleave = () => {
     dragCounter--
     if (dragCounter > 0) return
     if (document.body.classList.contains('drag')) document.body.classList.remove('drag')
@@ -189,4 +182,8 @@ function handleDragnDrop () {
 
 function copySelectedToClipboard () {
   clipboard.writeText(global.fileList.Select.selectedToCSV(), 'text/csv')
+}
+
+function removeSelected () {
+  global.fileList.Select.removeSelected()
 }

@@ -2,7 +2,7 @@ import jetpack from 'fs-jetpack'
 import mime from 'mime'
 import path from 'path'
 
-export default class Util {
+class Util {
   constructor (fileList) {
     this.fileList = fileList
   }
@@ -26,7 +26,7 @@ export default class Util {
   }
 
   filterFiles (filelist) {
-    return filelist.filter(function (element, index, array) {
+    return filelist.filter((element, index, array) => {
       return (['pdf', 'jpeg', 'jpg', 'tiff', 'png', 'bmp'].indexOf((element.path || element).split('.').pop().toLowerCase()) !== -1)
     })
   }
@@ -35,12 +35,12 @@ export default class Util {
     var files = [file]
 
     // Filter non existing files
-    files = files.filter(function (element, index, array) {
+    files = files.filter((element, index, array) => {
       return jetpack.exists(element.path || element)
     })
 
     // Expand directories
-    for (var i = 0; i < files.length; i++) {
+    for (let i = 0, length = files.length; i < length; i++) {
       if (this.isDir(files[i].path || files[i])) {
         var expandedFiles = this.walkSync(files[i].path || files[i])
         files.splice(i, 1)
@@ -51,7 +51,7 @@ export default class Util {
     // Filter invalid files
     files = this.filterFiles(files)
 
-    return files.map(function (file) {
+    return files.map(file => {
       if (!file.path) {
         var object = jetpack.inspect(file)
 
@@ -85,8 +85,10 @@ export default class Util {
 Util.Interval = function (fn, interval) {
   var id = setInterval(fn, interval)
   this.cleared = false
-  this.clear = function () {
+  this.clear = () => {
     this.cleared = true
     clearInterval(id)
   }
 }
+
+export default Util

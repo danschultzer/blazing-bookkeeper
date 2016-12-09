@@ -13,16 +13,16 @@
 //    <a href="http://bing.com">bing</a>
 // </p>
 
-(function () {
+function externalLinks () {
   'use strict'
 
   var shell = require('electron').shell
 
-  var supportExternalLinks = function (e) {
+  function supportExternalLinks (e) {
     var href
     var isExternal = false
 
-    var checkDomElement = function (element) {
+    function checkDomElement (element) {
       if (element.nodeName === 'A') {
         href = element.getAttribute('href')
       }
@@ -41,4 +41,6 @@
   }
 
   document.addEventListener('click', supportExternalLinks, false)
-}())
+}
+
+export default externalLinks

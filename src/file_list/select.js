@@ -1,4 +1,4 @@
-export default class Select {
+class Select {
   constructor (fileList) {
     this.fileList = fileList
   }
@@ -13,7 +13,7 @@ export default class Select {
 
   indexOf (item) {
     var children = this.items()
-    for (var i = 0; i < children.length; i++) {
+    for (let i = 0, length = children.length; i < length; i++) {
       if (children[i] === item) {
         return i
       }
@@ -26,7 +26,7 @@ export default class Select {
   }
 
   deselect (items) {
-    for (var i = 0, length = items.length; i < length; ++i) {
+    for (let i = 0, length = items.length; i < length; ++i) {
       if (items[i].classList.contains('selected')) {
         items[i].classList.remove('selected')
       }
@@ -40,7 +40,7 @@ export default class Select {
 
   select (items, removeSelected) {
     if (removeSelected) this.deselectAll()
-    for (var i = 0, length = items.length; i < length; ++i) {
+    for (let i = 0, length = items.length; i < length; ++i) {
       if (!items[i].classList.contains('selected')) {
         items[i].classList.add('selected')
       }
@@ -87,7 +87,7 @@ export default class Select {
   updateFileListSelect () {
     this.fileList.selectedFiles.splice(0, this.fileList.selectedFiles.length)
     var selected = this.selected()
-    for (var i = 0, length = selected.length; i < length; ++i) {
+    for (let i = 0, length = selected.length; i < length; ++i) {
       this.fileList.selectedFiles.push(this.fileList.getFileForElement(selected[i]))
     }
   }
@@ -119,7 +119,7 @@ export default class Select {
   }
 
   selectedToCSV () {
-    var files = [].slice.call(this.selected()).map((el) => {
+    var files = [].slice.call(this.selected()).map(el => {
       return this.fileList.getFileForElement(el)
     })
     if (files.length < 1) files = this.fileList.files
@@ -127,7 +127,7 @@ export default class Select {
   }
 
   removeSelected () {
-    var files = [].slice.call(this.selected()).map((el) => {
+    var files = [].slice.call(this.selected()).map(el => {
       return this.fileList.getFileForElement(el)
     })
     this.fileList.removeFiles(files)
@@ -162,3 +162,5 @@ export default class Select {
     }
   }
 }
+
+export default Select

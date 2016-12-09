@@ -3,14 +3,16 @@ import Vue from 'vue'
 import { PDFJS } from 'pdfjs-dist/build/pdf.combined'
 import mime from 'mime'
 import env from './env'
+import crashReporter from './helpers/crash_reporter'
+import contextMenu from './menu/context_menu'
 
-require('./helpers/crash_reporter.js')(env)
-require('./helpers/context_menu')
-require('./helpers/external_links')
+// Initialize
+crashReporter(env)
+contextMenu()
 
 webFrame.setZoomLevelLimits(1, 1) // Don't allow any pinch zoom
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   global.file = remote.getGlobal('editObject')
   global.page = 1
   new Vue({ // eslint-disable-line no-new
@@ -21,28 +23,24 @@ document.addEventListener('DOMContentLoaded', function () {
     methods: {
       close: close,
       save: save,
-      report: function (event) {
-        ipcRenderer.send('display-report', global.file)
-      }
+      report () { ipcRenderer.send('display-report', global.file) }
     }
   })
   updatePreviewCanvas()
 
   var preview = document.getElementById('preview')
-  ipcRenderer.on('edit-resizing', function () {
-    preview.style.opacity = 0
-  })
+  ipcRenderer.on('edit-resizing', () => { preview.style.opacity = 0 })
 
-  ipcRenderer.on('edit-resized', function () {
+  ipcRenderer.on('edit-resized', () => {
     preview.style.opacity = 1
     updatePreviewCanvas()
   })
 
-  ipcRenderer.on('edit-blur', function (event) {
+  ipcRenderer.on('edit-blur', () => {
     if (!document.body.classList.contains('blurred')) document.body.classList.add('blurred')
   })
 
-  ipcRenderer.on('edit-focus', function (event) {
+  ipcRenderer.on('edit-focus', () => {
     if (document.body.classList.contains('blurred')) document.body.classList.remove('blurred')
   })
 })
@@ -62,7 +60,7 @@ function updatePreviewCanvas () {
   switch (true) {
     case mimetype === 'application/pdf':
       if (!loadedPdf) {
-        PDFJS.getDocument(path).then(function (pdf) {
+        PDFJS.getDocument(path).then(pdf => {
           loadedPdf = pdf
           renderPDF(loadedPdf, canvas, context, maxWidth, maxHeight)
         })
@@ -73,7 +71,7 @@ function updatePreviewCanvas () {
     case /^image\/.*/.test(mimetype):
       if (!loadedImg) {
         var img = new window.Image()
-        img.onload = function () {
+        img.onload = () => {
           loadedImg = img
           renderImage(loadedImg, canvas, context, maxWidth, maxHeight)
         }
@@ -86,7 +84,7 @@ function updatePreviewCanvas () {
 }
 
 function renderPDF (pdf, canvas, context, maxWidth, maxHeight) {
-  pdf.getPage(global.page).then(function (page) {
+  pdf.getPage(global.page).then(page => {
     var ratio = 1
     var viewport = page.getViewport(1)
     if (viewport.height > maxHeight) {

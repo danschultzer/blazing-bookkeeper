@@ -3,7 +3,7 @@ import scanner from 'receipt-scanner'
 import Select from './select'
 import Util from './util'
 
-export class FileList {
+class FileList {
   constructor (elId) {
     this.elId = elId
     this.files = []
@@ -19,16 +19,16 @@ export class FileList {
   }
 
   addFiles (files) {
-    for (var i = 0; i < files.length; ++i) {
+    for (let i = 0, iLength = files.length; i < iLength; ++i) {
       var extractedFiles = this.Util.extractFiles(files[i])
-      for (var j = 0; j < extractedFiles.length; ++j) {
+      for (let j = 0, jLength = extractedFiles.length; j < jLength; ++j) {
         this.addFile(extractedFiles[j].name, extractedFiles[j].path, extractedFiles[j].size, extractedFiles[j].type)
       }
     }
   }
 
   getFileIndexForIndex (index) {
-    return this.files.findIndex(function (f) { return f.index === index })
+    return this.files.findIndex(f => f.index === index)
   }
 
   createSmoothPercentProgressionInterval (index) {
@@ -68,9 +68,7 @@ export class FileList {
   }
 
   queued () {
-    return this.files.filter(function (f) {
-      return f.done === false && f.processing === false
-    })
+    return this.files.filter(f => f.done === false && f.processing === false)
   }
 
   queuedCount () {
@@ -78,9 +76,7 @@ export class FileList {
   }
 
   processingCount () {
-    return this.files.filter(function (f) {
-      return f.done === false && f.processing === true
-    }).length
+    return this.files.filter(f => f.done === false && f.processing === true).length
   }
 
   processQueue () {
@@ -141,25 +137,25 @@ export class FileList {
   results () {
     return {
       done: {
-        total: this.files.filter(function (element) { return element.done }).length,
-        successful: this.files.filter(function (element) { return element.done && element.result.parsed && element.result.parsed.amount && element.result.parsed.date }).length,
-        failures: this.files.filter(function (element) { return element.done && element.result.error }).length
+        total: this.files.filter(element => element.done).length,
+        successful: this.files.filter(element => element.done && element.result.parsed && element.result.parsed.amount && element.result.parsed.date).length,
+        failures: this.files.filter(element => element.done && element.result.error).length
       },
       processing: {
-        total: this.files.filter(function (element) { return !element.done }).length
+        total: this.files.filter(element => !element.done).length
       }
     }
   }
   toCSV (files) {
     var text = 'Name\tAmount\tDate\tPath\n'
-    for (var i = 0, length = files.length; i < length; ++i) {
+    for (let i = 0, length = files.length; i < length; ++i) {
       var values = [
         files[i].file.name,
         files[i].result && files[i].result.parsed ? (files[i].result.updated || {}).amount || files[i].result.parsed.amount : '',
         files[i].result && files[i].result.parsed ? (files[i].result.updated || {}).date || files[i].result.parsed.date : '',
         files[i].file.path
       ]
-      values = values.map(function (value) {
+      values = values.map(value => {
         if (value && value.length && (value.indexOf('"') > -1 || value.indexOf('\t') > -1)) {
           return '"' + value.replace('"', '\\"') + '"'
         }
@@ -184,8 +180,10 @@ export class FileList {
   }
 
   removeFiles (files) {
-    for (var i = 0, length = files.length; i < length; ++i) {
+    for (let i = 0, length = files.length; i < length; ++i) {
       this.files.splice(this.files.indexOf(files[i]), 1)
     }
   }
 }
+
+export { FileList }

@@ -6,7 +6,7 @@
 import { app, BrowserWindow, screen } from 'electron'
 import jetpack from 'fs-jetpack'
 
-export default function (name, options) {
+function createWindow (name, options) {
   var userDataDir = jetpack.cwd(app.getPath('userData'))
   var stateStoreFile = 'window-state-' + name + '.json'
   var defaultSize = {
@@ -16,7 +16,7 @@ export default function (name, options) {
   var state = {}
   var win
 
-  var restore = function () {
+  function restore () {
     var restoredState = {}
     try {
       restoredState = userDataDir.read(stateStoreFile, 'json')
@@ -27,7 +27,7 @@ export default function (name, options) {
     return Object.assign({}, defaultSize, restoredState)
   }
 
-  var getCurrentPosition = function () {
+  function getCurrentPosition () {
     var position = win.getPosition()
     var size = win.getSize()
     return {
@@ -38,14 +38,14 @@ export default function (name, options) {
     }
   }
 
-  var windowWithinBounds = function (windowState, bounds) {
+  function windowWithinBounds (windowState, bounds) {
     return windowState.x >= bounds.x &&
             windowState.y >= bounds.y &&
             windowState.x + windowState.width <= bounds.x + bounds.width &&
             windowState.y + windowState.height <= bounds.y + bounds.height
   }
 
-  var resetToDefaults = function (windowState) {
+  function resetToDefaults (windowState) {
     var bounds = screen.getPrimaryDisplay().bounds
     return Object.assign({}, defaultSize, {
       x: (bounds.width - defaultSize.width) / 2,
@@ -53,8 +53,8 @@ export default function (name, options) {
     })
   }
 
-  var ensureVisibleOnSomeDisplay = function (windowState) {
-    var visible = screen.getAllDisplays().some(function (display) {
+  function ensureVisibleOnSomeDisplay (windowState) {
+    var visible = screen.getAllDisplays().some(display => {
       return windowWithinBounds(windowState, display.bounds)
     })
     if (!visible) {
@@ -65,7 +65,7 @@ export default function (name, options) {
     return windowState
   }
 
-  var saveState = function () {
+  function saveState () {
     if (!win.isMinimized() && !win.isMaximized()) {
       Object.assign(state, getCurrentPosition())
     }
@@ -80,3 +80,5 @@ export default function (name, options) {
 
   return win
 }
+
+export default createWindow
