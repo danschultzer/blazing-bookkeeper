@@ -5,38 +5,33 @@ import path from 'path'
 class Util {
   constructor (fileList) {
     this.fileList = fileList
-  }
-
-  // https://gist.github.com/kethinov/6658166
-  walkSync (dir, filelist) {
-    var files = jetpack.list(dir)
-    filelist = filelist || []
-    files.forEach((file) => {
-      if (this.isDir(path.join(dir, file))) {
-        filelist = this.walkSync(path.join(dir, file), filelist)
-      } else {
-        filelist.push(path.join(dir, file))
-      }
-    })
-    return filelist
-  }
-
-  isDir (path) {
-    return jetpack.exists(path) && jetpack.inspect(path).type === 'dir'
-  }
-
-  filterFiles (filelist) {
-    return filelist.filter(function (element, index, array) {
-      return (['pdf', 'jpeg', 'jpg', 'tiff', 'png', 'bmp'].indexOf((element.path || element).split('.').pop().toLowerCase()) !== -1)
-    })
-  }
-
-  extractFiles (file) {
-    var files = [file]
-      // Filter non existing files
+    // https://gist.github.com/kethinov/6658166
+    this.walkSync = (dir, filelist) => {
+      var files = jetpack.list(dir)
+      filelist = filelist || []
+      files.forEach((file) => {
+        if (this.isDir(path.join(dir, file))) {
+          filelist = this.walkSync(path.join(dir, file), filelist)
+        } else {
+          filelist.push(path.join(dir, file))
+        }
+      })
+      return filelist
+    }
+    this.isDir = path => {
+      return jetpack.exists(path) && jetpack.inspect(path).type === 'dir'
+    }
+    this.filterFiles = filelist => {
+      return filelist.filter(function (element, index, array) {
+        return (['pdf', 'jpeg', 'jpg', 'tiff', 'png', 'bmp'].indexOf((element.path || element).split('.').pop().toLowerCase()) !== -1)
+      })
+    }
+    this.extractFiles = file => {
+      var files = [file]
+        // Filter non existing files
       files = files.filter((element, index, array) => jetpack.exists(element.path || element))
 
-      // Expand directories
+        // Expand directories
       for (let i = 0; i < files.length; i++) {
         if (this.isDir(files[i].path || files[i])) {
           var expandedFiles = this.walkSync(files[i].path || files[i])

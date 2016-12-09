@@ -42,7 +42,7 @@ describe('application launch', function () {
     })
 
     describe('when removing', function () {
-      it('should remove file', function () {
+      it('remove file from list', function () {
         return this.app.client.element('.table .body .row:nth-child(1)')
           .isVisible().then(function (visible) {
             assert.equal(visible, true)
@@ -51,8 +51,8 @@ describe('application launch', function () {
           .click('.table .body .row:nth-child(1)').execute(function () {
             document.dispatchEvent(new window.Event('remove'))
           })
-          .isVisible('.table .body .row:nth-child(1)').then(function (visible) {
-            assert.equal(visible, false)
+          .isExisting('.table .body .row:nth-child(1)').then(function (existing) {
+            assert.equal(existing, false)
           })
       })
     })

@@ -112,15 +112,15 @@ class FileList {
         this.files.$set(index, this.files[index])
       }
     }
-    this.results = () => {
+    this.results = event => {
       return {
         done: {
-          total: this.files.filter(element => element.done).length,
-          successful: this.files.filter(element => element.done && element.result.parsed && element.result.parsed.amount && element.result.parsed.date).length,
-          failures: this.files.filter(element => element.done && element.result.error).length
+          total: event.files.filter(element => element.done).length,
+          successful: event.files.filter(element => element.done && element.result.parsed && element.result.parsed.amount && element.result.parsed.date).length,
+          failures: event.files.filter(element => element.done && element.result.error).length
         },
         processing: {
-          total: this.files.filter(element => !element.done).length
+          total: event.files.filter(element => !element.done).length
         }
       }
     }
