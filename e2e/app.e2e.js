@@ -28,7 +28,7 @@ describe('application launch', function () {
       return this.app.client.click('#plus-button-open').waitForVisible('.table .body .row', 1000)
     })
 
-    it('should show file', function () {
+    it('shows file', function () {
       return this.app.client.element('.table .body .row:nth-child(1)')
         .isVisible().then(function (visible) {
           assert.equal(visible, true)
@@ -42,7 +42,7 @@ describe('application launch', function () {
     })
 
     describe('when copying', function () {
-      it('should copy CSV to clipboard', function () {
+      it('copys CSV to clipboard', function () {
         return this.app.client.click('.table .body .row')
           .execute(function () {
             document.dispatchEvent(new window.Event('copy'))
@@ -99,7 +99,7 @@ describe('application launch', function () {
             .waitUntilWindowLoaded().windowByIndex(2)
         })
 
-        it('shows new browser window with attached file, email and comments', function () {
+        it('shows new browser window with attached file, email and comment', function () {
           return this.app.client.getWindowCount().then(function (count) {
             assert.equal(count, 3)
           }).isExisting('input[name="email"]').then(function (exists) {
@@ -116,7 +116,7 @@ describe('application launch', function () {
             return this.app.client.click('[name="anonymized"]')
           })
 
-          it('hides email, attached file and paths', function () {
+          it('hides email, attached file and absolute path', function () {
             return this.app.client.getWindowCount().then(function (count) {
               assert.equal(count, 3)
             }).isExisting('input[name="email"]').then(function (exists) {

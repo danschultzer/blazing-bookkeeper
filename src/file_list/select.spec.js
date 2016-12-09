@@ -22,7 +22,7 @@ describe('fileList.Select', function () {
       Select.select([filesContainer.firstChild])
     })
 
-    it('should select the row', function () {
+    it('selects the row', function () {
       assert.equal(Select.selected().length, 1)
     })
 
@@ -31,7 +31,7 @@ describe('fileList.Select', function () {
         Select.select([filesContainer.lastChild])
       })
 
-      it('should select both rows', function () {
+      it('selects both rows', function () {
         assert.equal(Select.selected().length, 2)
       })
     })
@@ -41,7 +41,7 @@ describe('fileList.Select', function () {
         Select.select([filesContainer.lastChild], true)
       })
 
-      it('should deselect the previous selected row', function () {
+      it('deselects the previous selected row', function () {
         assert.equal(Select.selected().length, 1)
       })
     })
@@ -53,7 +53,7 @@ describe('fileList.Select', function () {
       Select.selectAll()
     })
 
-    it('should select all rows', function () {
+    it('selects all rows', function () {
       assert.equal(Select.selected().length, 2)
     })
   })
@@ -63,7 +63,7 @@ describe('fileList.Select', function () {
       filesContainer.innerHTML = '<div class="row"></div><div class="row"></div>'
     })
 
-    it('should toggle row selected/unselected', function () {
+    it('toggles row selected/unselected', function () {
       Select.toggleSelect(filesContainer.firstChild)
       assert.equal(Select.selected().length, 1)
       assert.equal(Select.selected()[0], filesContainer.firstChild)
@@ -77,7 +77,7 @@ describe('fileList.Select', function () {
       filesContainer.innerHTML = '<div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>'
     })
 
-    it('should select all rows in range in any direction', function () {
+    it('select all rows in range in any direction', function () {
       Select.select([filesContainer.childNodes[2]])
 
       // Moving up
@@ -100,14 +100,14 @@ describe('fileList.Select', function () {
     })
 
     describe('moving up', function () {
-      it('should select next row in sequence', function () {
+      it('selects next row in sequence', function () {
         Select.select([filesContainer.childNodes[1]])
         Select.moveDirection('up', true)
         assert.equal(Select.selected().length, 1)
         assert.equal(Select.selected()[0], filesContainer.firstChild)
       })
 
-      it('should not find anything before first', function () {
+      it('does not find anything before first', function () {
         Select.select([filesContainer.firstChild])
         Select.moveDirection('up', true)
         assert.equal(Select.selected().length, 1)
@@ -116,14 +116,14 @@ describe('fileList.Select', function () {
     })
 
     describe('moving down', function () {
-      it('should select next row in sequence', function () {
+      it('selects next row in sequence', function () {
         Select.select([filesContainer.childNodes[1]])
         Select.moveDirection('down', true)
         assert.equal(Select.selected().length, 1)
         assert.equal(Select.selected()[0], filesContainer.lastChild)
       })
 
-      it('should not find anything past last', function () {
+      it('does not find anything past last', function () {
         Select.select([filesContainer.lastChild])
         Select.moveDirection('down', true)
         assert.equal(Select.selected().length, 1)
@@ -195,7 +195,7 @@ describe('fileList.Select', function () {
     })
 
     describe('already in view', function () {
-      it('should not scroll', function () {
+      it('does not scroll', function () {
         Select.select([filesContainer.lastChild])
         fileContainerRect = {
           top: 0,
@@ -215,7 +215,7 @@ describe('fileList.Select', function () {
     })
 
     describe('moving up', function () {
-      it('should scroll so top row is shown first', function () {
+      it('scrolls so top row is shown first', function () {
         Select.select([filesContainer.firstChild])
         Select.scrollTop(filesContainer, 20)
         fileContainerRect = {
@@ -234,7 +234,7 @@ describe('fileList.Select', function () {
     })
 
     describe('moving down', function () {
-      it('should scroll so bottom row is shown last', function () {
+      it('scrolls so bottom row is shown last', function () {
         Select.select([filesContainer.lastChild])
         Select.scrollTop(filesContainer, 0)
         fileContainerRect = {
