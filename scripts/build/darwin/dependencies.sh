@@ -75,12 +75,12 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/leptonica-src" ]
 then
-  if [ ! -f "$BUILDDIR/leptonica-1.73.tar.gz" ]
+  if [ ! -f "$BUILDDIR/leptonica-1.74.1.tar.gz" ]
   then
-    curl -o leptonica-1.73.tar.gz -L -z leptonica-1.73.tar.gz https://github.com/DanBloomberg/leptonica/archive/v1.73.tar.gz
+    curl -o leptonica-1.74.1.tar.gz -L -z leptonica-1.74.1.tar.gz https://github.com/DanBloomberg/leptonica/archive/1.74.1.tar.gz
   fi
-  tar xzf leptonica-1.73.tar.gz
-  mv leptonica-1.73 leptonica-src
+  tar xzf leptonica-1.74.1.tar.gz
+  mv leptonica-1.74.1 leptonica-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/liblept.dylib" ]
 then
