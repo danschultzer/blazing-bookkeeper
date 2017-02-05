@@ -8,12 +8,12 @@ DEST_DEPENDENCIES_DIR=$THIRDPARTYDIR/dependencies
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/jpeg-src" ]
 then
-  if [ ! -f "$BUILDDIR/jpeg-v8d.tar.gz" ]
+  if [ ! -f "$BUILDDIR/jpeg-v9b.tar.gz" ]
   then
-    curl -o jpeg-v8d.tar.gz -L -z jpeg-v8d.tar.gz http://www.ijg.org/files/jpegsrc.v8d.tar.gz
+    curl -o jpegsrc.v9b.tar.gz -L -z jpegsrc.v9b.tar.gz http://www.ijg.org/files/jpegsrc.v9b.tar.gz
   fi
-  tar xzf jpeg-v8d.tar.gz
-  mv jpeg-8d jpeg-src
+  tar xzf jpegsrc.v9b.tar.gz
+  mv jpeg-9b jpeg-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libjpeg.dylib" ]
 then
@@ -28,12 +28,12 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/libpng-src" ]
 then
-  if [ ! -f "$BUILDDIR/libpng-1.6.26.tar.xz" ]
+  if [ ! -f "$BUILDDIR/libpng-1.6.28.tar.xz" ]
   then
-    curl -o libpng-1.6.26.tar.xz -L -z libpng-1.6.26.tar.xz ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.26.tar.xz
+    curl -o libpng-1.6.28.tar.xz -L -z libpng-1.6.28.tar.xz ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.28.tar.xz
   fi
-  tar xzf libpng-1.6.26.tar.xz
-  mv libpng-1.6.26 libpng-src
+  tar xzf libpng-1.6.28.tar.xz
+  mv libpng-1.6.28 libpng-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libpng.dylib" ]
 then
@@ -51,10 +51,10 @@ if [ ! -d "$BUILDDIR/tiff-src" ]
 then
   if [ ! -f "$BUILDDIR/tiff-4.0.6.tar.gz" ]
   then
-    curl -o tiff-4.0.6.tar.gz -L -z tiff-4.0.6.tar.gz http://download.osgeo.org/libtiff/tiff-4.0.6.tar.gz
+    curl -o tiff-4.0.7.tar.gz -L -z tiff-4.0.7.tar.gz http://download.osgeo.org/libtiff/tiff-4.0.7.tar.gz
   fi
-  tar xzf tiff-4.0.6.tar.gz
-  mv tiff-4.0.6 tiff-src
+  tar xzf tiff-4.0.7.tar.gz
+  mv tiff-4.0.7 tiff-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libtiff.dylib" ]
 then
@@ -103,12 +103,12 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/freetype-src" ]
 then
-  if [ ! -f "$BUILDDIR/freetype-2.7.tar.bz2" ]
+  if [ ! -f "$BUILDDIR/freetype-2.7.1.tar.gz" ]
   then
-    curl -o freetype-2.7.tar.bz2 -L -z freetype-2.7.tar.bz2 https://downloads.sf.net/project/freetype/freetype2/2.7/freetype-2.7.tar.bz2
+    curl -o freetype-2.7.1.tar.gz -L -z freetype-2.7.1.tar.gz https://downloads.sourceforge.net/project/freetype/freetype2/2.7.1/freetype-2.7.1.tar.gz
   fi
-  tar xzf freetype-2.7.tar.bz2
-  mv freetype-2.7 freetype-src
+  tar xzf freetype-2.7.1.tar.gz
+  mv freetype-2.7.1 freetype-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libfreetype.dylib" ]
 then
