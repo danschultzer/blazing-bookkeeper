@@ -49,7 +49,7 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/tiff-src" ]
 then
-  if [ ! -f "$BUILDDIR/tiff-4.0.6.tar.gz" ]
+  if [ ! -f "$BUILDDIR/tiff-4.0.7.tar.gz" ]
   then
     curl -o tiff-4.0.7.tar.gz -L -z tiff-4.0.7.tar.gz http://download.osgeo.org/libtiff/tiff-4.0.7.tar.gz
   fi
