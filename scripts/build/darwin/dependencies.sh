@@ -49,7 +49,7 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/tiff-src" ]
 then
-  if [ ! -f "$BUILDDIR/tiff-4.0.7.tar.gz" ]
+  if [ ! -f "$BUILDDIR/tiff-4.0.6.tar.gz" ]
   then
     curl -o tiff-4.0.7.tar.gz -L -z tiff-4.0.7.tar.gz http://download.osgeo.org/libtiff/tiff-4.0.7.tar.gz
   fi
@@ -103,11 +103,11 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/freetype-src" ]
 then
-  if [ ! -f "$BUILDDIR/freetype-2.7.1.tar.bz2" ]
+  if [ ! -f "$BUILDDIR/freetype-2.7.1.tar.gz" ]
   then
-    curl -o freetype-2.7.1.tar.bz2 -L -z freetype-2.7.1.tar.bz2 https://downloads.sf.net/project/freetype/freetype2/2.7/freetype-2.7.1.tar.bz2
+    curl -o freetype-2.7.1.tar.gz -L -z freetype-2.7.1.tar.gz https://downloads.sourceforge.net/project/freetype/freetype2/2.7.1/freetype-2.7.1.tar.gz
   fi
-  tar xzf freetype-2.7.1.tar.bz2
+  tar xzf freetype-2.7.1.tar.gz
   mv freetype-2.7.1 freetype-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libfreetype.dylib" ]
