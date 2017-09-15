@@ -7,12 +7,12 @@ cd $BUILDDIR
 # Compile tesseract
 if [ ! -d "$BUILDDIR/tesseract-src" ]
 then
-  if [ ! -f "$BUILDDIR/tesseract-3.04.01.tar.gz" ]
+  if [ ! -f "$BUILDDIR/tesseract-3.05.01.tar.gz" ]
   then
-    curl -o tesseract-3.04.01.tar.gz -L -z tesseract-3.04.01.tar.gz https://github.com/tesseract-ocr/tesseract/archive/3.04.01.tar.gz
+    curl -o tesseract-3.05.01.tar.gz -L -z tesseract-3.05.01.tar.gz https://github.com/tesseract-ocr/tesseract/archive/3.05.01.tar.gz
   fi
-  tar xzf tesseract-3.04.01.tar.gz
-  mv tesseract-3.04.01 tesseract-src
+  tar xzf tesseract-3.05.01.tar.gz
+  mv tesseract-3.05.01 tesseract-src
 fi
 if [ ! -f "$THIRDPARTYDIR/tesseract/bin/tesseract" ]
 then

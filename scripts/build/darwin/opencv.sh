@@ -7,12 +7,12 @@ cd $BUILDDIR
 # Compile opencv
 if [ ! -d "$BUILDDIR/opencv-src" ]
 then
-  if [ ! -f "$BUILDDIR/3.2.0.tar.gz" ]
+  if [ ! -f "$BUILDDIR/3.3.0.tar.gz" ]
   then
-    curl -o 3.2.0.tar.gz -L -z 3.2.0.tar.gz https://github.com/opencv/opencv/archive/3.2.0.tar.gz
+    curl -o 3.3.0.tar.gz -L -z 3.3.0.tar.gz https://github.com/opencv/opencv/archive/3.3.0.tar.gz
   fi
-  tar xzf 3.2.0.tar.gz
-  mv opencv-3.2.0 opencv-src
+  tar xzf 3.3.0.tar.gz
+  mv opencv-3.3.0 opencv-src
 fi
 cd opencv-src
 
