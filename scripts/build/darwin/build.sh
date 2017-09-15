@@ -14,7 +14,7 @@ echo [darwin-build] Will build files in $THIRDPARTYDIR
 
 # Build dependencies
 echo [darwin-build] Building development dependencies with brew
-brew install automake autoconf libtool pkg-config
+brew install cmake automake autoconf libtool pkg-config
 
 echo [darwin-build] Building 3rdparty dependencies
 cd $BASEDIR && ./dependencies.sh
