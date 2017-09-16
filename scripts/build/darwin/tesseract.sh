@@ -32,9 +32,9 @@ if [ ! -f "$THIRDPARTYDIR/tesseract/share/tessdata/eng.traineddata" ]
 then
   if [ ! -f "$BUILDDIR/tessdata.tar.gz" ]
   then
-    curl -o tessdata.tar.gz -L -z tessdata.tar.gz https://github.com/tesseract-ocr/tessdata/archive/master.tar.gz
+    curl -o tessdata.tar.gz -L -z tessdata.tar.gz https://github.com/tesseract-ocr/tessdata/archive/3.04.00.zip
   fi
   tar xzf tessdata.tar.gz
   mkdir -p $THIRDPARTYDIR/tesseract/share/tessdata/
-  mv tessdata-master/eng.* tessdata-master/osd.traineddata $THIRDPARTYDIR/tesseract/share/tessdata/
+  mv tessdata-3.04.00/eng.* tessdata-3.04.00/osd.traineddata $THIRDPARTYDIR/tesseract/share/tessdata/
 fi
