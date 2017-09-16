@@ -26,8 +26,8 @@ then
     --disable-poppler-qt4 \
     --disable-poppler-qt5 \
     --disable-poppler-cpp \
-    --disable-libopenjpeg \
-    --disable-gtk-test \
+    --enable-libopenjpeg=none \
+    --disable-gtk-test
 
   make install
 fi
