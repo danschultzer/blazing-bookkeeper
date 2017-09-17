@@ -8,7 +8,7 @@ DEST_DEPENDENCIES_DIR=$THIRDPARTYDIR/dependencies
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/jpeg-src" ]
 then
-  if [ ! -f "$BUILDDIR/jpeg-v9b.tar.gz" ]
+  if [ ! -f "$BUILDDIR/jpegsrc.v9b.tar.gz" ]
   then
     curl -o jpegsrc.v9b.tar.gz -L -z jpegsrc.v9b.tar.gz http://www.ijg.org/files/jpegsrc.v9b.tar.gz
   fi
@@ -28,12 +28,12 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/libpng-src" ]
 then
-  if [ ! -f "$BUILDDIR/libpng-1.6.28.tar.xz" ]
+  if [ ! -f "$BUILDDIR/libpng-1.6.32.tar.xz" ]
   then
-    curl -o libpng-1.6.28.tar.xz -L -z libpng-1.6.28.tar.xz ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.28.tar.xz
+    curl -o libpng-1.6.32.tar.xz -L -z libpng-1.6.32.tar.xz ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.32.tar.xz
   fi
-  tar xzf libpng-1.6.28.tar.xz
-  mv libpng-1.6.28 libpng-src
+  tar xzf libpng-1.6.32.tar.xz
+  mv libpng-1.6.32 libpng-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libpng.dylib" ]
 then
@@ -49,12 +49,12 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/tiff-src" ]
 then
-  if [ ! -f "$BUILDDIR/tiff-4.0.6.tar.gz" ]
+  if [ ! -f "$BUILDDIR/tiff-4.0.8.tar.gz" ]
   then
-    curl -o tiff-4.0.7.tar.gz -L -z tiff-4.0.7.tar.gz http://download.osgeo.org/libtiff/tiff-4.0.7.tar.gz
+    curl -o tiff-4.0.8.tar.gz -L -z tiff-4.0.8.tar.gz http://download.osgeo.org/libtiff/tiff-4.0.8.tar.gz
   fi
-  tar xzf tiff-4.0.7.tar.gz
-  mv tiff-4.0.7 tiff-src
+  tar xzf tiff-4.0.8.tar.gz
+  mv tiff-4.0.8 tiff-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libtiff.dylib" ]
 then
@@ -75,12 +75,12 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/leptonica-src" ]
 then
-  if [ ! -f "$BUILDDIR/leptonica-1.74.1.tar.gz" ]
+  if [ ! -f "$BUILDDIR/leptonica-1.74.4.tar.gz" ]
   then
-    curl -o leptonica-1.74.1.tar.gz -L -z leptonica-1.74.1.tar.gz https://github.com/DanBloomberg/leptonica/archive/1.74.1.tar.gz
+    curl -o leptonica-1.74.4.tar.gz -L -z leptonica-1.74.4.tar.gz https://github.com/DanBloomberg/leptonica/releases/download/1.74.4/leptonica-1.74.4.tar.gz
   fi
-  tar xzf leptonica-1.74.1.tar.gz
-  mv leptonica-1.74.1 leptonica-src
+  tar xzf leptonica-1.74.4.tar.gz
+  mv leptonica-1.74.4 leptonica-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/liblept.dylib" ]
 then
@@ -103,12 +103,12 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/freetype-src" ]
 then
-  if [ ! -f "$BUILDDIR/freetype-2.7.1.tar.gz" ]
+  if [ ! -f "$BUILDDIR/freetype-2.8.tar.gz" ]
   then
-    curl -o freetype-2.7.1.tar.gz -L -z freetype-2.7.1.tar.gz https://downloads.sourceforge.net/project/freetype/freetype2/2.7.1/freetype-2.7.1.tar.gz
+    curl -o freetype-2.8.tar.gz -L -z freetype-2.8.tar.gz https://downloads.sourceforge.net/project/freetype/freetype2/2.8/freetype-2.8.tar.gz
   fi
-  tar xzf freetype-2.7.1.tar.gz
-  mv freetype-2.7.1 freetype-src
+  tar xzf freetype-2.8.tar.gz
+  mv freetype-2.8 freetype-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libfreetype.dylib" ]
 then
@@ -125,12 +125,12 @@ fi
 cd $BUILDDIR
 if [ ! -d "$BUILDDIR/fontconfig-src" ]
 then
-  if [ ! -f "$BUILDDIR/fontconfig-2.12.1.tar.gz" ]
+  if [ ! -f "$BUILDDIR/fontconfig-2.12.5.tar.gz" ]
   then
-    curl -o fontconfig-2.12.1.tar.bz2 -L -z fontconfig-2.12.1.tar.bz2 https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.1.tar.bz2
+    curl -o fontconfig-2.12.5.tar.gz -L -z fontconfig-2.12.5.tar.gz https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.5.tar.gz
   fi
-  tar xzf fontconfig-2.12.1.tar.bz2
-  mv fontconfig-2.12.1 fontconfig-src
+  tar xzf fontconfig-2.12.5.tar.gz
+  mv fontconfig-2.12.5 fontconfig-src
 fi
 if [ ! -f "$DEST_DEPENDENCIES_DIR/lib/libfontconfig.dylib" ]
 then

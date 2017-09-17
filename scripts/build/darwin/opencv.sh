@@ -7,14 +7,15 @@ cd $BUILDDIR
 # Compile opencv
 if [ ! -d "$BUILDDIR/opencv-src" ]
 then
-  if [ ! -f "$BUILDDIR/3.2.0.tar.gz" ]
+  if [ ! -f "$BUILDDIR/3.3.0.tar.gz" ]
   then
-    curl -o 3.2.0.tar.gz -L -z 3.2.0.tar.gz https://github.com/opencv/opencv/archive/3.2.0.tar.gz
+    curl -o 3.3.0.tar.gz -L -z 3.3.0.tar.gz https://github.com/opencv/opencv/archive/3.3.0.tar.gz
   fi
-  tar xzf 3.2.0.tar.gz
-  mv opencv-3.2.0 opencv-src
+  tar xzf 3.3.0.tar.gz
+  mv opencv-3.3.0 opencv-src
 fi
-cd opencv-src
+mkdir -p opencv-src/build
+cd opencv-src/build
 
 if [ ! -f "$THIRDPARTYDIR/opencv/lib/pkgconfig/opencv.pc" ]
 then
@@ -29,7 +30,7 @@ then
     -D JPEG_LIBRARY=$THIRDPARTYDIR/dependencies/lib/libjpeg.a -D JPEG_INCLUDE_DIR=$THIRDPARTYDIR/dependencies/include \
     -D TIFF_LIBRARY=$THIRDPARTYDIR/dependencies/lib/libtiff.a -D TIFF_INCLUDE_DIR=$THIRDPARTYDIR/dependencies/include \
     -D PNG_LIBRARY=$THIRDPARTYDIR/dependencies/lib/libpng.a -D PNG_INCLUDE_DIR=$THIRDPARTYDIR/dependencies/include \
-    ./
+    $BUILDDIR/opencv-src
   make
   make install
 fi

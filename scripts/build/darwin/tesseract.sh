@@ -7,12 +7,12 @@ cd $BUILDDIR
 # Compile tesseract
 if [ ! -d "$BUILDDIR/tesseract-src" ]
 then
-  if [ ! -f "$BUILDDIR/tesseract-3.04.01.tar.gz" ]
+  if [ ! -f "$BUILDDIR/tesseract-3.05.01.tar.gz" ]
   then
-    curl -o tesseract-3.04.01.tar.gz -L -z tesseract-3.04.01.tar.gz https://github.com/tesseract-ocr/tesseract/archive/3.04.01.tar.gz
+    curl -o tesseract-3.05.01.tar.gz -L -z tesseract-3.05.01.tar.gz https://github.com/tesseract-ocr/tesseract/archive/3.05.01.tar.gz
   fi
-  tar xzf tesseract-3.04.01.tar.gz
-  mv tesseract-3.04.01 tesseract-src
+  tar xzf tesseract-3.05.01.tar.gz
+  mv tesseract-3.05.01 tesseract-src
 fi
 if [ ! -f "$THIRDPARTYDIR/tesseract/bin/tesseract" ]
 then
@@ -32,9 +32,9 @@ if [ ! -f "$THIRDPARTYDIR/tesseract/share/tessdata/eng.traineddata" ]
 then
   if [ ! -f "$BUILDDIR/tessdata.tar.gz" ]
   then
-    curl -o tessdata.tar.gz -L -z tessdata.tar.gz https://github.com/tesseract-ocr/tessdata/archive/master.tar.gz
+    curl -o tessdata.tar.gz -L -z tessdata.tar.gz https://github.com/tesseract-ocr/tessdata/archive/3.04.00.zip
   fi
   tar xzf tessdata.tar.gz
   mkdir -p $THIRDPARTYDIR/tesseract/share/tessdata/
-  mv tessdata-master/eng.* tessdata-master/osd.traineddata $THIRDPARTYDIR/tesseract/share/tessdata/
+  mv tessdata-3.04.00/eng.* tessdata-3.04.00/osd.traineddata $THIRDPARTYDIR/tesseract/share/tessdata/
 fi
