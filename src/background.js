@@ -67,10 +67,7 @@ function blur (windowName, eventName) {
   windowName.on('blur', () => windowName.webContents.send(eventName))
 }
 
-app.on('ready', () => {
-  crashReporter(env)
-  setApplicationMenu()
-
+function openMainWindow () {
   mainWindow = openWindow('main', 'app.html', { width: 640, height: 480 })
 
   mainWindow.on('focus', () => {
@@ -85,6 +82,12 @@ app.on('ready', () => {
   })
 
   mainWindow.on('closed', () => { mainWindow = null })
+}
+
+app.on('ready', () => {
+  crashReporter(env)
+  setApplicationMenu()
+  openMainWindow()
 
   ipcMain.on('display-edit', (event, arg) => {
     if (!arg[1].done || editWindow) return
@@ -152,4 +155,14 @@ app.on('ready', () => {
   ipcMain.on('close-report', () => reportWindow.close())
 })
 
-app.on('window-all-closed', () => app.quit())
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('activate', () => {
+  if (mainWindow === null) {
+    openMainWindow()
+  }
+})
